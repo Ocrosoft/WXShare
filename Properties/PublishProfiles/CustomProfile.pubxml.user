@@ -1,0 +1,245 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--
+此文件由 Web 项目的发布/打包过程使用。可以通过编辑此 MSBuild 文件
+自定义此过程的行为。为了解与此相关的更多内容，请访问 https://go.microsoft.com/fwlink/?LinkID=208121。 
+-->
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <TimeStampOfAssociatedLegacyPublishXmlFile />
+    <EncryptedPassword>AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAA9puTGmWYAEGPD7ozbPeHqgAAAAACAAAAAAAQZgAAAAEAACAAAADiP4rJIZ5KF39IhCkd7T5C6XzBIzG059y9nbNGOwiJhwAAAAAOgAAAAAIAACAAAABuytpCkko398VowtCCI9XflnALGAuSMpEX4ifok0CQCRAAAACeYG8fb6YR9t/wjUD11nH2QAAAADSwdyWOckdHnPn5GKmROZfjoK3z2IzE/K46iskVfGvmwzftC+F3CNhw96AI+GXtwc0NsBgaGXlBFHjEGM11qNo=</EncryptedPassword>
+    <_PublishTargetUrl>ftp://debug.ocrosoft.com/</_PublishTargetUrl>
+  </PropertyGroup>
+  <ItemGroup>
+    <File Include="Activity.aspx">
+      <publishTime>10/15/2017 00:10:23</publishTime>
+    </File>
+    <File Include="ActivityAuthSuccess.aspx">
+      <publishTime>10/16/2017 10:38:15</publishTime>
+    </File>
+    <File Include="ActivityDetail.aspx">
+      <publishTime>10/16/2017 12:13:49</publishTime>
+    </File>
+    <File Include="ActivitySign.aspx">
+      <publishTime>10/16/2017 15:48:50</publishTime>
+    </File>
+    <File Include="bin/Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll">
+      <publishTime>12/13/2016 03:10:32</publishTime>
+    </File>
+    <File Include="bin/MySql.Data.dll">
+      <publishTime>10/12/2017 21:41:39</publishTime>
+    </File>
+    <File Include="bin/Newtonsoft.Json.dll">
+      <publishTime>03/20/2017 20:02:18</publishTime>
+    </File>
+    <File Include="bin/roslyn/csc.exe">
+      <publishTime>06/27/2016 14:50:24</publishTime>
+    </File>
+    <File Include="bin/roslyn/csc.exe.config">
+      <publishTime>06/27/2016 14:50:24</publishTime>
+    </File>
+    <File Include="bin/roslyn/csc.rsp">
+      <publishTime>06/27/2016 14:50:24</publishTime>
+    </File>
+    <File Include="bin/roslyn/csi.exe">
+      <publishTime>06/27/2016 14:50:24</publishTime>
+    </File>
+    <File Include="bin/roslyn/csi.rsp">
+      <publishTime>06/27/2016 14:50:24</publishTime>
+    </File>
+    <File Include="bin/roslyn/Microsoft.Build.Tasks.CodeAnalysis.dll">
+      <publishTime>06/27/2016 14:50:24</publishTime>
+    </File>
+    <File Include="bin/roslyn/Microsoft.CodeAnalysis.CSharp.dll">
+      <publishTime>06/27/2016 14:50:24</publishTime>
+    </File>
+    <File Include="bin/roslyn/Microsoft.CodeAnalysis.CSharp.Scripting.dll">
+      <publishTime>06/27/2016 14:50:24</publishTime>
+    </File>
+    <File Include="bin/roslyn/Microsoft.CodeAnalysis.dll">
+      <publishTime>06/27/2016 14:50:24</publishTime>
+    </File>
+    <File Include="bin/roslyn/Microsoft.CodeAnalysis.Scripting.dll">
+      <publishTime>06/27/2016 14:50:24</publishTime>
+    </File>
+    <File Include="bin/roslyn/Microsoft.CodeAnalysis.VisualBasic.dll">
+      <publishTime>06/27/2016 14:50:24</publishTime>
+    </File>
+    <File Include="bin/roslyn/Microsoft.CSharp.Core.targets">
+      <publishTime>06/27/2016 14:50:24</publishTime>
+    </File>
+    <File Include="bin/roslyn/Microsoft.DiaSymReader.Native.amd64.dll">
+      <publishTime>06/27/2016 14:50:24</publishTime>
+    </File>
+    <File Include="bin/roslyn/Microsoft.DiaSymReader.Native.x86.dll">
+      <publishTime>06/27/2016 14:50:24</publishTime>
+    </File>
+    <File Include="bin/roslyn/Microsoft.VisualBasic.Core.targets">
+      <publishTime>06/27/2016 14:50:24</publishTime>
+    </File>
+    <File Include="bin/roslyn/System.AppContext.dll">
+      <publishTime>06/27/2016 14:50:24</publishTime>
+    </File>
+    <File Include="bin/roslyn/System.Collections.Immutable.dll">
+      <publishTime>06/27/2016 14:50:24</publishTime>
+    </File>
+    <File Include="bin/roslyn/System.Diagnostics.StackTrace.dll">
+      <publishTime>06/27/2016 14:50:24</publishTime>
+    </File>
+    <File Include="bin/roslyn/System.IO.FileSystem.dll">
+      <publishTime>06/27/2016 14:50:24</publishTime>
+    </File>
+    <File Include="bin/roslyn/System.IO.FileSystem.Primitives.dll">
+      <publishTime>06/27/2016 14:50:24</publishTime>
+    </File>
+    <File Include="bin/roslyn/System.Reflection.Metadata.dll">
+      <publishTime>06/27/2016 14:50:24</publishTime>
+    </File>
+    <File Include="bin/roslyn/vbc.exe">
+      <publishTime>06/27/2016 14:50:24</publishTime>
+    </File>
+    <File Include="bin/roslyn/vbc.exe.config">
+      <publishTime>06/27/2016 14:50:24</publishTime>
+    </File>
+    <File Include="bin/roslyn/vbc.rsp">
+      <publishTime>06/27/2016 14:50:24</publishTime>
+    </File>
+    <File Include="bin/roslyn/VBCSCompiler.exe">
+      <publishTime>06/27/2016 14:50:24</publishTime>
+    </File>
+    <File Include="bin/roslyn/VBCSCompiler.exe.config">
+      <publishTime>06/27/2016 14:50:24</publishTime>
+    </File>
+    <File Include="bin/WXShare.dll">
+      <publishTime>10/16/2017 16:00:52</publishTime>
+    </File>
+    <File Include="bin/WXShare.pdb">
+      <publishTime>10/16/2017 16:00:52</publishTime>
+    </File>
+    <File Include="css/article.css">
+      <publishTime>10/15/2017 10:46:57</publishTime>
+    </File>
+    <File Include="css/example.css">
+      <publishTime>10/13/2017 13:37:39</publishTime>
+    </File>
+    <File Include="css/requireWX.css">
+      <publishTime>10/15/2017 17:02:10</publishTime>
+    </File>
+    <File Include="css/weui.min.css">
+      <publishTime>10/10/2017 22:19:28</publishTime>
+    </File>
+    <File Include="editor/css/fonts/icomoon.eot">
+      <publishTime>10/15/2017 00:04:32</publishTime>
+    </File>
+    <File Include="editor/css/fonts/icomoon.svg">
+      <publishTime>10/15/2017 00:04:32</publishTime>
+    </File>
+    <File Include="editor/css/fonts/icomoon.ttf">
+      <publishTime>10/15/2017 00:04:32</publishTime>
+    </File>
+    <File Include="editor/css/fonts/icomoon.woff">
+      <publishTime>10/15/2017 00:04:32</publishTime>
+    </File>
+    <File Include="editor/css/wangEditor-mobile.css">
+      <publishTime>10/15/2017 00:04:32</publishTime>
+    </File>
+    <File Include="editor/css/wangEditor-mobile.min.css">
+      <publishTime>10/15/2017 00:04:32</publishTime>
+    </File>
+    <File Include="editor/js/lib/zepto.js">
+      <publishTime>10/15/2017 00:04:32</publishTime>
+    </File>
+    <File Include="editor/js/lib/zepto.touch.js">
+      <publishTime>10/15/2017 00:04:32</publishTime>
+    </File>
+    <File Include="editor/js/wangEditor-mobile.js">
+      <publishTime>10/15/2017 00:04:32</publishTime>
+    </File>
+    <File Include="editor/js/wangEditor-mobile.min.js">
+      <publishTime>10/15/2017 00:04:32</publishTime>
+    </File>
+    <File Include="GetAccessToken.aspx">
+      <publishTime>10/10/2017 16:06:32</publishTime>
+    </File>
+    <File Include="images/activity.png">
+      <publishTime>10/14/2017 22:31:24</publishTime>
+    </File>
+    <File Include="images/icon_tabbar.png">
+      <publishTime>10/14/2017 15:05:21</publishTime>
+    </File>
+    <File Include="images/logout.png">
+      <publishTime>10/14/2017 22:31:25</publishTime>
+    </File>
+    <File Include="images/profile.png">
+      <publishTime>10/14/2017 20:37:12</publishTime>
+    </File>
+    <File Include="images/qrcode.png">
+      <publishTime>10/16/2017 10:29:40</publishTime>
+    </File>
+    <File Include="images/share-it.png">
+      <publishTime>10/15/2017 21:19:23</publishTime>
+    </File>
+    <File Include="images/share-text.png">
+      <publishTime>10/15/2017 21:19:23</publishTime>
+    </File>
+    <File Include="images/share.png">
+      <publishTime>10/14/2017 22:31:24</publishTime>
+    </File>
+    <File Include="js/example.js">
+      <publishTime>10/11/2017 16:09:32</publishTime>
+    </File>
+    <File Include="js/jweixin-1.00.js">
+      <publishTime>10/11/2017 16:08:48</publishTime>
+    </File>
+    <File Include="js/jweixin-1.2.0.js">
+      <publishTime>10/15/2017 17:37:06</publishTime>
+    </File>
+    <File Include="js/weui.min.js">
+      <publishTime>10/11/2017 16:08:05</publishTime>
+    </File>
+    <File Include="js/zepto-touch.js">
+      <publishTime>10/15/2017 00:02:42</publishTime>
+    </File>
+    <File Include="js/zepto.js">
+      <publishTime>10/11/2017 00:03:56</publishTime>
+    </File>
+    <File Include="logo.png">
+      <publishTime>10/10/2017 20:55:36</publishTime>
+    </File>
+    <File Include="packages.config">
+      <publishTime>10/10/2017 15:11:34</publishTime>
+    </File>
+    <File Include="RequireWX.aspx">
+      <publishTime>10/15/2017 17:15:24</publishTime>
+    </File>
+    <File Include="TEST.aspx">
+      <publishTime>10/13/2017 15:25:17</publishTime>
+    </File>
+    <File Include="UserIndex.aspx">
+      <publishTime>10/14/2017 22:38:31</publishTime>
+    </File>
+    <File Include="UserLogin.aspx">
+      <publishTime>10/14/2017 16:41:40</publishTime>
+    </File>
+    <File Include="UserLoginPhone.aspx">
+      <publishTime>10/14/2017 16:41:39</publishTime>
+    </File>
+    <File Include="UserLogout.aspx">
+      <publishTime>10/14/2017 16:43:56</publishTime>
+    </File>
+    <File Include="UserMain.aspx">
+      <publishTime>10/10/2017 21:22:03</publishTime>
+    </File>
+    <File Include="UserProfile.aspx">
+      <publishTime>10/14/2017 22:37:05</publishTime>
+    </File>
+    <File Include="UserRegister.aspx">
+      <publishTime>10/14/2017 16:41:38</publishTime>
+    </File>
+    <File Include="WaitAuth.aspx">
+      <publishTime>10/14/2017 16:41:38</publishTime>
+    </File>
+    <File Include="Web.config">
+      <publishTime>10/15/2017 18:23:23</publishTime>
+    </File>
+  </ItemGroup>
+</Project>

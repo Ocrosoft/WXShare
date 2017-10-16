@@ -1,12 +1,11 @@
 ﻿using MySql.Data.MySqlClient;
 using System;
 using System.Text.RegularExpressions;
-using System.Web;
 using System.Web.UI;
 
 namespace WXShare
 {
-    public partial class UserRegister : System.Web.UI.Page
+    public partial class UserRegister : Page
     {
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -37,9 +36,9 @@ namespace WXShare
                     return;
                 }
                 // 验证码检查
-                if(/*AuthCode.CheckAuthCode(phone,code)*/code == "")
+                if(!AuthCode.CheckAuthCode(phone,code))
                 {
-                    ScriptManager.RegisterStartupScript(this, GetType(), "errorCallback", "alterError($('input[name=code]')[0]);", true);
+                    ScriptManager.RegisterStartupScript(this, GetType(), "codeError", "alterError($('input[name=code]')[0]);", true);
                     return;
                 }
 
@@ -65,7 +64,7 @@ namespace WXShare
                         int ret = MySQLHelper.ExecuteNonQuery(sql, para);
                         if(ret == 1)
                         {
-                            ScriptManager.RegisterStartupScript(this, GetType(), "success", "success();", true);
+                            ScriptManager.RegisterStartupScript(this, GetType(), "success", "success(" + iden + ", '注册成功', true);", true);
                         }
                     }
                     catch(MySqlException ex)
@@ -78,13 +77,30 @@ namespace WXShare
                 else if (iden == "2" || iden == "4" || iden == "5")
                 {
                     IDCardYWY = Request.Form["idcard_ywy"];
-                    string sql = "insert into users(name, phone, identity, IDCard) values(?name, ?phone, ?iden, ?IDCard);";
+                    // 身份证
+                    if(!Regex.IsMatch(IDCardYWY, "^(\\d{15}$|^\\d{18}$|^\\d{17}(\\d|X|x))$"))
+                    {
+                        return;
+                    }
+
+                    string sql = "insert into users_unsigned(name, phone, identity, IDCard) values(?name, ?phone, ?iden, ?IDCard);";
                     MySqlParameter[] para = new MySqlParameter[4];
                     para[0] = new MySqlParameter("?name", name);
                     para[1] = new MySqlParameter("?phone", phone);
                     para[2] = new MySqlParameter("?iden", iden);
                     para[3] = new MySqlParameter("?IDCard", IDCardYWY);
-                    int ret = MySQLHelper.ExecuteNonQuery(sql, para);
+                    try
+                    {
+                        int ret = MySQLHelper.ExecuteNonQuery(sql, para);
+                        if (ret == 1)
+                        {
+                            ScriptManager.RegisterStartupScript(this, GetType(), "success", "success(" + iden + ");", true);
+                        }
+                    }
+                    catch (MySqlException ex)
+                    {
+                        //
+                    }
                     /// ret == 1
                 }
                 // 经销商
@@ -104,7 +120,22 @@ namespace WXShare
         {
             if (Regex.IsMatch(tel.Value, "^((13[0-9])|(14[5|7])|(15([0-3]|[5-9]))|(18[0,5-9]))\\d{8}$"))
             {
+                // 发送间隔校验
+                if(Session["vcodeSend"] != null)
+                {
+                    if(WXManage.DateTimeToTimeStamp(DateTime.Now) -  Int64.Parse(Session["vcodeSend"].ToString()) < 60)
+                    {
+                        return;
+                    }
+                }
+                Session["vcodeSend"] = WXManage.DateTimeToTimeStamp(DateTime.Now);
                 AuthCode.SendAuthCode(tel.Value);
+                ScriptManager.RegisterStartupScript(this, GetType(), "success", "success(1, '验证码已发送', false);", true);
+                ScriptManager.RegisterStartupScript(this, GetType(), "successcd", "startCountDown();", true);
+            }
+            else
+            {
+                ScriptManager.RegisterStartupScript(this, GetType(), "phoneError", "alterError($('input[name=tel]')[0]);", true);
             }
         }
     }

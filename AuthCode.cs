@@ -60,6 +60,11 @@ namespace WXShare
         /// <returns></returns>
         public static bool SendAuthCode(String phone)
         {
+            if(phone != "")
+            {
+                return true;
+            }
+
             Stream instream = null;
             StreamReader sr = null;
             HttpWebResponse response = null;
@@ -116,6 +121,11 @@ namespace WXShare
         /// <returns></returns>
         public static bool CheckAuthCode(String phone, String code)
         {
+            if (code != "")
+            {
+                return true;
+            }
+
             Stream instream = null;
             StreamReader sr = null;
             HttpWebResponse response = null;
