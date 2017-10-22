@@ -21,8 +21,7 @@
                 </div>
                 <div class="weui-msg__opr-area">
                     <p class="weui-btn-area">
-                        <a href="j/UserLogin.aspx" class="weui-btn weui-btn_primary">前往登录</a>
-                        <!--<a href="javascript:history.back();" class="weui-btn weui-btn_default">辅助操作</a>-->
+                        <a href="/UserLogin.aspx" class="weui-btn weui-btn_primary">前往登录</a>
                     </p>
                 </div>
                 <div class="weui-msg__extra-area">
@@ -30,7 +29,7 @@
                         <p class="weui-footer__links">
                             <a href="javascript:void(0);" class="weui-footer__link">hzlbsx</a>
                         </p>
-                        <p class="weui-footer__text">Copyright © 2017 hzlbsx.com</p>
+                        <p class="weui-footer__text">Copyright © 2017</p>
                     </div>
                 </div>
             </div>

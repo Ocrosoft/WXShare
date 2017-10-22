@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using MySql.Data.MySqlClient;
+using Ocrosoft;
+using System;
 using System.Linq;
-using System.Web;
 using System.Web.UI;
-using System.Web.UI.WebControls;
-using MySql.Data.MySqlClient;
-using System.Text.RegularExpressions;
 
 namespace WXShare
 {
@@ -70,7 +67,7 @@ namespace WXShare
                timestamp: timestamp
                nonceStr: nonceStr
                signature: signature*/
-            var timestamp = WXManage.DateTimeToTimeStamp(DateTime.Now);
+            var timestamp = OSecurity.DateTimeToTimeStamp(DateTime.Now);
             String script = "var appId = '" + WXManage.appID + "';";
             script += "var timestamp = '" + timestamp.ToString() + "';";
             script += "var nonceStr = 'chenyanhong';";

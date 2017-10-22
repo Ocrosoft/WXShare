@@ -1,4 +1,4 @@
-﻿using MySql.Data.MySqlClient;
+﻿using Ocrosoft;
 using System;
 using System.Text.RegularExpressions;
 using System.Web.UI;
@@ -11,12 +11,6 @@ namespace WXShare
         {
             if (IsPostBack)
             {
-                /* 上传的文件
-                for (int i = 0; i < Request.Files.Count; i++)
-                {
-                    HttpPostedFile file = Request.Files[0];
-                }
-                */
                 // 姓名
                 var name = Request.Form["name"];
                 // 手机
@@ -28,7 +22,7 @@ namespace WXShare
 
                 // 格式检查
                 if (name == "" || // 姓名不空
-                    !Regex.IsMatch(phone, "^((13[0-9])|(14[5|7])|(15([0-3]|[5-9]))|(18[0,5-9]))\\d{8}$") || // 手机号
+                    !OSecurity.ValidPhone(phone) || // 手机号
                     !Regex.IsMatch(code, "^\\d{4}$") || // 验证码4位数字
                     Int32.Parse(iden) < 1 || Int32.Parse(iden) > 5 // 身份在[1,5]
                     )
@@ -43,7 +37,7 @@ namespace WXShare
                 }
 
                 // 身份证（业务员-施工队-管理员）
-                String IDCardYWY;
+                String IDCardYWY = null;
                 // 身份证（经销商）
                 String IDCardJXS;
                 // 区县（经销商）
@@ -51,57 +45,25 @@ namespace WXShare
                 // 详细地址
                 String detailLocation;
 
-                // 普通会员
-                if (iden == "1")
-                {
-                    string sql = "insert into users(name, phone, identity) values(?name, ?phone, ?iden);";
-                    MySqlParameter[] para = new MySqlParameter[3];
-                    para[0] = new MySqlParameter("?name", name);
-                    para[1] = new MySqlParameter("?phone", phone);
-                    para[2] = new MySqlParameter("?iden", iden);
-                    try
-                    {
-                        int ret = MySQLHelper.ExecuteNonQuery(sql, para);
-                        if(ret == 1)
-                        {
-                            ScriptManager.RegisterStartupScript(this, GetType(), "success", "success(" + iden + ", '注册成功', true);", true);
-                        }
-                    }
-                    catch(MySqlException ex)
-                    {
-                        //
-                    }
-                    /// ret == 1
-                }
-                // 业务员-施工队-管理员
-                else if (iden == "2" || iden == "4" || iden == "5")
+                if(iden == "2" || iden == "4" || iden == "5")
                 {
                     IDCardYWY = Request.Form["idcard_ywy"];
-                    // 身份证
-                    if(!Regex.IsMatch(IDCardYWY, "^(\\d{15}$|^\\d{18}$|^\\d{17}(\\d|X|x))$"))
+                    // 身份证检查
+                    if (!OSecurity.ValidIDCard(IDCardYWY))
                     {
                         return;
                     }
+                }
 
-                    string sql = "insert into users_unsigned(name, phone, identity, IDCard) values(?name, ?phone, ?iden, ?IDCard);";
-                    MySqlParameter[] para = new MySqlParameter[4];
-                    para[0] = new MySqlParameter("?name", name);
-                    para[1] = new MySqlParameter("?phone", phone);
-                    para[2] = new MySqlParameter("?iden", iden);
-                    para[3] = new MySqlParameter("?IDCard", IDCardYWY);
-                    try
-                    {
-                        int ret = MySQLHelper.ExecuteNonQuery(sql, para);
-                        if (ret == 1)
-                        {
-                            ScriptManager.RegisterStartupScript(this, GetType(), "success", "success(" + iden + ");", true);
-                        }
-                    }
-                    catch (MySqlException ex)
-                    {
-                        //
-                    }
-                    /// ret == 1
+                if ((iden == "1" || iden == "2" || iden == "4" || iden == "5") && 
+                    DataBase.User.Add(new Objects.User() {
+                    phone = phone,
+                    name = name,
+                    identity = iden,
+                    IDCard = IDCardYWY
+                    }))
+                {
+                    ScriptManager.RegisterStartupScript(this, GetType(), "success", "success(" + iden + ", '注册成功', true);", true);
                 }
                 // 经销商
                 else if (iden == "3")
@@ -118,17 +80,17 @@ namespace WXShare
 
         protected void vcodeBtn_Click(object sender, EventArgs e)
         {
-            if (Regex.IsMatch(tel.Value, "^((13[0-9])|(14[5|7])|(15([0-3]|[5-9]))|(18[0,5-9]))\\d{8}$"))
+            if (OSecurity.ValidPhone(tel.Value))
             {
                 // 发送间隔校验
                 if(Session["vcodeSend"] != null)
                 {
-                    if(WXManage.DateTimeToTimeStamp(DateTime.Now) -  Int64.Parse(Session["vcodeSend"].ToString()) < 60)
+                    if(OSecurity.DateTimeToTimeStamp(DateTime.Now) -  Int64.Parse(Session["vcodeSend"].ToString()) < 60)
                     {
                         return;
                     }
                 }
-                Session["vcodeSend"] = WXManage.DateTimeToTimeStamp(DateTime.Now);
+                Session["vcodeSend"] = OSecurity.DateTimeToTimeStamp(DateTime.Now);
                 AuthCode.SendAuthCode(tel.Value);
                 ScriptManager.RegisterStartupScript(this, GetType(), "success", "success(1, '验证码已发送', false);", true);
                 ScriptManager.RegisterStartupScript(this, GetType(), "successcd", "startCountDown();", true);

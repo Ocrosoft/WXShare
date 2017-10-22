@@ -74,27 +74,29 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Activity.aspx" />
+    <Content Include="ActivityAll.aspx" />
+    <Content Include="ActivityEditor.aspx" />
     <Content Include="ActivitySignSuccess.aspx" />
     <Content Include="ActivityDetail.aspx" />
     <Content Include="ActivitySign.aspx" />
+    <Content Include="ActivitySignView.aspx" />
+    <Content Include="ActivitySignViewDetail.aspx" />
     <Content Include="css\article.css" />
     <Content Include="css\example.css" />
     <Content Include="css\requireWX.css" />
-    <Content Include="editor\css\fonts\icomoon.svg" />
-    <Content Include="editor\css\wangEditor-mobile.css" />
-    <Content Include="editor\css\wangEditor-mobile.min.css" />
-    <Content Include="editor\js\lib\zepto.js" />
-    <Content Include="editor\js\lib\zepto.touch.js" />
-    <Content Include="editor\js\wangEditor-mobile.js" />
-    <Content Include="editor\js\wangEditor-mobile.min.js" />
     <Content Include="images\activity.png" />
+    <Content Include="images\checkout.png" />
+    <Content Include="images\control.png" />
     <Content Include="images\icon_tabbar.png" />
     <Content Include="images\logout.png" />
+    <Content Include="images\orders.png" />
     <Content Include="images\profile.png" />
     <Content Include="images\qrcode.png" />
     <Content Include="images\share-it.png" />
     <Content Include="images\share-text.png" />
     <Content Include="images\share.png" />
+    <Content Include="images\signup.png" />
+    <Content Include="images\staff.png" />
     <Content Include="js\example.js" />
     <Content Include="js\jweixin-1.00.js" />
     <Content Include="js\weui.min.js" />
@@ -102,9 +104,6 @@
     <Content Include="js\zepto.js" />
     <Content Include="logo.png" />
     <Content Include="packages.config" />
-    <Content Include="editor\css\fonts\icomoon.eot" />
-    <Content Include="editor\css\fonts\icomoon.ttf" />
-    <Content Include="editor\css\fonts\icomoon.woff" />
     <Content Include="js\jweixin-1.2.0.js" />
     <None Include="Properties\PublishProfiles\CustomProfile.pubxml" />
     <None Include="Web.Debug.config">
@@ -117,15 +116,17 @@
   <ItemGroup>
     <Content Include="css\weui.min.css" />
     <Content Include="GetAccessToken.aspx" />
+    <Content Include="RegisterAuthDetail.aspx" />
     <Content Include="RequireWX.aspx" />
     <Content Include="TEST.aspx" />
     <Content Include="UserIndex.aspx" />
     <Content Include="UserLogin.aspx" />
     <Content Include="UserLoginPhone.aspx" />
     <Content Include="UserLogout.aspx" />
-    <Content Include="UserMain.aspx" />
     <Content Include="UserProfile.aspx" />
     <Content Include="UserRegister.aspx" />
+    <Content Include="UserRegisterAuth.aspx" />
+    <Content Include="UserSetPassword.aspx" />
     <Content Include="WaitAuth.aspx" />
     <Content Include="Web.config" />
   </ItemGroup>
@@ -136,6 +137,20 @@
     </Compile>
     <Compile Include="Activity.aspx.designer.cs">
       <DependentUpon>Activity.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ActivityAll.aspx.cs">
+      <DependentUpon>ActivityAll.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ActivityAll.aspx.designer.cs">
+      <DependentUpon>ActivityAll.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ActivityEditor.aspx.cs">
+      <DependentUpon>ActivityEditor.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ActivityEditor.aspx.designer.cs">
+      <DependentUpon>ActivityEditor.aspx</DependentUpon>
     </Compile>
     <Compile Include="ActivitySignSuccess.aspx.cs">
       <DependentUpon>ActivitySignSuccess.aspx</DependentUpon>
@@ -158,7 +173,22 @@
     <Compile Include="ActivitySign.aspx.designer.cs">
       <DependentUpon>ActivitySign.aspx</DependentUpon>
     </Compile>
+    <Compile Include="ActivitySignView.aspx.cs">
+      <DependentUpon>ActivitySignView.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ActivitySignView.aspx.designer.cs">
+      <DependentUpon>ActivitySignView.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ActivitySignViewDetail.aspx.cs">
+      <DependentUpon>ActivitySignViewDetail.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ActivitySignViewDetail.aspx.designer.cs">
+      <DependentUpon>ActivitySignViewDetail.aspx</DependentUpon>
+    </Compile>
     <Compile Include="AuthCode.cs" />
+    <Compile Include="DataBase.cs" />
     <Compile Include="GetAccessToken.aspx.cs">
       <DependentUpon>GetAccessToken.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -167,7 +197,16 @@
       <DependentUpon>GetAccessToken.aspx</DependentUpon>
     </Compile>
     <Compile Include="MySQLHelper.cs" />
+    <Compile Include="Objects.cs" />
+    <Compile Include="ORequest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RegisterAuthDetail.aspx.cs">
+      <DependentUpon>RegisterAuthDetail.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="RegisterAuthDetail.aspx.designer.cs">
+      <DependentUpon>RegisterAuthDetail.aspx</DependentUpon>
+    </Compile>
     <Compile Include="RequireWX.aspx.cs">
       <DependentUpon>RequireWX.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -175,6 +214,7 @@
     <Compile Include="RequireWX.aspx.designer.cs">
       <DependentUpon>RequireWX.aspx</DependentUpon>
     </Compile>
+    <Compile Include="OSecurity.cs" />
     <Compile Include="TEST.aspx.cs">
       <DependentUpon>TEST.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -210,13 +250,6 @@
     <Compile Include="UserLogout.aspx.designer.cs">
       <DependentUpon>UserLogout.aspx</DependentUpon>
     </Compile>
-    <Compile Include="UserMain.aspx.cs">
-      <DependentUpon>UserMain.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="UserMain.aspx.designer.cs">
-      <DependentUpon>UserMain.aspx</DependentUpon>
-    </Compile>
     <Compile Include="UserProfile.aspx.cs">
       <DependentUpon>UserProfile.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -230,6 +263,20 @@
     </Compile>
     <Compile Include="UserRegister.aspx.designer.cs">
       <DependentUpon>UserRegister.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="UserRegisterAuth.aspx.cs">
+      <DependentUpon>UserRegisterAuth.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UserRegisterAuth.aspx.designer.cs">
+      <DependentUpon>UserRegisterAuth.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="UserSetPassword.aspx.cs">
+      <DependentUpon>UserSetPassword.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UserSetPassword.aspx.designer.cs">
+      <DependentUpon>UserSetPassword.aspx</DependentUpon>
     </Compile>
     <Compile Include="WaitAuth.aspx.cs">
       <DependentUpon>WaitAuth.aspx</DependentUpon>

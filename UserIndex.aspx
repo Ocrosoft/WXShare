@@ -43,77 +43,102 @@
             <img src="http://shuaxinfuwu.nipponpaint.com.cn/cdn/media/Images/Shuaxin/Banner/PCBanner1.ashx?h=515&la=en&w=1600&hash=4A7B4C2AC762F68A62A75BB5DAB16537E951AC58" />
         </div>
         <div class="weui-grids">
+            <%
+                if (Session["iden"].ToString() == "1")
+                {
+            %>
+            <!-- 会员S -->
             <a href="/Activity.aspx" class="weui-grid">
                 <div class="weui-grid__icon">
                     <img src="./images/activity.png" alt="">
                 </div>
                 <p class="weui-grid__label">当前活动</p>
             </a>
-            <a href="javascript:;" class="weui-grid">
-                <div class="weui-grid__icon">
-                    <img src="./images/icon_tabbar.png" alt="">
-                </div>
-                <p class="weui-grid__label">Grid</p>
-            </a>
-            <a href="javascript:;" class="weui-grid">
-                <div class="weui-grid__icon">
-                    <img src="./images/icon_tabbar.png" alt="">
-                </div>
-                <p class="weui-grid__label">Grid</p>
-            </a>
-            <a href="javascript:;" class="weui-grid">
-                <div class="weui-grid__icon">
-                    <img src="./images/icon_tabbar.png" alt="">
-                </div>
-                <p class="weui-grid__label">Grid</p>
-            </a>
-            <a href="javascript:;" class="weui-grid">
-                <div class="weui-grid__icon">
-                    <img src="./images/icon_tabbar.png" alt="">
-                </div>
-                <p class="weui-grid__label">Grid</p>
-            </a>
-            <a href="javascript:;" class="weui-grid">
-                <div class="weui-grid__icon">
-                    <img src="./images/icon_tabbar.png" alt="">
-                </div>
-                <p class="weui-grid__label">Grid</p>
-            </a>
-            <a href="/MyGroup.aspx" class="weui-grid">
+            <a href="#" class="weui-grid">
                 <div class="weui-grid__icon" style="width: 35.86px">
                     <img src="./images/share.png" alt="">
                 </div>
                 <p class="weui-grid__label">我的推荐</p>
             </a>
-            <a href="/UserProfile" class="weui-grid">
+            <a href="#" class="weui-grid">
                 <div class="weui-grid__icon" style="width: 35.86px">
                     <img src="./images/profile.png" alt="">
                 </div>
                 <p class="weui-grid__label">我的信息</p>
             </a>
+            <!-- 会员E -->
+            <%
+                }
+                else if (Session["iden"].ToString() == "2")
+                {
+            %>
+            <!-- 业务员S -->
+            <!-- 业务员E -->
+            <%
+                }
+                else if (Session["iden"].ToString() == "3")
+                {
+            %>
+            <!-- 经销商S -->
+            <!-- 经销商E -->
+            <%
+                }
+                else if (Session["iden"].ToString() == "4")
+                {
+            %>
+            <!-- 施工队S -->
+            <!-- 施工队E -->
+            <%
+                }
+                else if (Session["iden"].ToString() == "5")
+                {
+            %>
+            <!-- 管理员S -->
+            <a href="/ActivityAll.aspx" class="weui-grid">
+                <div class="weui-grid__icon">
+                    <img src="./images/activity.png" alt="">
+                </div>
+                <p class="weui-grid__label">活动管理</p>
+            </a>
+            <a href="/ActivitySignView.aspx" class="weui-grid">
+                <div class="weui-grid__icon">
+                    <img src="./images/signup.png" alt="">
+                </div>
+                <p class="weui-grid__label">报名管理</p>
+            </a>
+            <a href="/UserRegisterAuth.aspx" class="weui-grid">
+                <div class="weui-grid__icon">
+                    <img src="./images/checkout.png" alt="">
+                </div>
+                <p class="weui-grid__label">注册审核</p>
+            </a>
+            <a href="#" class="weui-grid">
+                <div class="weui-grid__icon">
+                    <img src="./images/orders.png" alt="">
+                </div>
+                <p class="weui-grid__label">订单管理</p>
+            </a>
+            <a href="#" class="weui-grid">
+                <div class="weui-grid__icon" style="width: 55px">
+                    <img src="./images/staff.png" alt="">
+                </div>
+                <p class="weui-grid__label">员工管理</p>
+            </a>
+            <a href="#" class="weui-grid">
+                <div class="weui-grid__icon">
+                    <img src="./images/control.png" alt="">
+                </div>
+                <p class="weui-grid__label">系统设置</p>
+            </a>
+            <!-- 管理员E -->
+            <%
+                }
+            %>
             <a href="/UserLogout.aspx" class="weui-grid">
                 <div class="weui-grid__icon">
                     <img src="./images/logout.png" alt="">
                 </div>
                 <p class="weui-grid__label">退出登录</p>
-            </a>
-            <a href="javascript:;" class="weui-grid">
-                <div class="weui-grid__icon">
-                    <img src="./images/icon_tabbar.png" alt="">
-                </div>
-                <p class="weui-grid__label">Grid</p>
-            </a>
-            <a href="javascript:;" class="weui-grid">
-                <div class="weui-grid__icon">
-                    <img src="./images/icon_tabbar.png" alt="">
-                </div>
-                <p class="weui-grid__label">Grid</p>
-            </a>
-            <a href="javascript:;" class="weui-grid">
-                <div class="weui-grid__icon">
-                    <img src="./images/icon_tabbar.png" alt="">
-                </div>
-                <p class="weui-grid__label">Grid</p>
             </a>
         </div>
 
@@ -121,9 +146,7 @@
         <script type="text/javascript" src="./js/jweixin-1.00.js"></script>
         <script src="./js/weui.min.js"></script>
 
-        <script>
-
-</script>
+        <script></script>
 
     </form>
 </body>

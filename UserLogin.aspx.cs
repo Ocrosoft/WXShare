@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using Ocrosoft;
+using System;
 using System.Web;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-using MySql.Data.MySqlClient;
-using System.Text.RegularExpressions;
 
 namespace WXShare
 {
@@ -21,7 +16,7 @@ namespace WXShare
                 bool reme = Request.Form["autoLogin"] == "on";
 
                 // 格式检查
-                if (!Regex.IsMatch(phone, "^((13[0-9])|(14[5|7])|(15([0-3]|[5-9]))|(18[0,5-9]))\\d{8}$") || // 手机号
+                if (!OSecurity.ValidPhone(phone) || // 手机号
                     iden < 1 || iden > 5 // 身份在[1,5]
                     )
                 {
@@ -31,65 +26,49 @@ namespace WXShare
                 // 普通会员-业务员-施工队-管理员
                 if(iden == 1 || iden == 2 || iden == 4 || iden == 5)
                 {
-                    string sql = "select count(*) from users where phone=?phone and password=?pass and identity=?iden;";
-                    MySqlParameter[] para = new MySqlParameter[3];
-                    para[0] = new MySqlParameter("?phone", phone);
-                    para[1] = new MySqlParameter("?pass", password);
-                    para[2] = new MySqlParameter("?iden", iden);
-                    try
+                    if(DataBase.User.Login(new Objects.User()
                     {
-                        Object ret = MySQLHelper.ExecuteScalar(sql, para);
-                        if(Int32.Parse(ret.ToString()) == 1)
+                        phone = phone,
+                        password=password,
+                        identity=iden.ToString()
+                    }))
+                    {
+                        Session["phone"] = phone;
+                        Session["iden"] = iden;
+                        if (reme)
                         {
-                            Session["phone"] = phone;
-                            Session["iden"] = iden;
-                            if(reme)
-                            {
-                                var telc = new HttpCookie("tel", phone);
-                                telc.Expires = DateTime.Now.AddDays(15);
-                                var pasc = new HttpCookie("__p", WXManage.EncryptAes(password));
-                                pasc.Expires = DateTime.Now.AddDays(15);
-                                var idenc = new HttpCookie("ide", iden.ToString());
-                                idenc.Expires = DateTime.Now.AddDays(15);
-                                Response.SetCookie(telc);
-                                Response.SetCookie(pasc);
-                                Response.SetCookie(idenc);
-                                Response.Redirect("/UserIndex.aspx");
-                            }
+                            var telc = new HttpCookie("tel", phone);
+                            telc.Expires = DateTime.Now.AddDays(15);
+                            var pasc = new HttpCookie("__p", OSecurity.AESEncrypt(password));
+                            pasc.Expires = DateTime.Now.AddDays(15);
+                            var idenc = new HttpCookie("ide", iden.ToString());
+                            idenc.Expires = DateTime.Now.AddDays(15);
+                            Response.SetCookie(telc);
+                            Response.SetCookie(pasc);
+                            Response.SetCookie(idenc);
                         }
-                    }
-                    catch (MySqlException ex)
-                    {
-                        //
+                        Response.Redirect("/UserIndex.aspx");
                     }
                 }
             }
             else
             {
                 /* 自动登录 */
-                if(Request.Cookies["tel"] != null && Request.Cookies["__p"] != null && Request.Cookies["ide"] != null)
+                if (Request.Cookies["tel"] != null && Request.Cookies["__p"] != null && Request.Cookies["ide"] != null)
                 {
                     var phone = Request.Cookies["tel"].Value;
                     var password = Request.Cookies["__p"].Value;
                     var iden = Request.Cookies["ide"].Value;
-                    string sql = "select count(*) from users where phone=?phone and password=?pass and identity=?iden;";
-                    MySqlParameter[] para = new MySqlParameter[3];
-                    para[0] = new MySqlParameter("?phone", phone);
-                    para[1] = new MySqlParameter("?pass", WXManage.DecryptAes(password));
-                    para[2] = new MySqlParameter("?iden", iden);
-                    try
+                    if (DataBase.User.Login(new Objects.User()
                     {
-                        Object ret = MySQLHelper.ExecuteScalar(sql, para);
-                        if (Int32.Parse(ret.ToString()) == 1)
-                        {
-                            Session["phone"] = phone;
-                            Session["iden"] = iden;
-                            Response.Redirect("/UserIndex.aspx");
-                        }
-                    }
-                    catch (MySqlException ex)
+                        phone = phone,
+                        password = OSecurity.AESDecrypt(password),
+                        identity = iden.ToString()
+                    }))
                     {
-                        //
+                        Session["phone"] = phone;
+                        Session["iden"] = iden;
+                        Response.Redirect("/UserIndex.aspx");
                     }
                 }
             }

@@ -56,7 +56,7 @@ namespace WXShare
                     }
                     catch (MySql.Data.MySqlClient.MySqlException e)
                     {
-                        throw e;
+                       throw e;
                     }
                 }
             }

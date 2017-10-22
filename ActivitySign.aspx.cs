@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using Ocrosoft;
+using System;
 using System.Text.RegularExpressions;
-using System.Web;
 using System.Web.UI;
-using System.Web.UI.WebControls;
-using MySql.Data.MySqlClient;
 
 namespace WXShare
 {
-    public partial class ActivitySign : System.Web.UI.Page
+    public partial class ActivitySign : Page
     {
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -23,7 +19,7 @@ namespace WXShare
 
                 // 格式检查
                 if (name == "" || // 姓名不空
-                    !Regex.IsMatch(phone, "^((13[0-9])|(14[5|7])|(15([0-3]|[5-9]))|(18[0,5-9]))\\d{8}$") || // 手机号
+                    !OSecurity.ValidPhone(phone) || // 手机号
                     !Regex.IsMatch(code, "^\\d{4}$") || // 验证码4位数字
                     location == "" // 详细地址为空
                     )
@@ -31,11 +27,11 @@ namespace WXShare
                     return;
                 }
                 // 验证码检查
-                /*if (!AuthCode.CheckAuthCode(phone, code))
+                if (!AuthCode.CheckAuthCode(phone, code))
                 {
                     ScriptManager.RegisterStartupScript(this, GetType(), "codeError", "alterError($('input[name=code]')[0]);", true);
                     return;
-                }*/
+                }
 
                 string activityID = Request.QueryString["aid"];
                 string userID = Request.QueryString["uid"]; // 即手机号
@@ -43,65 +39,38 @@ namespace WXShare
                 {
                     return;
                 }
-                string sql = "select timeend from activity where Id = ?aid and valid = 1";
-                MySqlParameter para = new MySqlParameter("?aid", activityID);
-                try
+                var activity = DataBase.Activity.Get(new Objects.Activity() { id = activityID });
+                if (activity == null)
                 {
-                    Object ret = MySQLHelper.ExecuteScalar(sql, para);
-                    if(ret.ToString() == string.Empty)
-                    {
-                        ScriptManager.RegisterClientScriptBlock(this, GetType(), "noaid", "alert('不存在此活动！');", true);
-                        return;
-                    }
-                    DateTime endTime = DateTime.Parse(ret.ToString());
-                    if(endTime <= DateTime.Now)
-                    {
-                        ScriptManager.RegisterClientScriptBlock(this, GetType(), "ended", "alert('活动已结束！');", true);
-                        return;
-                    }
+                    ScriptManager.RegisterClientScriptBlock(this, GetType(), "noaid", "alert('不存在此活动！');", true);
+                    return;
                 }
-                catch(MySqlException ex)
+                if (activity.timeEnd <= DateTime.Now)
                 {
-                    //
+                    ScriptManager.RegisterClientScriptBlock(this, GetType(), "ended", "alert('活动已结束！');", true);
+                    return;
                 }
-                sql = "select count(*) from users where phone = ?phone and identity = 1";
-                para = new MySqlParameter("?phone", userID);
-                try
+
+                var user = DataBase.User.Get(new Objects.User() { phone = userID, identity = "1" });
+                if (user == null)
                 {
-                    Object ret = MySQLHelper.ExecuteScalar(sql, para);
-                    if(ret.ToString() == "0")
-                    {
-                        ScriptManager.RegisterClientScriptBlock(this, GetType(), "nouid", "alert('不存在该推荐人！');", true);
-                        return;
-                    }
+                    ScriptManager.RegisterClientScriptBlock(this, GetType(), "nouid", "alert('不存在该推荐人！');", true);
+                    return;
                 }
-                catch(MySqlException ex)
+
+                if(DataBase.ActivitySign.Add(new Objects.ActivitySign()
                 {
-                    //
-                }
-                sql = "insert into activitysign(name, phone, location, locationDetail, activityID, shareSource) " +
-                    "values(?name, ?phone, ?location, ?locationDetail, ?activityID, ?shareSource);";
-                MySqlParameter[] paras = new MySqlParameter[6];
-                paras[0] = new MySqlParameter("?name", name);
-                paras[1] = new MySqlParameter("?phone", phone);
-                paras[2] = new MySqlParameter("?location", location);
-                paras[3] = new MySqlParameter("?locationDetail", locationDetail);
-                paras[4] = new MySqlParameter("?activityID", activityID);
-                paras[5] = new MySqlParameter("?shareSource", userID);
-                try
+                    name=name,
+                    phone=phone,
+                    location=location,
+                    locationDetail=locationDetail,
+                    activityID=activityID,
+                    shareSource=userID
+                }))
                 {
-                    int ret = MySQLHelper.ExecuteNonQuery(sql, paras);
-                    if(ret == 1)
-                    {
-                        Response.Redirect("/ActivityASignSuccess.aspx");
-                        WXManage.SendMessage("orUOg1HDidOwnt_QS45_Ws4XHko4",
-                            "有一条新报名信息！");
-                        return;
-                    }
-                }
-                catch(MySqlException ex)
-                {
-                    ScriptManager.RegisterClientScriptBlock(this, GetType(), "severError", "alert('服务器错误，请稍候再试！');", true);
+                    Response.Redirect("/ActivitySignSuccess.aspx");
+                    WXManage.SendMessage("orUOg1HDidOwnt_QS45_Ws4XHko4",
+                        "有一条新报名信息！");
                     return;
                 }
             }
@@ -109,17 +78,17 @@ namespace WXShare
 
         protected void vcodeBtn_Click(object sender, EventArgs e)
         {
-            if (Regex.IsMatch(tel.Value, "^((13[0-9])|(14[5|7])|(15([0-3]|[5-9]))|(18[0,5-9]))\\d{8}$"))
+            if (OSecurity.ValidPhone(tel.Value))
             {
                 // 发送间隔校验
                 if (Session["vcodeSend"] != null)
                 {
-                    if (WXManage.DateTimeToTimeStamp(DateTime.Now) - Int64.Parse(Session["vcodeSend"].ToString()) < 60)
+                    if (OSecurity.DateTimeToTimeStamp(DateTime.Now) - Int64.Parse(Session["vcodeSend"].ToString()) < 60)
                     {
                         return;
                     }
                 }
-                Session["vcodeSend"] = WXManage.DateTimeToTimeStamp(DateTime.Now);
+                Session["vcodeSend"] = OSecurity.DateTimeToTimeStamp(DateTime.Now);
                 AuthCode.SendAuthCode(tel.Value);
                 ScriptManager.RegisterStartupScript(this, GetType(), "success", "success(1, '验证码已发送', false);", true);
                 ScriptManager.RegisterStartupScript(this, GetType(), "successcd", "startCountDown();", true);

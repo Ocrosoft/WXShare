@@ -7,6 +7,11 @@ namespace WXShare
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+            var obj = DataBase.User.Get(new Objects.User()
+            {
+                phone = "15869141870",
+                identity = "1"
+            });
         }
     }
 }

@@ -28,7 +28,7 @@
         <!-- 表单 -->
         <div class="weui-cells weui-cells_form">
             <!-- 手机号，发送验证码 -->
-            <div class="weui-cell weui-cell_vcode">
+            <div class="weui-cell">
                 <div class="weui-cell__hd">
                     <label class="weui-label">手机号</label>
                 </div>
@@ -45,7 +45,7 @@
                     <label class="weui-label">验证码</label>
                 </div>
                 <div class="weui-cell__bd">
-                    <input id="password" class="weui-input" type="number" name="password" placeholder="请填写验证码" required />
+                    <input id="password" class="weui-input" type="number" name="code" placeholder="请填写验证码" required />
                 </div>
                 <div class="weui-cell__ft" style="display: none;">
                     <label class="weui-cell__bd">验证码错误</label>

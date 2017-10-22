@@ -320,8 +320,8 @@
                 }
                 // 身份证
                 if ($('[name=iden]').val() == 2 || $('[name=iden]').val() == 4 || $('[name=iden]').val() == 5) {
-                    if (!RegExp('^(\\d{15}$|^\\d{18}$|^\\d{17}(\\d|X|x))$').test($('[name=IDCard_YWY]').val())) {
-                        alterError($('input[name=IDCard_YWY]')[0]);
+                    if (!RegExp('^(\\d{15}$|^\\d{18}$|^\\d{17}(\\d|X|x))$').test($('[name=idcard_ywy]').val())) {
+                        alterError($('input[name=idcard_ywy]')[0]);
                         ok = false;
                     }
                 }

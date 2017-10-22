@@ -44,10 +44,68 @@
         </div>
         <div class="weui-grids">
             <a href="/Activity.aspx" class="weui-grid">
+                <% if (Session["iden"].ToString() == "1")
+                    { %>
                 <div class="weui-grid__icon">
                     <img src="./images/activity.png" alt="">
                 </div>
                 <p class="weui-grid__label">当前活动</p>
+                <%}
+                    else
+                    { %>
+                <div class="weui-grid__icon">
+                    <img src="./images/icon_tabbar.png" alt="">
+                </div>
+                <p class="weui-grid__label">Grid</p>
+                <%} %>
+            </a>
+            <a href="/ActivityAll.aspx" class="weui-grid">
+                <% if (Session["iden"].ToString() == "5")
+                    { %>
+                <div class="weui-grid__icon">
+                    <img src="./images/activity.png" alt="">
+                </div>
+                <p class="weui-grid__label">活动管理</p>
+                <%}
+                    else
+                    { %>
+                <div class="weui-grid__icon">
+                    <img src="./images/icon_tabbar.png" alt="">
+                </div>
+                <p class="weui-grid__label">Grid</p>
+                <%} %>
+            </a>
+            <a href="/ActivitySignView.aspx" class="weui-grid">
+                <% if (Session["iden"].ToString() == "5")
+                    { %>
+                <div class="weui-grid__icon">
+                    <img src="./images/signup.png" alt="">
+                </div>
+                <p class="weui-grid__label">报名管理</p>
+                <%}
+                    else
+                    { %>
+                <div class="weui-grid__icon">
+                    <img src="./images/icon_tabbar.png" alt="">
+                </div>
+                <p class="weui-grid__label">Grid</p>
+                <%} %>
+            </a>
+            <a href="/UserRegisterAuth.aspx" class="weui-grid">
+                <% if (Session["iden"].ToString() == "5")
+                    { %>
+                <div class="weui-grid__icon">
+                    <img src="./images/checkout.png" alt="">
+                </div>
+                <p class="weui-grid__label">注册审核</p>
+                <%}
+                    else
+                    { %>
+                <div class="weui-grid__icon">
+                    <img src="./images/icon_tabbar.png" alt="">
+                </div>
+                <p class="weui-grid__label">Grid</p>
+                <%} %>
             </a>
             <a href="javascript:;" class="weui-grid">
                 <div class="weui-grid__icon">
@@ -61,35 +119,37 @@
                 </div>
                 <p class="weui-grid__label">Grid</p>
             </a>
-            <a href="javascript:;" class="weui-grid">
-                <div class="weui-grid__icon">
-                    <img src="./images/icon_tabbar.png" alt="">
-                </div>
-                <p class="weui-grid__label">Grid</p>
-            </a>
-            <a href="javascript:;" class="weui-grid">
-                <div class="weui-grid__icon">
-                    <img src="./images/icon_tabbar.png" alt="">
-                </div>
-                <p class="weui-grid__label">Grid</p>
-            </a>
-            <a href="javascript:;" class="weui-grid">
-                <div class="weui-grid__icon">
-                    <img src="./images/icon_tabbar.png" alt="">
-                </div>
-                <p class="weui-grid__label">Grid</p>
-            </a>
-            <a href="/MyGroup.aspx" class="weui-grid">
+            <a href="javascript:alert('暂未开放');" class="weui-grid">
+                <% if (Session["iden"].ToString() == "1")
+                    { %>
                 <div class="weui-grid__icon" style="width: 35.86px">
                     <img src="./images/share.png" alt="">
                 </div>
                 <p class="weui-grid__label">我的推荐</p>
+                <%}
+                    else
+                    { %>
+                <div class="weui-grid__icon">
+                    <img src="./images/icon_tabbar.png" alt="">
+                </div>
+                <p class="weui-grid__label">Grid</p>
+                <%} %>
             </a>
-            <a href="/UserProfile" class="weui-grid">
+            <a href="javascript:alert('暂未开放');" class="weui-grid">
+                <% if (Session["iden"].ToString() == "1")
+                    { %>
                 <div class="weui-grid__icon" style="width: 35.86px">
                     <img src="./images/profile.png" alt="">
                 </div>
                 <p class="weui-grid__label">我的信息</p>
+                <%}
+                    else
+                    { %>
+                <div class="weui-grid__icon">
+                    <img src="./images/icon_tabbar.png" alt="">
+                </div>
+                <p class="weui-grid__label">Grid</p>
+                <%} %>
             </a>
             <a href="/UserLogout.aspx" class="weui-grid">
                 <div class="weui-grid__icon">
@@ -121,9 +181,7 @@
         <script type="text/javascript" src="./js/jweixin-1.00.js"></script>
         <script src="./js/weui.min.js"></script>
 
-        <script>
-
-</script>
+        <script></script>
 
     </form>
 </body>
