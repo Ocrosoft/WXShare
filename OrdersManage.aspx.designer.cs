@@ -10,7 +10,7 @@
 namespace WXShare {
     
     
-    public partial class UserProfile {
+    public partial class OrdersManage {
         
         /// <summary>
         /// form1 控件。
@@ -22,39 +22,30 @@ namespace WXShare {
         protected global::System.Web.UI.HtmlControls.HtmlForm form1;
         
         /// <summary>
-        /// name 控件。
+        /// statusSelect 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl name;
+        protected global::System.Web.UI.HtmlControls.HtmlSelect statusSelect;
         
         /// <summary>
-        /// phone 控件。
+        /// selectStatus 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl phone;
+        protected global::System.Web.UI.HtmlControls.HtmlButton selectStatus;
         
         /// <summary>
-        /// money 控件。
+        /// orderList 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl money;
-        
-        /// <summary>
-        /// moneyChange 控件。
-        /// </summary>
-        /// <remarks>
-        /// 自动生成的字段。
-        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl moneyChange;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl orderList;
     }
 }

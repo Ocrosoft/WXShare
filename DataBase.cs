@@ -135,6 +135,32 @@ namespace WXShare
                 };
             }
             /// <summary>
+            /// 获取用户信息（id）
+            /// </summary>
+            /// <param name="info"></param>
+            /// <returns></returns>
+            public static Objects.User GetByID(Objects.User info)
+            {
+                string sql = "select id, phone, password, identity, name, IDCard from users where id = ?id";
+                MySqlParameter para = new MySqlParameter("?id", info.id);
+
+                var ds = MySQLHelper.ExecuteDataSet(sql, para);
+                if (ds.Tables[0].Rows.Count == 0)
+                {
+                    return null;
+                }
+                var array = ds.Tables[0].Rows[0].ItemArray;
+                return new Objects.User()
+                {
+                    id = array[0].ToString(),
+                    phone = array[1].ToString(),
+                    password = array[2].ToString(),
+                    identity = array[3].ToString(),
+                    name = array[4].ToString(),
+                    IDCard = array[5].ToString()
+                };
+            }
+            /// <summary>
             /// 修改密码
             /// </summary>
             /// <param name="user"></param>
@@ -153,8 +179,311 @@ namespace WXShare
                 }
                 return false;
             }
+            /// <summary>
+            /// 删除
+            /// </summary>
+            /// <param name="user"></param>
+            /// <returns></returns>
             public static bool Delete(Objects.User user)
             {
+                string sql = "delete from users where id = ?id";
+                MySqlParameter para = new MySqlParameter("?id", user.id);
+
+                int ret = MySQLHelper.ExecuteNonQuery(sql, para);
+                if(ret == 1)
+                {
+                    return true;
+                }
+                return false;
+            }
+            /// <summary>
+            /// 获取身份为1,2,4,5的用户
+            /// </summary>
+            /// <param name="identity">身份</param>
+            /// <returns></returns>
+            public static List<Objects.User> Gets(string identity)
+            {
+                string sql = "select * from users where identity = " + identity;
+                List<Objects.User> ret = new List<Objects.User>();
+
+                var ds = MySQLHelper.ExecuteDataSet(sql);
+                foreach (DataRow row in ds.Tables[0].Rows)
+                {
+                    var array = row.ItemArray;
+                    ret.Add(new Objects.User()
+                    {
+                        id = array[0].ToString(),
+                        phone = array[1].ToString(),
+                        password = array[2].ToString(),
+                        identity = array[3].ToString(),
+                        name = array[4].ToString(),
+                        IDCard = array[5].ToString()
+                    });
+                }
+                return ret;
+            }
+            /// <summary>
+            /// 修改用户（name，phone，idcard），根据（id）
+            /// </summary>
+            /// <param name="user"></param>
+            /// <returns></returns>
+            public static bool Modify(Objects.User user)
+            {
+                string sql = "update users set name = ?na, phone = ?ph, idcard = ?idc where id = ?id";
+                MySqlParameter[] para = new MySqlParameter[4];
+
+                para[0] = new MySqlParameter("?na", user.name);
+                para[1] = new MySqlParameter("?ph", user.phone);
+                para[2] = new MySqlParameter("?idc", user.IDCard);
+                para[3] = new MySqlParameter("?id", user.id);
+
+                int ret = MySQLHelper.ExecuteNonQuery(sql, para);
+                if(ret == 1)
+                {
+                    return true;
+                }
+                return false;
+            }
+
+        }
+        public class Team
+        {
+            /// <summary>
+            /// 添加到施工队
+            /// </summary>
+            /// <param name="user">施工人员（phone）</param>
+            /// <param name="team">施工队（id，teamname）</param>
+            /// <returns></returns>
+            public static bool AddToTeam(Objects.User user, Objects.Team team)
+            {
+                string sql = "insert into constructionteam values(?tid, ?ph)";
+                MySqlParameter[] para = new MySqlParameter[2];
+                para[0] = new MySqlParameter("?tid", team.id);
+                para[1] = new MySqlParameter("?ph", user.phone);
+
+                int ret = MySQLHelper.ExecuteNonQuery(sql, para);
+                if (ret == 1)
+                {
+                    return true;
+                }
+                return false;
+            }
+            /// <summary>
+            /// 从施工队中移除
+            /// </summary>
+            /// <param name="user">施工人员（phone）</param>
+            /// <returns></returns>
+            public static bool RemoveFromTeam(Objects.User user)
+            {
+                string sql = "delete from constructionteam where phone = ?ph";
+                MySqlParameter para = new MySqlParameter("?ph", user.phone);
+
+                int ret = MySQLHelper.ExecuteNonQuery(sql, para);
+                if (ret == 1)
+                {
+                    return true;
+                }
+                return false;
+            }
+            /// <summary>
+            /// 获取没有加入到施工队中的施工人员
+            /// </summary>
+            /// <returns></returns>
+            public static List<Objects.User> UnRegisterToTeam()
+            {
+                string sql = "select * from users where identity = 4 and phone not in (select phone from constructionteam)";
+
+                var ds = MySQLHelper.ExecuteDataSet(sql);
+                List<Objects.User> ret = new List<Objects.User>();
+                foreach (DataRow row in ds.Tables[0].Rows)
+                {
+                    var array = row.ItemArray;
+                    ret.Add(new Objects.User()
+                    {
+                        id = array[0].ToString(),
+                        phone = array[1].ToString(),
+                        password = array[2].ToString(),
+                        identity = array[3].ToString(),
+                        name = array[4].ToString(),
+                        IDCard = array[5].ToString()
+                    });
+                }
+                return ret;
+            }
+            /// <summary>
+            /// 获取所有施工队
+            /// </summary>
+            /// <returns></returns>
+            public static Dictionary<string, Objects.Team> GetsWithMembers()
+            {
+                string sql = "select * from users,constructionteam_name as cta " +
+                    "where identity = 4 and users.phone in (select phone from constructionteam)";
+                Dictionary<string, Objects.Team> ret = new Dictionary<string, Objects.Team>();
+
+                var ds = MySQLHelper.ExecuteDataSet(sql);
+                foreach (DataRow row in ds.Tables[0].Rows)
+                {
+                    var array = row.ItemArray;
+                    if (ret.ContainsKey(array[7].ToString()))
+                    {
+                        ret[array[7].ToString()].members.Add(new Objects.User()
+                        {
+                            id = array[0].ToString(),
+                            phone = array[1].ToString(),
+                            password = array[2].ToString(),
+                            identity = array[3].ToString(),
+                            name = array[4].ToString(),
+                            IDCard = array[5].ToString()
+                        });
+                    }
+                    else // 该组不存在，新建
+                    {
+                        ret.Add(array[7].ToString(), new Objects.Team()
+                        {
+                            id = array[7].ToString(),
+                            teamName = array[6].ToString(),
+                            members = new List<Objects.User>()
+                        });
+                        ret[array[7].ToString()].members.Add(new Objects.User()
+                        {
+                            id = array[0].ToString(),
+                            phone = array[1].ToString(),
+                            password = array[2].ToString(),
+                            identity = array[3].ToString(),
+                            name = array[4].ToString(),
+                            IDCard = array[5].ToString()
+                        });
+                    }
+                }
+                return ret;
+            }
+            public static List<Objects.Team> Gets()
+            {
+                string sql = "select * from constructionteam_name";
+                List<Objects.Team> ret = new List<Objects.Team>();
+
+                var ds = MySQLHelper.ExecuteDataSet(sql);
+                foreach (DataRow row in ds.Tables[0].Rows)
+                {
+                    var array = row.ItemArray;
+                    ret.Add(new Objects.Team()
+                    {
+                        teamName = array[0].ToString(),
+                        id = array[1].ToString()
+                    });
+                }
+                return ret;
+            }
+            /// <summary>
+            /// 获取施工人员所在施工队
+            /// </summary>
+            /// <param name="info"></param>
+            /// <returns></returns>
+            public static Objects.Team Get(Objects.User info)
+            {
+                string sql = "select cta.* from constructionteam as ct, constructionteam_name as cta where phone = ?ph and ct.teamID = cta.teamID";
+                MySqlParameter para = new MySqlParameter("?ph", info.phone);
+
+                var ds = MySQLHelper.ExecuteDataSet(sql, para);
+                if (ds.Tables[0].Rows.Count == 0)
+                {
+                    return null;
+                }
+                var array = ds.Tables[0].Rows[0].ItemArray;
+                return new Objects.Team()
+                {
+                    teamName = array[0].ToString(),
+                    id = array[1].ToString()
+                };
+            }
+            /// <summary>
+            /// 获取施工队伍，包括成员
+            /// </summary>
+            /// <param name="info"></param>
+            /// <returns></returns>
+            public static Objects.Team GetWithMembers(Objects.Team info)
+            {
+                var ret = Get(info);
+                ret.members = new List<Objects.User>();
+
+                string sql = "select users.* from users where users.phone in (select phone from constructionteam where teamID = ?id)";
+                MySqlParameter para = new MySqlParameter("?id", info.id);
+
+                var ds = MySQLHelper.ExecuteDataSet(sql, para);
+                foreach (DataRow row in ds.Tables[0].Rows)
+                {
+                    var array = row.ItemArray;
+                    ret.members.Add(new Objects.User()
+                    {
+                        id = array[0].ToString(),
+                        phone = array[1].ToString(),
+                        password = array[2].ToString(),
+                        identity = array[3].ToString(),
+                        name = array[4].ToString(),
+                        IDCard = array[5].ToString()
+                    });
+                }
+                return ret;
+            }
+            /// <summary>
+            /// 根据（id）获取施工队信息，不包含成员
+            /// </summary>
+            /// <param name="info"></param>
+            /// <returns></returns>
+            public static Objects.Team Get(Objects.Team info)
+            {
+                string sql = "select * from constructionteam_name where teamID = ?id";
+                MySqlParameter para = new MySqlParameter("?id", info.id);
+
+                var ds = MySQLHelper.ExecuteDataSet(sql, para);
+                if (ds.Tables[0].Rows.Count == 0)
+                {
+                    return null;
+                }
+                var array = ds.Tables[0].Rows[0].ItemArray;
+                return new Objects.Team()
+                {
+                    teamName = array[0].ToString(),
+                    id = array[1].ToString()
+                };
+            }
+            /// <summary>
+            /// 修改队伍名称（id）
+            /// </summary>
+            /// <param name="team"></param>
+            /// <returns></returns>
+            public static bool Modify(Objects.Team team)
+            {
+                string sql = "update constructionteam_name set teamName = ?na where teamID = ?id";
+                MySqlParameter[] para = new MySqlParameter[2];
+                para[0] = new MySqlParameter("?na", team.teamName);
+                para[1] = new MySqlParameter("?id", team.id);
+
+                int ret = MySQLHelper.ExecuteNonQuery(sql, para);
+                if(ret == 1)
+                {
+                    return true;
+                }
+                return false;
+            }
+            /// <summary>
+            /// 删除施工队（id），自动解除成员绑定
+            /// </summary>
+            /// <param name="team"></param>
+            /// <returns></returns>
+            public static bool Delete(Objects.Team team)
+            {
+                string sql = "delete from constructionteam where teamID = ?id";
+                MySqlParameter para = new MySqlParameter("?id", team.id);
+
+                int ret = MySQLHelper.ExecuteNonQuery(sql, para);
+                sql = "delete from constructionteam_name where teamID = ?id";
+
+                ret = MySQLHelper.ExecuteNonQuery(sql, para);
+                if(ret == 1)
+                {
+                    return true;
+                }
                 return false;
             }
         }
@@ -848,6 +1177,251 @@ namespace WXShare
                 }
                 return false;
             }
+
+            public static List<Objects.Order> Search(string key)
+            {
+                string sql = "select * from orders where " +
+                    "id like ?key or " +
+                    "name like ?key or " +
+                    "phone like ?key or " +
+                    "location like ?key or " +
+                    "locationDetail like ?key or " +
+                    "orderChannel like ?key or " +
+                    "brushType like ?key or " +
+                    "commissioner like ?key or " +
+                    "canceledReason like ?key or " +
+                    // housePurpose
+                    // houseType
+                    "signFailedReason like ?key or " +
+                    "contractNumber like ?key or " +
+                    // constractNumber
+                    "refuseReason like ?key or " +
+                    "likePart like ?key or " +
+                    "dislikePart like ?key or " +
+                    "qaNumber like ?key or " + 
+                    "callbackFailedReason like ?key or " +
+                    "callbackTrace like ?key or " +
+                    "postNumber like ?key";
+                // youHuiLaiYuan
+                List<Objects.Order> ret = new List<Objects.Order>();
+
+                var ds = MySQLHelper.ExecuteDataSet(sql);
+                foreach (DataRow row in ds.Tables[0].Rows)
+                {
+                    var array = row.ItemArray;
+                    ret.Add(new Objects.Order()
+                    {
+                        id = array[0].ToString(),
+                        name = array[1].ToString(),
+                        phone = array[2].ToString(),
+                        createTime = DateTime.Parse(array[3].ToString()),
+                        orderTime = DateTime.Parse(array[4].ToString()),
+                        status = int.Parse(array[5].ToString()),
+                        location = array[6].ToString(),
+                        locationDetail = array[7].ToString(),
+                        orderChannel = int.Parse(array[8].ToString()),
+                        brushType = int.Parse(array[9].ToString()),
+                        brushDemand = array[10].ToString(),
+                        commissioner = array[11].ToString(),
+                        comOrderTime = DateTime.Parse(array[12].ToString()),
+                        canceledReason = array[13].ToString(),
+                        comCheckOrderTime = DateTime.Parse(array[14].ToString()),
+                        comCheckTime = DateTime.Parse(array[15].ToString()),
+                        housePurpose = int.Parse(array[16].ToString()),
+                        houseType = int.Parse(array[17].ToString()),
+                        signTime = DateTime.Parse(array[18].ToString()),
+                        dispatchTime = DateTime.Parse(array[19].ToString()),
+                        signFailedReason = array[20].ToString(),
+                        contractNumber = array[21].ToString(),
+                        constructionTeam = array[22].ToString(),
+                        workOrderDate = DateTime.Parse(array[23].ToString()),
+                        workCompleteOrderDate = DateTime.Parse(array[24].ToString()),
+                        refuseReason = array[25].ToString(),
+                        workDate = DateTime.Parse(array[26].ToString()),
+                        workCompleteDate = DateTime.Parse(array[27].ToString()),
+                        workStopDays = int.Parse(array[28].ToString()),
+                        timeLimitOrder = int.Parse(array[29].ToString()),
+                        timeLimit = int.Parse(array[30].ToString()),
+                        mmSum = int.Parse(array[31].ToString()),
+                        smSum = int.Parse(array[32].ToString()),
+                        workSum = int.Parse(array[33].ToString()),
+                        signed = array[34].ToString() == "1",
+                        receipted = array[35].ToString() == "1",
+                        likePart = array[36].ToString(),
+                        dislikePart = array[37].ToString(),
+                        NPS = int.Parse(array[38].ToString()),
+                        callbackTime = DateTime.Parse(array[39].ToString()),
+                        qaNumber = array[40].ToString(),
+                        postDate= DateTime.Parse(array[41].ToString()),
+                        year = DateTime.Parse(array[42].ToString()),
+                        callbackSuccess = array[43].ToString() =="1",
+                        callbackFailedReason = array[44].ToString(),
+                        callbackTrace = array[45].ToString(),
+                        callbackComm = array[46].ToString(),
+                        postNumber = array[47].ToString(),
+                        houseStructure = int.Parse(array[48].ToString()),
+                        mianJi = int.Parse(array[49].ToString()),
+                        neiQiang = int.Parse(array[50].ToString()),
+                        yiShuQi  = int.Parse(array[51].ToString()),
+                        waiQiang = int.Parse(array[52].ToString()),
+                        yangTai = int.Parse(array[53].ToString()),
+                        muQi = int.Parse(array[54].ToString()),
+                        tieYi = int.Parse(array[55].ToString()),
+                        youHuiLaiYuan = int.Parse(array[56].ToString())
+                    });
+                }
+                return ret;
+            }
+            public static List<Objects.Order> Gets()
+            {
+                string sql = "select * from orders";
+                List<Objects.Order> ret = new List<Objects.Order>();
+
+                var ds = MySQLHelper.ExecuteDataSet(sql);
+                foreach (DataRow row in ds.Tables[0].Rows)
+                {
+                    var array = row.ItemArray;
+                    ret.Add(new Objects.Order()
+                    {
+                        id = array[0].ToString(),
+                        name = array[1].ToString(),
+                        phone = array[2].ToString(),
+                        createTime = DateTime.Parse(array[3].ToString()),
+                        orderTime = DateTime.Parse(array[4].ToString()),
+                        status = int.Parse(array[5].ToString()),
+                        location = array[6].ToString(),
+                        locationDetail = array[7].ToString(),
+                        orderChannel = int.Parse(array[8].ToString()),
+                        brushType = int.Parse(array[9].ToString()),
+                        brushDemand = array[10].ToString(),
+                        commissioner = array[11].ToString(),
+                        comOrderTime = DateTime.Parse(array[12].ToString()),
+                        canceledReason = array[13].ToString(),
+                        comCheckOrderTime = DateTime.Parse(array[14].ToString()),
+                        comCheckTime = DateTime.Parse(array[15].ToString()),
+                        housePurpose = int.Parse(array[16].ToString()),
+                        houseType = int.Parse(array[17].ToString()),
+                        signTime = DateTime.Parse(array[18].ToString()),
+                        dispatchTime = DateTime.Parse(array[19].ToString()),
+                        signFailedReason = array[20].ToString(),
+                        contractNumber = array[21].ToString(),
+                        constructionTeam = array[22].ToString(),
+                        workOrderDate = DateTime.Parse(array[23].ToString()),
+                        workCompleteOrderDate = DateTime.Parse(array[24].ToString()),
+                        refuseReason = array[25].ToString(),
+                        workDate = DateTime.Parse(array[26].ToString()),
+                        workCompleteDate = DateTime.Parse(array[27].ToString()),
+                        workStopDays = int.Parse(array[28].ToString()),
+                        timeLimitOrder = int.Parse(array[29].ToString()),
+                        timeLimit = int.Parse(array[30].ToString()),
+                        mmSum = int.Parse(array[31].ToString()),
+                        smSum = int.Parse(array[32].ToString()),
+                        workSum = int.Parse(array[33].ToString()),
+                        signed = array[34].ToString() == "1",
+                        receipted = array[35].ToString() == "1",
+                        likePart = array[36].ToString(),
+                        dislikePart = array[37].ToString(),
+                        NPS = int.Parse(array[38].ToString()),
+                        callbackTime = DateTime.Parse(array[39].ToString()),
+                        qaNumber = array[40].ToString(),
+                        postDate = DateTime.Parse(array[41].ToString()),
+                        year = DateTime.Parse(array[42].ToString()),
+                        callbackSuccess = array[43].ToString() == "1",
+                        callbackFailedReason = array[44].ToString(),
+                        callbackTrace = array[45].ToString(),
+                        callbackComm = array[46].ToString(),
+                        postNumber = array[47].ToString(),
+                        houseStructure = int.Parse(array[48].ToString()),
+                        mianJi = int.Parse(array[49].ToString()),
+                        neiQiang = int.Parse(array[50].ToString()),
+                        yiShuQi = int.Parse(array[51].ToString()),
+                        waiQiang = int.Parse(array[52].ToString()),
+                        yangTai = int.Parse(array[53].ToString()),
+                        muQi = int.Parse(array[54].ToString()),
+                        tieYi = int.Parse(array[55].ToString()),
+                        youHuiLaiYuan = int.Parse(array[56].ToString())
+                    });
+                }
+                return ret;
+            }
+            /// <summary>
+            /// 处于某一状态的订单（id）
+            /// </summary>
+            /// <param name="info"></param>
+            /// <returns></returns>
+            public static List<Objects.Order> Gets(Objects.Status info)
+            {
+                string sql = "select * from orders where status = ?s";
+                MySqlParameter para = new MySqlParameter("?s", info.id);
+                List<Objects.Order> ret = new List<Objects.Order>();
+
+                var ds = MySQLHelper.ExecuteDataSet(sql, para);
+                foreach (DataRow row in ds.Tables[0].Rows)
+                {
+                    var array = row.ItemArray;
+                    ret.Add(new Objects.Order()
+                    {
+                        id = array[0].ToString(),
+                        name = array[1].ToString(),
+                        phone = array[2].ToString(),
+                        createTime = DateTime.Parse(array[3].ToString()),
+                        orderTime = DateTime.Parse(array[4].ToString()),
+                        status = int.Parse(array[5].ToString()),
+                        location = array[6].ToString(),
+                        locationDetail = array[7].ToString(),
+                        orderChannel = int.Parse(array[8].ToString()),
+                        brushType = int.Parse(array[9].ToString()),
+                        brushDemand = array[10].ToString(),
+                        commissioner = array[11].ToString(),
+                        comOrderTime = DateTime.Parse(array[12].ToString()),
+                        canceledReason = array[13].ToString(),
+                        comCheckOrderTime = DateTime.Parse(array[14].ToString()),
+                        comCheckTime = DateTime.Parse(array[15].ToString()),
+                        housePurpose = int.Parse(array[16].ToString()),
+                        houseType = int.Parse(array[17].ToString()),
+                        signTime = DateTime.Parse(array[18].ToString()),
+                        dispatchTime = DateTime.Parse(array[19].ToString()),
+                        signFailedReason = array[20].ToString(),
+                        contractNumber = array[21].ToString(),
+                        constructionTeam = array[22].ToString(),
+                        workOrderDate = DateTime.Parse(array[23].ToString()),
+                        workCompleteOrderDate = DateTime.Parse(array[24].ToString()),
+                        refuseReason = array[25].ToString(),
+                        workDate = DateTime.Parse(array[26].ToString()),
+                        workCompleteDate = DateTime.Parse(array[27].ToString()),
+                        workStopDays = int.Parse(array[28].ToString()),
+                        timeLimitOrder = int.Parse(array[29].ToString()),
+                        timeLimit = int.Parse(array[30].ToString()),
+                        mmSum = int.Parse(array[31].ToString()),
+                        smSum = int.Parse(array[32].ToString()),
+                        workSum = int.Parse(array[33].ToString()),
+                        signed = array[34].ToString() == "1",
+                        receipted = array[35].ToString() == "1",
+                        likePart = array[36].ToString(),
+                        dislikePart = array[37].ToString(),
+                        NPS = int.Parse(array[38].ToString()),
+                        callbackTime = DateTime.Parse(array[39].ToString()),
+                        qaNumber = array[40].ToString(),
+                        postDate = DateTime.Parse(array[41].ToString()),
+                        year = DateTime.Parse(array[42].ToString()),
+                        callbackSuccess = array[43].ToString() == "1",
+                        callbackFailedReason = array[44].ToString(),
+                        callbackTrace = array[45].ToString(),
+                        callbackComm = array[46].ToString(),
+                        postNumber = array[47].ToString(),
+                        houseStructure = int.Parse(array[48].ToString()),
+                        mianJi = int.Parse(array[49].ToString()),
+                        neiQiang = int.Parse(array[50].ToString()),
+                        yiShuQi = int.Parse(array[51].ToString()),
+                        waiQiang = int.Parse(array[52].ToString()),
+                        yangTai = int.Parse(array[53].ToString()),
+                        muQi = int.Parse(array[54].ToString()),
+                        tieYi = int.Parse(array[55].ToString()),
+                        youHuiLaiYuan = int.Parse(array[56].ToString())
+                    });
+                }
+                return ret;
+            }
         }
         public class OrderBase
         {
@@ -923,6 +1497,21 @@ namespace WXShare
                 return obj;
             }
             /// <summary>
+            /// 根据view获取ID
+            /// </summary>
+            /// <param name="obj"></param>
+            /// <param name="tableName"></param>
+            /// <returns></returns>
+            public virtual Objects.OrderBase GetByName(Objects.OrderBase obj, string tableName)
+            {
+                string sql = "select Id from " + tableName + " where View = ?view";
+                MySqlParameter para = new MySqlParameter("?view", obj.view);
+
+                Object ret = MySQLHelper.ExecuteScalar(sql, para);
+                obj.id = ret.ToString();
+                return obj;
+            }
+            /// <summary>
             /// 获取所有记录
             /// </summary>
             /// <param name="tableName"></param>
@@ -968,6 +1557,10 @@ namespace WXShare
             {
                 return Get(obj, tableName);
             }
+            public Objects.OrderBase GetByName(Objects.OrderBase obj)
+            {
+                return Get(obj, tableName);
+            }
             public virtual List<Objects.OrderBase> Gets()
             {
                 return Gets(tableName);
@@ -980,13 +1573,17 @@ namespace WXShare
             {
                 return (Objects.BrushDemand)base.Get(obj);
             }
+            public Objects.BrushDemand GetByName(Objects.BrushDemand obj)
+            {
+                return (Objects.BrushDemand)base.Get(obj);
+            }
             public new List<Objects.BrushDemand> Gets()
             {
                 var list = base.Gets();
                 List<Objects.BrushDemand> ret = new List<Objects.BrushDemand>();
                 foreach(var each in list)
                 {
-                    ret.Add((Objects.BrushDemand)each);
+                    ret.Add(new Objects.BrushDemand() { id = each.id, view = each.view });
                 }
                 return ret;
             }
@@ -998,13 +1595,17 @@ namespace WXShare
             {
                 return (Objects.BrushType)base.Get(obj);
             }
+            public Objects.BrushType GetByName(Objects.BrushType obj)
+            {
+                return (Objects.BrushType)base.Get(obj);
+            }
             public new List<Objects.BrushType> Gets()
             {
                 var list = base.Gets();
                 List<Objects.BrushType> ret = new List<Objects.BrushType>();
                 foreach (var each in list)
                 {
-                    ret.Add((Objects.BrushType)each);
+                    ret.Add(new Objects.BrushType() { id = each.id, view = each.view });
                 }
                 return ret;
             }
@@ -1016,21 +1617,29 @@ namespace WXShare
             {
                 return (Objects.Channel)base.Get(obj);
             }
+            public Objects.Channel GetByName(Objects.Channel obj)
+            {
+                return (Objects.Channel)base.Get(obj);
+            }
             public new List<Objects.Channel> Gets()
             {
                 var list = base.Gets();
                 List<Objects.Channel> ret = new List<Objects.Channel>();
                 foreach (var each in list)
                 {
-                    ret.Add((Objects.Channel)each);
+                    ret.Add(new Objects.Channel() { id = each.id, view = each.view });
                 }
                 return ret;
             }
         }
         public class HousePurpose : OrderBaseS
         {
-            public HousePurpose() : base("order_channel") { }
+            public HousePurpose() : base("order_housepurpose") { }
             public Objects.HousePurpose Get(Objects.HousePurpose obj)
+            {
+                return (Objects.HousePurpose)base.Get(obj);
+            }
+            public Objects.HousePurpose GetByName(Objects.HousePurpose obj)
             {
                 return (Objects.HousePurpose)base.Get(obj);
             }
@@ -1040,15 +1649,19 @@ namespace WXShare
                 List<Objects.HousePurpose> ret = new List<Objects.HousePurpose>();
                 foreach (var each in list)
                 {
-                    ret.Add((Objects.HousePurpose)each);
+                    ret.Add(new Objects.HousePurpose() { id = each.id, view = each.view });
                 }
                 return ret;
             }
         }
         public class HouseStructure : OrderBaseS
         {
-            public HouseStructure() : base("order_channel") { }
+            public HouseStructure() : base("order_housestructure") { }
             public Objects.HouseStructure Get(Objects.HouseStructure obj)
+            {
+                return (Objects.HouseStructure)base.Get(obj);
+            }
+            public Objects.HouseStructure GetByName(Objects.HouseStructure obj)
             {
                 return (Objects.HouseStructure)base.Get(obj);
             }
@@ -1058,15 +1671,19 @@ namespace WXShare
                 List<Objects.HouseStructure> ret = new List<Objects.HouseStructure>();
                 foreach (var each in list)
                 {
-                    ret.Add((Objects.HouseStructure)each);
+                    ret.Add(new Objects.HouseStructure() { id = each.id, view = each.view });
                 }
                 return ret;
             }
         }
         public class HouseType : OrderBaseS
         {
-            public HouseType() : base("order_channel") { }
+            public HouseType() : base("order_housetype") { }
             public Objects.HouseType Get(Objects.HouseType obj)
+            {
+                return (Objects.HouseType)base.Get(obj);
+            }
+            public Objects.HouseType GetByName(Objects.HouseType obj)
             {
                 return (Objects.HouseType)base.Get(obj);
             }
@@ -1076,15 +1693,19 @@ namespace WXShare
                 List<Objects.HouseType> ret = new List<Objects.HouseType>();
                 foreach (var each in list)
                 {
-                    ret.Add((Objects.HouseType)each);
+                    ret.Add(new Objects.HouseType() { id = each.id, view = each.view });
                 }
                 return ret;
             }
         }
         public class Status : OrderBaseS
         {
-            public Status() : base("order_channel") { }
+            public Status() : base("order_status") { }
             public Objects.Status Get(Objects.Status obj)
+            {
+                return (Objects.Status)base.Get(obj);
+            }
+            public Objects.Status GetByName(Objects.Status obj)
             {
                 return (Objects.Status)base.Get(obj);
             }
@@ -1094,7 +1715,7 @@ namespace WXShare
                 List<Objects.Status> ret = new List<Objects.Status>();
                 foreach (var each in list)
                 {
-                    ret.Add((Objects.Status)each);
+                    ret.Add(new Objects.Status(){ id = each.id, view = each.view});
                 }
                 return ret;
             }

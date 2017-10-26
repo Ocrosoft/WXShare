@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace WXShare
 {
@@ -86,7 +87,7 @@ namespace WXShare
             // 建单时间
             public DateTime createTime;
             // 接单时间
-            public string orderTime;
+            public DateTime orderTime;
             // 目前状态
             public int status;
             // 区县
@@ -221,6 +222,18 @@ namespace WXShare
             public string name;
             // 身份证
             public string IDCard;
+        }
+        /// <summary>
+        /// 施工队
+        /// </summary>
+        public class Team
+        {
+            // 施工队名称
+            public string teamName;
+            // 施工队id
+            public string id;
+            // 施工队成员
+            public List<User> members;
         }
         /// <summary>
         /// 经销商

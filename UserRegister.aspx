@@ -343,7 +343,7 @@
                         }
                     }, 2000);
                 } else {
-                    location.href = '/WaitAuth.aspx';
+                    location.href = '/UserWaitAuth.aspx';
                 }
             }
             var cd = 60; // 计时

@@ -11,7 +11,7 @@
   </PropertyGroup>
   <ItemGroup>
     <File Include="Activity.aspx">
-      <publishTime>10/17/2017 23:10:33</publishTime>
+      <publishTime>10/23/2017 15:56:24</publishTime>
     </File>
     <File Include="ActivityAll.aspx">
       <publishTime>10/17/2017 23:28:15</publishTime>
@@ -125,10 +125,10 @@
       <publishTime>06/27/2016 14:50:24</publishTime>
     </File>
     <File Include="bin/WXShare.dll">
-      <publishTime>10/18/2017 11:22:51</publishTime>
+      <publishTime>10/25/2017 23:00:40</publishTime>
     </File>
     <File Include="bin/WXShare.pdb">
-      <publishTime>10/18/2017 11:22:51</publishTime>
+      <publishTime>10/25/2017 23:00:40</publishTime>
     </File>
     <File Include="css/article.css">
       <publishTime>10/17/2017 14:16:49</publishTime>
@@ -179,13 +179,19 @@
       <publishTime>10/14/2017 22:31:24</publishTime>
     </File>
     <File Include="images/checkout.png">
-      <publishTime>10/18/2017 09:23:58</publishTime>
+      <publishTime>10/22/2017 16:22:02</publishTime>
+    </File>
+    <File Include="images/control.png">
+      <publishTime>10/22/2017 16:22:03</publishTime>
     </File>
     <File Include="images/icon_tabbar.png">
       <publishTime>10/14/2017 15:05:21</publishTime>
     </File>
     <File Include="images/logout.png">
       <publishTime>10/14/2017 22:31:25</publishTime>
+    </File>
+    <File Include="images/orders.png">
+      <publishTime>10/22/2017 16:22:03</publishTime>
     </File>
     <File Include="images/profile.png">
       <publishTime>10/14/2017 20:37:12</publishTime>
@@ -203,7 +209,10 @@
       <publishTime>10/14/2017 22:31:24</publishTime>
     </File>
     <File Include="images/signup.png">
-      <publishTime>10/18/2017 08:49:51</publishTime>
+      <publishTime>10/22/2017 16:22:03</publishTime>
+    </File>
+    <File Include="images/staff.png">
+      <publishTime>10/22/2017 16:22:02</publishTime>
     </File>
     <File Include="js/example.js">
       <publishTime>10/11/2017 16:09:32</publishTime>
@@ -226,6 +235,9 @@
     <File Include="logo.png">
       <publishTime>10/10/2017 20:55:36</publishTime>
     </File>
+    <File Include="OrdersManage.aspx">
+      <publishTime>10/22/2017 19:47:44</publishTime>
+    </File>
     <File Include="packages.config">
       <publishTime>10/10/2017 15:11:34</publishTime>
     </File>
@@ -235,17 +247,38 @@
     <File Include="RequireWX.aspx">
       <publishTime>10/15/2017 17:15:24</publishTime>
     </File>
+    <File Include="StaffManage.aspx">
+      <publishTime>10/25/2017 23:00:12</publishTime>
+    </File>
+    <File Include="StaffManageSGDW.aspx">
+      <publishTime>10/23/2017 21:56:31</publishTime>
+    </File>
+    <File Include="StaffManageSGRY.aspx">
+      <publishTime>10/23/2017 21:44:16</publishTime>
+    </File>
+    <File Include="StaffManageYWY.aspx">
+      <publishTime>10/23/2017 15:56:30</publishTime>
+    </File>
+    <File Include="StaffSGDWDetail.aspx">
+      <publishTime>10/25/2017 22:56:53</publishTime>
+    </File>
+    <File Include="StaffSGRYDetail.aspx">
+      <publishTime>10/25/2017 21:43:39</publishTime>
+    </File>
+    <File Include="StaffYWYDetail.aspx">
+      <publishTime>10/25/2017 11:01:56</publishTime>
+    </File>
     <File Include="TEST.aspx">
       <publishTime>10/13/2017 15:25:17</publishTime>
     </File>
     <File Include="UserIndex.aspx">
-      <publishTime>10/18/2017 09:59:50</publishTime>
+      <publishTime>10/22/2017 22:40:57</publishTime>
     </File>
     <File Include="UserLogin.aspx">
       <publishTime>10/14/2017 16:41:40</publishTime>
     </File>
     <File Include="UserLoginPhone.aspx">
-      <publishTime>10/18/2017 10:13:23</publishTime>
+      <publishTime>10/22/2017 16:31:31</publishTime>
     </File>
     <File Include="UserLogout.aspx">
       <publishTime>10/14/2017 16:43:56</publishTime>
@@ -254,16 +287,19 @@
       <publishTime>10/10/2017 21:22:03</publishTime>
     </File>
     <File Include="UserProfile.aspx">
-      <publishTime>10/14/2017 22:37:05</publishTime>
+      <publishTime>10/22/2017 16:39:42</publishTime>
     </File>
     <File Include="UserRegister.aspx">
-      <publishTime>10/18/2017 09:55:47</publishTime>
+      <publishTime>10/22/2017 16:31:27</publishTime>
     </File>
     <File Include="UserRegisterAuth.aspx">
       <publishTime>10/18/2017 10:43:01</publishTime>
     </File>
     <File Include="UserSetPassword.aspx">
       <publishTime>10/18/2017 11:18:26</publishTime>
+    </File>
+    <File Include="UserWaitAuth.aspx">
+      <publishTime>10/22/2017 16:31:17</publishTime>
     </File>
     <File Include="WaitAuth.aspx">
       <publishTime>10/18/2017 09:57:04</publishTime>

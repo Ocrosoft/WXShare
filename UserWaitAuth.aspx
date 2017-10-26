@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="WaitAuth.aspx.cs" Inherits="WXShare.WaitAuth" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="UserWaitAuth.aspx.cs" Inherits="WXShare.WaitAuth" %>
 
 <!DOCTYPE html>
 

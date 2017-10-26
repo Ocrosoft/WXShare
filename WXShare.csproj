@@ -103,6 +103,7 @@
     <Content Include="js\zepto-touch.js" />
     <Content Include="js\zepto.js" />
     <Content Include="logo.png" />
+    <Content Include="OrdersManage.aspx" />
     <Content Include="packages.config" />
     <Content Include="js\jweixin-1.2.0.js" />
     <None Include="Properties\PublishProfiles\CustomProfile.pubxml" />
@@ -118,6 +119,13 @@
     <Content Include="GetAccessToken.aspx" />
     <Content Include="RegisterAuthDetail.aspx" />
     <Content Include="RequireWX.aspx" />
+    <Content Include="StaffManage.aspx" />
+    <Content Include="StaffManageSGDW.aspx" />
+    <Content Include="StaffManageSGRY.aspx" />
+    <Content Include="StaffManageYWY.aspx" />
+    <Content Include="StaffSGDWDetail.aspx" />
+    <Content Include="StaffSGRYDetail.aspx" />
+    <Content Include="StaffYWYDetail.aspx" />
     <Content Include="TEST.aspx" />
     <Content Include="UserIndex.aspx" />
     <Content Include="UserLogin.aspx" />
@@ -127,7 +135,7 @@
     <Content Include="UserRegister.aspx" />
     <Content Include="UserRegisterAuth.aspx" />
     <Content Include="UserSetPassword.aspx" />
-    <Content Include="WaitAuth.aspx" />
+    <Content Include="UserWaitAuth.aspx" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
@@ -198,6 +206,13 @@
     </Compile>
     <Compile Include="MySQLHelper.cs" />
     <Compile Include="Objects.cs" />
+    <Compile Include="OrdersManage.aspx.cs">
+      <DependentUpon>OrdersManage.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="OrdersManage.aspx.designer.cs">
+      <DependentUpon>OrdersManage.aspx</DependentUpon>
+    </Compile>
     <Compile Include="ORequest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RegisterAuthDetail.aspx.cs">
@@ -215,6 +230,55 @@
       <DependentUpon>RequireWX.aspx</DependentUpon>
     </Compile>
     <Compile Include="OSecurity.cs" />
+    <Compile Include="StaffManage.aspx.cs">
+      <DependentUpon>StaffManage.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="StaffManage.aspx.designer.cs">
+      <DependentUpon>StaffManage.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="StaffManageSGDW.aspx.cs">
+      <DependentUpon>StaffManageSGDW.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="StaffManageSGDW.aspx.designer.cs">
+      <DependentUpon>StaffManageSGDW.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="StaffManageSGRY.aspx.cs">
+      <DependentUpon>StaffManageSGRY.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="StaffManageSGRY.aspx.designer.cs">
+      <DependentUpon>StaffManageSGRY.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="StaffManageYWY.aspx.cs">
+      <DependentUpon>StaffManageYWY.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="StaffManageYWY.aspx.designer.cs">
+      <DependentUpon>StaffManageYWY.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="StaffSGDWDetail.aspx.cs">
+      <DependentUpon>StaffSGDWDetail.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="StaffSGDWDetail.aspx.designer.cs">
+      <DependentUpon>StaffSGDWDetail.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="StaffSGRYDetail.aspx.cs">
+      <DependentUpon>StaffSGRYDetail.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="StaffSGRYDetail.aspx.designer.cs">
+      <DependentUpon>StaffSGRYDetail.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="StaffYWYDetail.aspx.cs">
+      <DependentUpon>StaffYWYDetail.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="StaffYWYDetail.aspx.designer.cs">
+      <DependentUpon>StaffYWYDetail.aspx</DependentUpon>
+    </Compile>
     <Compile Include="TEST.aspx.cs">
       <DependentUpon>TEST.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -278,12 +342,12 @@
     <Compile Include="UserSetPassword.aspx.designer.cs">
       <DependentUpon>UserSetPassword.aspx</DependentUpon>
     </Compile>
-    <Compile Include="WaitAuth.aspx.cs">
-      <DependentUpon>WaitAuth.aspx</DependentUpon>
+    <Compile Include="UserWaitAuth.aspx.cs">
+      <DependentUpon>UserWaitAuth.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="WaitAuth.aspx.designer.cs">
-      <DependentUpon>WaitAuth.aspx</DependentUpon>
+    <Compile Include="UserWaitAuth.aspx.designer.cs">
+      <DependentUpon>UserWaitAuth.aspx</DependentUpon>
     </Compile>
     <Compile Include="WXManage.cs" />
     <Compile Include="WXRequest.cs" />

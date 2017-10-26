@@ -112,13 +112,13 @@
                 </div>
                 <p class="weui-grid__label">注册审核</p>
             </a>
-            <a href="#" class="weui-grid">
+            <a href="/OrdersManage.aspx" class="weui-grid">
                 <div class="weui-grid__icon">
                     <img src="./images/orders.png" alt="">
                 </div>
                 <p class="weui-grid__label">订单管理</p>
             </a>
-            <a href="#" class="weui-grid">
+            <a href="/StaffManage.aspx" class="weui-grid">
                 <div class="weui-grid__icon" style="width: 55px">
                     <img src="./images/staff.png" alt="">
                 </div>
