@@ -20,7 +20,7 @@
                 <div class="weui-dialog__bd">删除后不可恢复，确定要删除吗？</div>
                 <div class="weui-dialog__ft">
                     <a id="dialog_cancel" class="weui-dialog__btn weui-dialog__btn_default">取消</a>
-                    <a id="dialog_ok" class="weui-dialog__btn weui-dialog__btn_primary">确定</a>
+                    <a id="dialog_ok" onserverclick="DialogOK_Click" runat="server" class="weui-dialog__btn weui-dialog__btn_primary">确定</a>
                 </div>
             </div>
         </div>
@@ -62,7 +62,7 @@
                 <a class="weui-btn weui-btn_default" id="showTooltips">修改信息</a>
                 <label for="weuiAgree" class="weui-agree" style="text-align: center;">
                     <span class="weui-agree__text">
-                        <a id="delete">删除该账号</a>
+                        <a runat="server" onserverclick="DeleteBtn_Click" id="delete">删除该账号</a>
                     </span>
                 </label>
             </div>
@@ -82,6 +82,11 @@
                 } else {
                     $('#form1').submit();
                 }
+            });
+            $('#modify').on('click', function () {
+                $(this).css('display', 'none');
+                $('#save').css('display', 'block');
+                $('[required]').removeAttr('disabled');
             });
             /**
             * 显示错误
@@ -118,9 +123,6 @@
                 }
                 return ok;
             })
-            $('#dialog_ok').on('click', function () {
-                location.href = location.href + '&del=true';
-            });
             $('#dialog_cancel').on('click', function () {
                 $('#iosDialog1').fadeOut(200);
             });

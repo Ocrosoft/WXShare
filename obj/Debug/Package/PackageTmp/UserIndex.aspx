@@ -73,6 +73,19 @@
                 {
             %>
             <!-- 业务员S -->
+            <a href="/OrdersForYWY.aspx" class="weui-grid">
+                <div class="weui-grid__icon">
+                    <span runat="server" id="newOrderCount" class="weui-badge" style="position: absolute; display:none;"></span>
+                    <img src="./images/orders.png" alt="">
+                </div>
+                <p class="weui-grid__label">客户订单</p>
+            </a>
+            <a href="#" class="weui-grid">
+                <div class="weui-grid__icon" style="width: 35.86px">
+                    <img src="./images/profile.png" alt="">
+                </div>
+                <p class="weui-grid__label">我的信息</p>
+            </a>
             <!-- 业务员E -->
             <%
                 }

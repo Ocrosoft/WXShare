@@ -10,7 +10,7 @@
 namespace WXShare {
     
     
-    public partial class OrdersManage {
+    public partial class OrdersForYWY {
         
         /// <summary>
         /// form1 控件。

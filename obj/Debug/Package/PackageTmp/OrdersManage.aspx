@@ -17,14 +17,13 @@
             <h1 class="page__title" style="font-size: 25px; font-weight: bold;">订单管理</h1>
         </div>
         <div class="page__bd">
-            <!--<a href="javascript:;" class="weui-btn weui-btn_primary">点击展现searchBar</a>-->
             <div class="weui-search-bar" id="searchBar">
                 <div class="weui-search-bar__box" style="background: #fff; border-radius: 3px;">
                     <i class="weui-icon-search"></i>
-                    <input type="search" class="weui-search-bar__input" id="searchInput" placeholder="搜索" required="">
+                    <input runat="server" type="search" class="weui-search-bar__input" id="searchInput" placeholder="搜索" required="">
                     <a href="javascript:" class="weui-icon-clear" id="searchClear"></a>
                 </div>
-                <a href="javascript:" class="weui-search-bar__cancel-btn" id="searchCancel" style="display: block; margin-left: 10px;">搜索</a>
+                <a runat="server" onserverclick="searchBtn_Click" class="weui-search-bar__cancel-btn" id="searchCancel" style="display: block; margin-left: 10px;">搜索</a>
             </div>
         </div>
         <div class="weui-cells">
@@ -49,6 +48,11 @@
         <script type="text/javascript" src="./js/jweixin-1.00.js"></script>
         <script src="./js/weui.min.js"></script>
 
+        <script>
+            $('#searchClear').on('click', function () {
+                $('#searchInput').val('');
+            });
+        </script>
     </form>
 </body>
 </html>

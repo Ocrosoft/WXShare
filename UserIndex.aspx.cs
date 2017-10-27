@@ -11,8 +11,6 @@ namespace WXShare
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            Session["phone"] = "111";
-            Session["iden"] = "5";
             // 没有登录
             if(Session["phone"] == null)
             {
@@ -20,7 +18,6 @@ namespace WXShare
                 Response.Redirect("/UserLogin.aspx");
                 return;
             }
-            return;
             // 没有设置密码
             var user = DataBase.User.Get(new Objects.User()
             {
@@ -32,6 +29,24 @@ namespace WXShare
                 Response.Clear();
                 Response.Redirect("/UserSetPassword.aspx");
                 return;
+            }
+
+            if(Session["iden"].ToString() == "2")
+            {
+                var list = DataBase.Order.Gets(user);
+                int count = 0;
+                foreach(var order in list)
+                {
+                    if(order.status == 0)
+                    {
+                        count++;
+                    }
+                }
+                if(count!=0)
+                {
+                    newOrderCount.Style["display"] = "";
+                    newOrderCount.InnerText = count.ToString();
+                }
             }
         }
     }

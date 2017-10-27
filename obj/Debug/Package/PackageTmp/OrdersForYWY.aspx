@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="OrdersManage.aspx.cs" Inherits="WXShare.OrdersManage" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="OrdersForYWY.aspx.cs" Inherits="WXShare.OrdersForYWY" %>
 
 <!DOCTYPE html>
 
@@ -20,7 +20,7 @@
             <div class="weui-search-bar" id="searchBar">
                 <div class="weui-search-bar__box" style="background: #fff; border-radius: 3px;">
                     <i class="weui-icon-search"></i>
-                    <input runat="server" type="search" class="weui-search-bar__input" id="searchInput" placeholder="搜索" required="">
+                    <input runat="server" type="search" class="weui-search-bar__input" id="searchInput" placeholder="搜索">
                     <a href="javascript:" class="weui-icon-clear" id="searchClear"></a>
                 </div>
                 <a runat="server" onserverclick="searchBtn_Click" class="weui-search-bar__cancel-btn" id="searchCancel" style="display: block; margin-left: 10px;">搜索</a>

@@ -103,6 +103,8 @@
     <Content Include="js\zepto-touch.js" />
     <Content Include="js\zepto.js" />
     <Content Include="logo.png" />
+    <Content Include="OrderDetailForYWY.aspx" />
+    <Content Include="OrdersForYWY.aspx" />
     <Content Include="OrdersManage.aspx" />
     <Content Include="packages.config" />
     <Content Include="js\jweixin-1.2.0.js" />
@@ -206,6 +208,20 @@
     </Compile>
     <Compile Include="MySQLHelper.cs" />
     <Compile Include="Objects.cs" />
+    <Compile Include="OrderDetailForYWY.aspx.cs">
+      <DependentUpon>OrderDetailForYWY.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="OrderDetailForYWY.aspx.designer.cs">
+      <DependentUpon>OrderDetailForYWY.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="OrdersForYWY.aspx.cs">
+      <DependentUpon>OrdersForYWY.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="OrdersForYWY.aspx.designer.cs">
+      <DependentUpon>OrdersForYWY.aspx</DependentUpon>
+    </Compile>
     <Compile Include="OrdersManage.aspx.cs">
       <DependentUpon>OrdersManage.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

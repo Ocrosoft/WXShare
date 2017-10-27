@@ -16,6 +16,7 @@
         <div class="page__hd" style="padding-left: 15px; padding-bottom: 15px;">
             <h1 class="page__title" style="font-size: 25px; font-weight: bold;">施工队伍</h1>
         </div>
+        <!-- 队伍列表 -->
         <div class="weui-cells" runat="server" id="list"></div>
 
         <script src="./js/zepto.js"></script>
