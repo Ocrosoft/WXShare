@@ -8,9 +8,19 @@ namespace WXShare
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+            // 不是微信内置浏览器
+            if (!WXManage.IsWXBrowser(Request))
+            {
+                Response.Redirect("/RequireWX.aspx?url=" + Request.Url);
+                return;
+            }
+            if (Session["phone"] == null || Session["iden"].ToString() != "5")
+            {
+                Response.Redirect("/UserIndex.aspx");
+                return;
+            }
             if (Request.QueryString["uid"] == null)
             {
-                Response.Clear();
                 Response.Redirect("/StaffManageSGRY.aspx");
                 return;
             }
@@ -27,13 +37,13 @@ namespace WXShare
             var teams = DataBase.Team.Gets();
             teamSelect.Items.Clear();
             teamSelect.Items.Add(new ListItem("请选择施工队", "0"));
-            foreach(var team in teams)
+            foreach (var team in teams)
             {
                 teamSelect.Items.Add(new ListItem(team.teamName, team.id));
             }
 
             var signedTeam = DataBase.Team.Get(user);
-            if(signedTeam == null)
+            if (signedTeam == null)
             {
                 team.Value = "未加入";
             }
@@ -60,9 +70,9 @@ namespace WXShare
             }
         }
 
-        protected void TeamOK_Click(Object sender,EventArgs e)
+        protected void TeamOK_Click(Object sender, EventArgs e)
         {
-            if(Request.Form["teamSelect"] == "0")
+            if (Request.Form["teamSelect"] == "0")
             {
                 ScriptManager.RegisterClientScriptBlock(this, GetType(), "error", "alert('请选择要添加的施工队')", true);
                 return;
@@ -88,7 +98,7 @@ namespace WXShare
             }
             Response.Redirect(Request.Url.ToString());
         }
-        protected void ButtonOK_Click(Object sender ,EventArgs e)
+        protected void ButtonOK_Click(Object sender, EventArgs e)
         {
             var usr = new Objects.User()
             {
@@ -104,7 +114,7 @@ namespace WXShare
                     ScriptManager.RegisterClientScriptBlock(this, GetType(), "error", "alert('保存失败，服务器错误')", true);
                 }
             }
-            catch(MySql.Data.MySqlClient.MySqlException ex)
+            catch (MySql.Data.MySqlClient.MySqlException ex)
             {
                 ScriptManager.RegisterClientScriptBlock(this, GetType(), "error", "alert('保存失败，需要先退出施工队')", true);
             }

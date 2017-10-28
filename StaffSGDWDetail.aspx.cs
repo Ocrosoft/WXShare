@@ -11,6 +11,23 @@ namespace WXShare
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+            // 不是微信内置浏览器
+            if (!WXManage.IsWXBrowser(Request))
+            {
+                Response.Redirect("/RequireWX.aspx?url=" + Request.Url);
+                return;
+            }
+            if (Session["phone"] == null || Session["iden"].ToString() != "5")
+            {
+                Response.Redirect("/UserIndex.aspx");
+                return;
+            }
+            if (Request.QueryString["tid"] == null)
+            {
+                Response.Redirect("/StaffManageSGDW.aspx");
+                return;
+            }
+
             string listHTML =
 "<a class=\"weui-cell weui-cell_access\" href=\"/StaffSGRYDetail.aspx?uid=#id#\">" +
 "	<div class=\"weui-cell__bd\">" +

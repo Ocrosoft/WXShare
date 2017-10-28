@@ -95,7 +95,7 @@ namespace WXShare
         {
             var menuJson = "{\"button\":[{\"type\":\"view\",\"name\":\"我的\"," +
                 "\"url\":\"http://debug.ocrosoft.com/UserLogin.aspx\"}," +
-                "{\"type\":\"view\",\"name\":\"当前活动\",\"url\":\"http://debug.ocrosoft.com/UserLogin.aspx\"}]}";
+                "{\"type\":\"view\",\"name\":\"当前活动\",\"url\":\"http://debug.ocrosoft.com/Activity.aspx\"}]}";
             var errcode = ORequest.RequestPost(
                 "https://api.weixin.qq.com/cgi-bin/menu/create?access_token=" + GetAccessToken(),
                 menuJson, 

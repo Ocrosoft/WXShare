@@ -12,8 +12,8 @@
 </head>
 <body>
     <form id="form1" runat="server">
-         <!-- 弹出悬浮提示 -->
-        <div class="js_dialog" id="iosDialog1" style="display:none;">
+        <!-- 弹出悬浮提示 -->
+        <div class="js_dialog" id="iosDialog1" style="display: none;">
             <div class="weui-mask"></div>
             <div class="weui-dialog">
                 <div class="weui-dialog__hd"><strong class="weui-dialog__title">删除确认</strong></div>

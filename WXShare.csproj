@@ -103,7 +103,10 @@
     <Content Include="js\zepto-touch.js" />
     <Content Include="js\zepto.js" />
     <Content Include="logo.png" />
+    <Content Include="OrderDetail.aspx" />
     <Content Include="OrderDetailForYWY.aspx" />
+    <Content Include="OrderDetailForSGD.aspx" />
+    <Content Include="OrdersForSGD.aspx" />
     <Content Include="OrdersForYWY.aspx" />
     <Content Include="OrdersManage.aspx" />
     <Content Include="packages.config" />
@@ -118,7 +121,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="css\weui.min.css" />
-    <Content Include="GetAccessToken.aspx" />
     <Content Include="RegisterAuthDetail.aspx" />
     <Content Include="RequireWX.aspx" />
     <Content Include="StaffManage.aspx" />
@@ -199,21 +201,35 @@
     </Compile>
     <Compile Include="AuthCode.cs" />
     <Compile Include="DataBase.cs" />
-    <Compile Include="GetAccessToken.aspx.cs">
-      <DependentUpon>GetAccessToken.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="GetAccessToken.aspx.designer.cs">
-      <DependentUpon>GetAccessToken.aspx</DependentUpon>
-    </Compile>
     <Compile Include="MySQLHelper.cs" />
     <Compile Include="Objects.cs" />
+    <Compile Include="OrderDetail.aspx.cs">
+      <DependentUpon>OrderDetail.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="OrderDetail.aspx.designer.cs">
+      <DependentUpon>OrderDetail.aspx</DependentUpon>
+    </Compile>
     <Compile Include="OrderDetailForYWY.aspx.cs">
       <DependentUpon>OrderDetailForYWY.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="OrderDetailForYWY.aspx.designer.cs">
       <DependentUpon>OrderDetailForYWY.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="OrderDetailForSGD.aspx.cs">
+      <DependentUpon>OrderDetailForSGD.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="OrderDetailForSGD.aspx.designer.cs">
+      <DependentUpon>OrderDetailForSGD.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="OrdersForSGD.aspx.cs">
+      <DependentUpon>OrdersForSGD.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="OrdersForSGD.aspx.designer.cs">
+      <DependentUpon>OrdersForSGD.aspx</DependentUpon>
     </Compile>
     <Compile Include="OrdersForYWY.aspx.cs">
       <DependentUpon>OrdersForYWY.aspx</DependentUpon>

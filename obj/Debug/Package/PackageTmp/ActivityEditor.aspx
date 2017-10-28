@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" validateRequest="false" AutoEventWireup="true" CodeBehind="ActivityEditor.aspx.cs" Inherits="WXShare.ActivityEditor" %>
+﻿<%@ Page Language="C#" ValidateRequest="false" AutoEventWireup="true" CodeBehind="ActivityEditor.aspx.cs" Inherits="WXShare.ActivityEditor" %>
 
 <!DOCTYPE html>
 
@@ -10,21 +10,22 @@
     <link rel="stylesheet" type="text/css" href="./css/weui.min.css" />
     <link rel="stylesheet" type="text/css" href="./css/example.css" />
     <style>
-        .w-e-text *{
+        .w-e-text * {
             max-width: 100% !important;
         }
-        .w-e-text > img{
+
+        .w-e-text > img {
             height: auto !important;
         }
     </style>
 </head>
 <body>
-    <form id="form1" runat="server" method="post" enctype="multipart/form-data" >
+    <form id="form1" runat="server" method="post" enctype="multipart/form-data">
         <!-- 保存按钮 -->
         <div class="weui-btn-area">
             <div class="weui-cell__hd">
-                <h2 style="float:left;">编辑活动</h2>
-                <a style="width:33.333%;margin-left: 65%;" class="weui-btn weui-btn_primary" onclick="document.getElementById('htmlInput').value = $('#textarea')[0].childNodes[0].innerHTML;$('#form1').submit();" id="showTooltips">保存</a>
+                <h2 style="float: left;">编辑活动</h2>
+                <a style="width: 33.333%; margin-left: 65%;" class="weui-btn weui-btn_primary" onclick="document.getElementById('htmlInput').value = $('#textarea')[0].childNodes[0].innerHTML;$('#form1').submit();" id="showTooltips">保存</a>
             </div>
         </div>
         <div class="weui-cells weui-cells_form">
@@ -33,7 +34,7 @@
                     <label class="weui-label">标题</label>
                 </div>
                 <div class="weui-cell__bd">
-                    <input  id="title" runat="server" class="weui-input" type="text" name="title" placeholder="填写文章标题" required />
+                    <input id="title" runat="server" class="weui-input" type="text" name="title" placeholder="填写文章标题" required />
                 </div>
             </div>
             <div class="weui-cell">
@@ -51,19 +52,22 @@
                 </div>
             </div>
             <div class="weui-cell">
-                <div class="weui-cell__hd"><label for="" class="weui-label">开始时间</label></div>
+                <div class="weui-cell__hd">
+                    <label for="" class="weui-label">开始时间</label></div>
                 <div class="weui-cell__bd">
                     <input id="timeStart" runat="server" class="weui-input" type="datetime-local" value="" placeholder="" name="timeStart" required>
                 </div>
             </div>
             <div class="weui-cell">
-                <div class="weui-cell__hd"><label for="" class="weui-label">结束时间</label></div>
+                <div class="weui-cell__hd">
+                    <label for="" class="weui-label">结束时间</label></div>
                 <div class="weui-cell__bd">
                     <input id="timeEnd" runat="server" class="weui-input" type="datetime-local" value="" placeholder="" name="timeEnd" required>
                 </div>
             </div>
-            <div class="weui-cell weui-cell_select" style="padding:10px 15px">
-                <div class="weui-cell__hd"><label for="" class="weui-label">活动模板</label></div>
+            <div class="weui-cell weui-cell_select" style="padding: 10px 15px">
+                <div class="weui-cell__hd">
+                    <label for="" class="weui-label">活动模板</label></div>
                 <div class="weui-cell__bd">
                     <select id="templateSelect" runat="server" class="weui-select" name="template">
                     </select>
@@ -79,7 +83,7 @@
             </div>
             <div id="toolbar" class="toolbar"></div>
             <div style="padding: 5px 0; color: #ccc"></div>
-            <input type="text" id="htmlInput" name="htmlInput"  style="display: none;"/>
+            <input type="text" id="htmlInput" name="htmlInput" style="display: none;" />
             <div id="textarea" class="con" runat="server">
             </div>
             <div class="page__bd">
@@ -123,7 +127,7 @@
             /* 编辑器 */
             $(function () {
                 var E = window.wangEditor;
-                var editor1 = new E('#toolbar', '#textarea');  // 两个参数也可以传入 elem 对象，class 选择器
+                var editor1 = new E('#toolbar', '#textarea');
                 editor1.create();
             });
             /**
@@ -177,7 +181,7 @@
                             form.reset();
                             p.insertBefore(f, ref);
                         }
-                    }  
+                    }
                     $('.weui-uploader__input-box').show();
                     $gallery.fadeOut(100);
                 });
@@ -195,7 +199,7 @@
             });
             $('[name=timeStart]').on('change', function () {
                 if (this.value >= $('[name=timeEnd]').val()) {
-                    $('[name=timeEnd]').val(""); 
+                    $('[name=timeEnd]').val("");
                 }
             });
             /* 提交检查 */

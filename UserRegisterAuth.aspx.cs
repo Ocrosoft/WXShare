@@ -11,15 +11,14 @@ namespace WXShare
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (Session["phone"] == null)
+            // 不是微信内置浏览器
+            if (!WXManage.IsWXBrowser(Request))
             {
-                Response.Clear();
-                Response.Redirect("/UserLogin.aspx");
+                Response.Redirect("/RequireWX.aspx?url=" + Request.Url);
                 return;
             }
-            if (Session["iden"].ToString() != "5")
+            if (Session["phone"] == null || Session["iden"].ToString() != "5")
             {
-                Response.Clear();
                 Response.Redirect("/UserIndex.aspx");
                 return;
             }

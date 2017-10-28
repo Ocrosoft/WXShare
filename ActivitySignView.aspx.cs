@@ -12,21 +12,23 @@ namespace WXShare
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            if(Session["phone"] == null)
+            // 不是微信内置浏览器
+            if (!WXManage.IsWXBrowser(Request))
             {
-                Response.Clear();
-                Response.Redirect("/UserLogin.aspx");
+                Response.Redirect("/RequireWX.aspx?url=" + Request.Url);
                 return;
             }
-            if(Session["iden"].ToString() != "5")
+            if (Session["phone"] == null || Session["iden"].ToString() != "5")
             {
-                Response.Clear();
                 Response.Redirect("/UserIndex.aspx");
                 return;
             }
 
+            // 获取所有活动，显示标题
             var activitys = DataBase.Activity.GetsAll();
-            foreach(var activity in activitys)
+            activitySelect.Items.Clear();
+            activitySelect.Items.Add(new ListItem("所有活动", "0"));
+            foreach (var activity in activitys)
             {
                 activitySelect.Items.Add(new ListItem(activity.title, activity.id));
             }
@@ -52,9 +54,13 @@ namespace WXShare
             {
                 list = DataBase.ActivitySign.Gets(new Objects.Activity() { id = aid });
             }
+            // 显示报名情况
+            signList.InnerHtml = "";
             foreach(var sign in list)
             {
-                signList.InnerHtml += signItem.Replace("#id#", sign.id).Replace("#content#", sign.name + " " + sign.phone);
+                signList.InnerHtml += signItem
+                    .Replace("#id#", sign.id)
+                    .Replace("#content#", sign.name + " " + sign.phone);
             }
         }
     }

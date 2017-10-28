@@ -12,8 +12,8 @@
 </head>
 <body>
     <form id="form1" runat="server">
-         <!-- 弹出悬浮提示 -->
-        <div class="js_dialog" id="iosDialog1" style="display:none;">
+        <!-- 弹出悬浮提示 -->
+        <div class="js_dialog" id="iosDialog1" style="display: none;">
             <div class="weui-mask"></div>
             <div class="weui-dialog">
                 <div class="weui-dialog__hd"><strong class="weui-dialog__title">解散确认</strong></div>
@@ -49,13 +49,13 @@
                 </div>
             </div>
         </div>
-        <div class="weui-cells hidden" runat="server" id="members" style="display:none;">
+        <div class="weui-cells hidden" runat="server" id="members" style="display: none;">
         </div>
         <div class="weui-cells">
-             <!-- 修改按钮 -->
+            <!-- 修改按钮 -->
             <div class="weui-btn-area">
                 <a class="weui-btn weui-btn_default" id="modify">修改信息</a>
-                <a class="weui-btn weui-btn_primary" id="save" runat="server" onserverclick="ButtonOK_Click" style="display:none;">保存修改</a>
+                <a class="weui-btn weui-btn_primary" id="save" runat="server" onserverclick="ButtonOK_Click" style="display: none;">保存修改</a>
                 <label for="weuiAgree" class="weui-agree" style="text-align: center;">
                     <span class="weui-agree__text">
                         <a id="delete">解散施工队</a>

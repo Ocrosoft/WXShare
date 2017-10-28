@@ -14,7 +14,7 @@
     <form id="form1" runat="server">
         <div class="weui-btn-area">
             <div class="weui-cell__hd">
-                <h2>注册审核</h2>                
+                <h2>注册审核</h2>
             </div>
         </div>
         <div class="weui-cells">

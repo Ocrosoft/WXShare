@@ -6,6 +6,13 @@ namespace WXShare
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+            // 不是微信内置浏览器
+            if (!WXManage.IsWXBrowser(Request))
+            {
+                Response.Redirect("/RequireWX.aspx?url=" + Request.Url);
+                return;
+            }
+
             string activityHTML =
 "<a href=\"/ActivityDetail.aspx?aid=#id#\" class=\"weui-media-box weui-media-box_appmsg\">" +
 "    <div class=\"weui-media-box__hd\">" +
@@ -19,11 +26,15 @@ namespace WXShare
 
             var activityList = DataBase.Activity.Gets();
             activities.InnerHtml = "";
-            foreach(var activity in activityList)
+            foreach (var activity in activityList)
             {
+                if (activity.imgSrc == null || activity.imgSrc == "")
+                {
+                    activity.imgSrc = WXManage.QRCode(Request.Url.Host + "/ActivityDetail.aspx?aid=" + activity.id);
+                }
                 activities.InnerHtml += activityHTML
                     .Replace("#id#", activity.id)
-                    .Replace("#img#", "")
+                    .Replace("#img#", activity.imgSrc)
                     .Replace("#title#", activity.title)
                     .Replace("#brief#", activity.brief);
             }

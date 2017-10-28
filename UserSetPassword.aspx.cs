@@ -11,14 +11,19 @@ namespace WXShare
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            if(Session["phone"] == null)
+            // 不是微信内置浏览器
+            if (!WXManage.IsWXBrowser(Request))
             {
-                Response.Clear();
-                Response.Redirect("/UserLogin.aspx");
+                Response.Redirect("/RequireWX.aspx?url=" + Request.Url);
+                return;
+            }
+            if (Session["phone"] == null)
+            {
+                Response.Redirect("/UserIndex.aspx");
                 return;
             }
 
-            if(IsPostBack)
+            if (IsPostBack)
             {
                 var pass1 = Request.Form["password1"];
                 var pass2 = Request.Form["password2"];

@@ -7,11 +7,7 @@ namespace WXShare
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            var obj = DataBase.User.Get(new Objects.User()
-            {
-                phone = "15869141870",
-                identity = "1"
-            });
+            //WXManage.SendMessage("orUOg1HDidOwnt_QS45_Ws4XHko4", "有一条新报名信息！");
         }
     }
 }

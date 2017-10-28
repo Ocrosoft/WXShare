@@ -9,6 +9,13 @@ namespace WXShare
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+            // 不是微信内置浏览器
+            if (!WXManage.IsWXBrowser(Request))
+            {
+                Response.Redirect("/RequireWX.aspx?url=" + Request.Url);
+                return;
+            }
+
             if (IsPostBack)
             {
                 // 姓名
@@ -30,7 +37,7 @@ namespace WXShare
                     return;
                 }
                 // 验证码检查
-                if(!AuthCode.CheckAuthCode(phone,code))
+                if (!AuthCode.CheckAuthCode(phone, code))
                 {
                     ScriptManager.RegisterStartupScript(this, GetType(), "codeError", "alterError($('input[name=code]')[0]);", true);
                     return;
@@ -45,7 +52,7 @@ namespace WXShare
                 // 详细地址
                 String detailLocation;
 
-                if(iden == "2" || iden == "4" || iden == "5")
+                if (iden == "2" || iden == "4" || iden == "5")
                 {
                     IDCardYWY = Request.Form["idcard_ywy"];
                     // 身份证检查
@@ -55,12 +62,13 @@ namespace WXShare
                     }
                 }
 
-                if ((iden == "1" || iden == "2" || iden == "4" || iden == "5") && 
-                    DataBase.User.Add(new Objects.User() {
-                    phone = phone,
-                    name = name,
-                    identity = iden,
-                    IDCard = IDCardYWY
+                if ((iden == "1" || iden == "2" || iden == "4" || iden == "5") &&
+                    DataBase.User.Add(new Objects.User()
+                    {
+                        phone = phone,
+                        name = name,
+                        identity = iden,
+                        IDCard = IDCardYWY
                     }))
                 {
                     ScriptManager.RegisterStartupScript(this, GetType(), "success", "success(" + iden + ", '注册成功', true);", true);
@@ -83,9 +91,9 @@ namespace WXShare
             if (OSecurity.ValidPhone(tel.Value))
             {
                 // 发送间隔校验
-                if(Session["vcodeSend"] != null)
+                if (Session["vcodeSend"] != null)
                 {
-                    if(OSecurity.DateTimeToTimeStamp(DateTime.Now) -  Int64.Parse(Session["vcodeSend"].ToString()) < 60)
+                    if (OSecurity.DateTimeToTimeStamp(DateTime.Now) - Int64.Parse(Session["vcodeSend"].ToString()) < 60)
                     {
                         return;
                     }

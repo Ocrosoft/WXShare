@@ -9,7 +9,18 @@ namespace WXShare
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            if(Request.QueryString["oid"] == null)
+            // 不是微信内置浏览器
+            if (!WXManage.IsWXBrowser(Request))
+            {
+                Response.Redirect("/RequireWX.aspx?url=" + Request.Url);
+                return;
+            }
+            if (Session["phone"] == null || Session["iden"].ToString() != "2")
+            {
+                Response.Redirect("/UserIndex.aspx");
+                return;
+            }
+            if (Request.QueryString["oid"] == null)
             {
                 Response.Clear();
                 Response.Redirect("/OrdersForYWY.aspx");
@@ -113,9 +124,9 @@ namespace WXShare
                 var houseType = new DataBase.HouseType().Gets();
                 houseTypeSelect.Items.Clear();
                 houseTypeSelect.Items.Add(new ListItem("选择房屋类型", "0"));
-                foreach(var type in houseType)
+                foreach (var type in houseType)
                 {
-                    if(type.id == "0")
+                    if (type.id == "0")
                     {
                         continue;
                     }
@@ -125,9 +136,9 @@ namespace WXShare
                 var houseStructure = new DataBase.HouseStructure().Gets();
                 houseStructureSelect.Items.Clear();
                 houseStructureSelect.Items.Add(new ListItem("选择房屋结构", "0"));
-                foreach(var structure in houseStructure)
+                foreach (var structure in houseStructure)
                 {
-                    if(structure.id == "0")
+                    if (structure.id == "0")
                     {
                         continue;
                     }
@@ -139,17 +150,17 @@ namespace WXShare
                     // 未开始
                     start.Style["display"] = "";
                     status_2.InnerHtml = "";
-                    inputStatus.Value += " - " + order.comCheckOrderTime.ToString("yyyy-MM-dd HH:mm:ss"); 
+                    inputStatus.Value += " - " + order.comCheckOrderTime.ToString("yyyy-MM-dd HH:mm:ss");
                 }
                 else
                 {
                     // 正在基检
                     finish.Style["display"] = "";
-                    inputStatus.Value = "正在基检 - "+order.comCheckTime.ToString("yyyy-MM-dd HH:mm:ss");
+                    inputStatus.Value = "正在基检 - " + order.comCheckTime.ToString("yyyy-MM-dd HH:mm:ss");
                 }
             }
             // 基检完成
-            else if(order.status == 3)
+            else if (order.status == 3)
             {
                 //
             }
@@ -160,7 +171,7 @@ namespace WXShare
                 requiredHint.Style["display"] = "none";
             }
 
-            if(order.status > 0)
+            if (order.status > 0)
             {
                 // 显示预约的内容
                 inputBrushType.Value = new DataBase.BrushType().Get(new Objects.BrushType() { id = order.brushType.ToString() }).view;
@@ -171,7 +182,7 @@ namespace WXShare
                 }
                 inputBrushDemand.Value = inputBrushDemand.Value.Substring(0, inputBrushDemand.Value.Length - 1);
             }
-            if(order.status > 2)
+            if (order.status > 2)
             {
                 // 显示基检内容
                 inputHousePurpose.Value = new DataBase.HousePurpose().Get(new Objects.HousePurpose() { id = order.housePurpose.ToString() }).view;
@@ -185,7 +196,7 @@ namespace WXShare
                 inputMuQiSubmitted.Value = order.muQi.ToString();
                 inputTieYiSubmitted.Value = order.tieYi.ToString();
             }
-            if(order.status > 3)
+            if (order.status > 3)
             {
                 inputWorkOrderDateSubmitted.Value = order.workOrderDate.ToString("yyyy-MM-dd");
                 inputWorkCompleteOrderDateSubmitted.Value = order.workCompleteOrderDate.ToString("yyyy-MM-dd");
@@ -241,10 +252,10 @@ namespace WXShare
         {
             var oid = Request.QueryString["oid"];
             var cancelReason = Request.Form["cancelReason"];
-            if(!DataBase.Order.CancelOrder(
+            if (!DataBase.Order.CancelOrder(
                 new Objects.Order()
                 {
-                    id=oid,
+                    id = oid,
                     canceledReason = cancelReason
                 }))
             {
@@ -254,7 +265,7 @@ namespace WXShare
             Response.Redirect(Request.Url.ToString());
         }
 
-        protected void startCheck_Click(Object sender,EventArgs e)
+        protected void startCheck_Click(Object sender, EventArgs e)
         {
             if (!DataBase.Order.CommissionerCheck(new Objects.Order()
             {
@@ -268,21 +279,21 @@ namespace WXShare
             Response.Redirect(Request.Url.ToString());
         }
 
-        protected void finishCheck_Click(Object sender,EventArgs e)
+        protected void finishCheck_Click(Object sender, EventArgs e)
         {
-            if(!DataBase.Order.CommissionerCheckComplete(new Objects.Order()
+            if (!DataBase.Order.CommissionerCheckComplete(new Objects.Order()
             {
-                id=Request.QueryString["oid"],
+                id = Request.QueryString["oid"],
                 housePurpose = int.Parse(Request.Form["housePurposeSelect"]),
                 houseType = int.Parse(Request.Form["houseTypeSelect"]),
                 houseStructure = int.Parse(Request.Form["houseStructureSelect"]),
                 mianJi = int.Parse(Request.Form["inputMianji"]),
                 neiQiang = int.Parse(Request.Form["inputNeiQiang"]),
                 yiShuQi = int.Parse(Request.Form["inputYiShuQi"]),
-                waiQiang=int.Parse(Request.Form["inputWaiQiang"]),
+                waiQiang = int.Parse(Request.Form["inputWaiQiang"]),
                 yangTai = int.Parse(Request.Form["inputYangTai"]),
                 muQi = int.Parse(Request.Form["inputMuQi"]),
-                tieYi=int.Parse(Request.Form["inputTieYi"])
+                tieYi = int.Parse(Request.Form["inputTieYi"])
             }))
             {
                 ScriptManager.RegisterClientScriptBlock(this, GetType(), "error", "alert('无法完成基检，系统错误')", true);
@@ -294,7 +305,7 @@ namespace WXShare
         {
 
         }
-        protected void signOrder_Click(Object sender,EventArgs e)
+        protected void signOrder_Click(Object sender, EventArgs e)
         {
             var workOrderDate = DateTime.Parse(Request.Form["workOrderDate"].Replace('T', ' '));
             var timeLimitOrder = int.Parse(Request.Form["timeLimitOrder"]);
@@ -332,7 +343,7 @@ namespace WXShare
                 statusBtn_2.InnerHtml = "";
                 statusBtn_2.Style["display"] = "none";
             }
-            if(show != 3)
+            if (show != 3)
             {
                 status_3.InnerHtml = "";
                 status_3.Style["display"] = "none";

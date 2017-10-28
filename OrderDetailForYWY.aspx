@@ -134,7 +134,7 @@
             </div>
             <div class="weui-cell">
                 <div class="weui-cell__hd">
-                    <label id="showAll" class="weui-label" style="color:#1AAD19">显示全部</label>
+                    <label id="showAll" class="weui-label" style="color: #1AAD19">显示全部</label>
                 </div>
             </div>
             <!-- 附加内容 -->
@@ -264,7 +264,7 @@
                         <label class="weui-label">合同号</label>
                     </div>
                     <div class="weui-cell__bd">
-                        <input runat="server" type="text" class="weui-input" id="inputContractNumberSubmitted" disabled/>
+                        <input runat="server" type="text" class="weui-input" id="inputContractNumberSubmitted" disabled />
                     </div>
                 </div>
             </div>
@@ -410,7 +410,7 @@
                         <label class="weui-label">计划工期</label>
                     </div>
                     <div class="weui-cell__bd">
-                        <input placeholder="0" type="text" class="weui-input" id="timeLimitOrder" name="timeLimitOrder" required/>
+                        <input placeholder="0" type="text" class="weui-input" id="timeLimitOrder" name="timeLimitOrder" required />
                     </div>
                 </div>
                 <!-- 计划完工日期 -->
@@ -428,7 +428,7 @@
                         <label class="weui-label">合同号</label>
                     </div>
                     <div class="weui-cell__bd">
-                        <input placeholder="CXXXXXXXXXXXXXXXX" type="text" class="weui-input" id="contractNumber" name="contractNumber" required/>
+                        <input placeholder="CXXXXXXXXXXXXXXXX" type="text" class="weui-input" id="contractNumber" name="contractNumber" required />
                     </div>
                 </div>
             </div>

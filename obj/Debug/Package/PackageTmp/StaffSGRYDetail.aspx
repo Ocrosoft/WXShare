@@ -96,7 +96,7 @@
             <!-- 修改按钮 -->
             <div class="weui-btn-area">
                 <a class="weui-btn weui-btn_default" id="modify">修改信息</a>
-                <a class="weui-btn weui-btn_primary" id="save" runat="server" onserverclick="ButtonOK_Click" style="display:none;">保存修改</a>
+                <a class="weui-btn weui-btn_primary" id="save" runat="server" onserverclick="ButtonOK_Click" style="display: none;">保存修改</a>
                 <a runat="server" class="weui-btn weui-btn_primary" id="addToTeam">添加到施工队</a>
                 <label for="weuiAgree" class="weui-agree" style="text-align: center;">
                     <span class="weui-agree__text">

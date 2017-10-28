@@ -6,7 +6,7 @@
 <head runat="server">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
-    <title>报名详情</title>
+    <title>注册详情</title>
     <link rel="stylesheet" type="text/css" href="./css/weui.min.css" />
     <link rel="stylesheet" type="text/css" href="./css/example.css" />
 </head>
@@ -14,12 +14,14 @@
     <form id="form1" runat="server">
         <div class="weui-btn-area">
             <div class="weui-cell__hd">
-                <h2>注册详情</h2>                
+                <h2>注册详情</h2>
             </div>
         </div>
         <div class="weui-cells weui-cells_form">
             <div class="weui-cell">
-                <div class="weui-cell__hd"><label class="weui-label">姓名</label></div>
+                <div class="weui-cell__hd">
+                    <label class="weui-label">姓名</label>
+                </div>
                 <div class="weui-cell__bd">
                     <input runat="server" id="inputName" disabled class="weui-input" type="text">
                 </div>

@@ -7,7 +7,7 @@
 <head runat="server">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
-    <title>注册</title>
+    <title>活动报名</title>
     <link rel="stylesheet" type="text/css" href="./css/weui.min.css" />
     <link rel="stylesheet" type="text/css" href="./css/example.css" />
     <style>
@@ -27,8 +27,8 @@
 <body>
     <form id="form1" runat="server">
         <!-- 标题 -->
-        <div class="page__hd" style="padding-left: 15px;padding-bottom: 15px;">
-            <h1 class="page__title" style="font-size: 25px;font-weight: bold;">活动报名</h1>
+        <div class="page__hd" style="padding-left: 15px; padding-bottom: 15px;">
+            <h1 class="page__title" style="font-size: 25px; font-weight: bold;">活动报名</h1>
         </div>
         <!-- 表单 -->
         <div class="weui-cells weui-cells_form">
@@ -44,15 +44,6 @@
                     <button type="button" id="vcodeBtn" class="weui-vcode-btn" runat="server" onserverclick="vcodeBtn_Click" name="vcode">获取验证码</button>
                 </div>
             </div>
-            <!-- 姓名 -->
-            <div class="weui-cell">
-                <div class="weui-cell__hd">
-                    <label class="weui-label">姓名</label>
-                </div>
-                <div class="weui-cell__bd">
-                    <input class="weui-input" type="text" name="name" placeholder="请填写姓名" required />
-                </div>
-            </div>
             <!-- 手机验证码 -->
             <div class="weui-cell ">
                 <div class="weui-cell__hd">
@@ -60,6 +51,15 @@
                 </div>
                 <div class="weui-cell__bd">
                     <input class="weui-input" type="number" name="code" placeholder="填写收到的验证码" required />
+                </div>
+            </div>
+            <!-- 姓名 -->
+            <div class="weui-cell">
+                <div class="weui-cell__hd">
+                    <label class="weui-label">姓名</label>
+                </div>
+                <div class="weui-cell__bd">
+                    <input class="weui-input" type="text" name="name" placeholder="请填写姓名" required />
                 </div>
             </div>
             <!-- 区县 -->
@@ -91,7 +91,7 @@
                     <label class="weui-label">详细地址</label>
                 </div>
                 <div class="weui-cell__bd">
-                    <input class="weui-input" type="text" name="detailLocation" placeholder="请输入详细地址" required/>
+                    <input class="weui-input" type="text" name="detailLocation" placeholder="请输入详细地址" required />
                 </div>
             </div>
             <!-- 条款 -->

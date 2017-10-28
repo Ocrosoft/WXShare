@@ -13,7 +13,7 @@
 <body>
     <form id="form1" runat="server">
         <!-- 弹出悬浮提示 -->
-        <div class="js_dialog" id="iosDialog1" style="display:none;">
+        <div class="js_dialog" id="iosDialog1" style="display: none;">
             <div class="weui-mask"></div>
             <div class="weui-dialog">
                 <div class="weui-dialog__hd"><strong class="weui-dialog__title">删除确认</strong></div>
@@ -43,12 +43,14 @@
         <!-- 标题 -->
         <div class="weui-btn-area">
             <div class="weui-cell__hd">
-                <h2>报名详情</h2>                
+                <h2>报名详情</h2>
             </div>
         </div>
         <div class="weui-cells weui-cells_form">
             <div class="weui-cell">
-                <div class="weui-cell__hd"><label class="weui-label">姓名</label></div>
+                <div class="weui-cell__hd">
+                    <label class="weui-label">姓名</label>
+                </div>
                 <div class="weui-cell__bd">
                     <input runat="server" id="inputName" disabled class="weui-input" type="text">
                 </div>
@@ -86,12 +88,14 @@
                 </div>
             </div>
             <div class="weui-cell">
-                <div class="weui-cell__hd"><label for="" class="weui-label">报名时间</label></div>
+                <div class="weui-cell__hd">
+                    <label for="" class="weui-label">报名时间</label>
+                </div>
                 <div class="weui-cell__bd">
-                    <input runat="server" id="inputTime" class="weui-input" type="datetime-local" disabled >
+                    <input runat="server" id="inputTime" class="weui-input" type="datetime-local" disabled>
                 </div>
             </div>
-             <!-- 派单按钮 -->
+            <!-- 派单按钮 -->
             <div class="weui-btn-area">
                 <a class="weui-btn weui-btn_primary" id="toOrder">派单到业务员</a>
                 <label for="weuiAgree" class="weui-agree" style="text-align: center;">
@@ -112,6 +116,12 @@
             });
             $('#button_cancel').on('click', function () {
                 $('#YWYDialog').fadeOut(200);
+            });
+            $('#delete').on('click', function () {
+                $('#iosDialog1').fadeIn(200);
+            });
+            $('#dialog_cancel').on('click', function () {
+                $('#iosDialog1').fadeOut(200);
             });
         </script>
     </form>

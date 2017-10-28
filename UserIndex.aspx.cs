@@ -11,10 +11,15 @@ namespace WXShare
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            // 没有登录
-            if(Session["phone"] == null)
+            // 不是微信内置浏览器
+            if (!WXManage.IsWXBrowser(Request))
             {
-                Response.Clear();
+                Response.Redirect("/RequireWX.aspx?url=" + Request.Url);
+                return;
+            }
+            // 没有登录
+            if (Session["phone"] == null)
+            {
                 Response.Redirect("/UserLogin.aspx");
                 return;
             }
@@ -26,13 +31,13 @@ namespace WXShare
             });
             if(user.password == "")
             {
-                Response.Clear();
                 Response.Redirect("/UserSetPassword.aspx");
                 return;
             }
 
             if(Session["iden"].ToString() == "2")
             {
+                // 新的派单订单
                 var list = DataBase.Order.Gets(user);
                 int count = 0;
                 foreach(var order in list)
@@ -44,8 +49,44 @@ namespace WXShare
                 }
                 if(count!=0)
                 {
-                    newOrderCount.Style["display"] = "";
-                    newOrderCount.InnerText = count.ToString();
+                    newOrderCountYWY.Style["display"] = "";
+                    newOrderCountYWY.InnerText = count.ToString();
+                }
+            }
+            else if (Session["iden"].ToString() == "4")
+            {
+                // 新的派工订单
+                var team = DataBase.Team.Get(user);
+                var list = DataBase.Order.Gets(team);
+                int count = 0;
+                foreach (var order in list)
+                {
+                    if (order.status == 8)
+                    {
+                        count++;
+                    }
+                }
+                if (count != 0)
+                {
+                    newOrderCountSGD.Style["display"] = "";
+                    newOrderCountSGD.InnerText = count.ToString();
+                }
+            }
+            else if(Session["iden"].ToString() == "5")
+            {
+                // 新的活动报名
+                var asign = DataBase.ActivitySign.Gets();
+                if(asign.Count!=0)
+                {
+                    newActivitySign.Style["display"] = "";
+                    newActivitySign.InnerText = asign.Count.ToString();
+                }
+                // 新的注册
+                var userAuth = DataBase.UserUnAuth.Gets();
+                if(userAuth.Count != 0 )
+                {
+                    newRegister.Style["display"] = "";
+                    newRegister.InnerText = userAuth.Count.ToString();
                 }
             }
         }

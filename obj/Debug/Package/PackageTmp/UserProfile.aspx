@@ -30,6 +30,12 @@
                 </div>
             </div>
             <div class="weui-cell weui-cell_access">
+                <div class="weui-cell__bd">身份证</div>
+                <div class="weui-cell__ft" style="font-size: 0">
+                    <span style="vertical-align:middle; font-size: 17px;" runat="server" id="Span1"></span>
+                </div>
+            </div>
+            <div class="weui-cell weui-cell_access">
                 <div class="weui-cell__bd">金额</div>
                 <div class="weui-cell__ft" style="font-size: 0">
                     <span style="vertical-align:middle; font-size: 17px;" runat="server" id="money"></span>

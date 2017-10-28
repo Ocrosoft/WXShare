@@ -9,7 +9,19 @@ namespace WXShare
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            if(IsPostBack)
+            // 不是微信内置浏览器
+            if (!WXManage.IsWXBrowser(Request))
+            {
+                Response.Redirect("/RequireWX.aspx?url=" + Request.Url);
+                return;
+            }
+            if (Request.QueryString["aid"] == null)
+            {
+                Response.Redirect("/Activity.aspx");
+                return;
+            }
+
+            if (IsPostBack)
             {
                 string phone = Request.Form["tel"]; // 手机
                 string name = Request.Form["name"]; // 姓名
@@ -68,9 +80,9 @@ namespace WXShare
                     shareSource=userID
                 }))
                 {
+                    // 发送新报名提示
+                    WXManage.SendMessage("orUOg1HDidOwnt_QS45_Ws4XHko4", "有一条新报名信息！");
                     Response.Redirect("/ActivitySignSuccess.aspx");
-                    WXManage.SendMessage("orUOg1HDidOwnt_QS45_Ws4XHko4",
-                        "有一条新报名信息！");
                     return;
                 }
             }

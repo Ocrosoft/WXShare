@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.UI;
 using System.Web.UI.WebControls;
 
 namespace WXShare
 {
-    public partial class OrdersForYWY : System.Web.UI.Page
+    public partial class OrdersForSGD : System.Web.UI.Page
     {
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -14,7 +17,7 @@ namespace WXShare
                 Response.Redirect("/RequireWX.aspx?url=" + Request.Url);
                 return;
             }
-            if (Session["phone"] == null || Session["iden"].ToString() != "2")
+            if (Session["phone"] == null || Session["iden"].ToString() != "4")
             {
                 Response.Redirect("/UserIndex.aspx");
                 return;
@@ -32,7 +35,7 @@ namespace WXShare
         protected void btn_Click(object sender, EventArgs e)
         {
             string item =
-"<a class=\"weui-cell weui-cell_access\" href=\"/OrderDetailForYWY.aspx?oid=#id#\">" +
+"<a class=\"weui-cell weui-cell_access\" href=\"/OrderDetailForSGD.aspx?oid=#id#\">" +
 "    <div class=\"weui-cell__bd\">" +
 "        <p>#content#</p>" +
 "   </div>" +
@@ -47,15 +50,16 @@ namespace WXShare
                 identity = Session["iden"].ToString()
             };
             user = DataBase.User.Get(user);
+            var team = DataBase.Team.Get(user);
             List<Objects.Order> list = new List<Objects.Order>();
             orderList.InnerHtml = "";
             if (aid == "-1")
             {
-                list = DataBase.Order.Gets(user);
+                list = DataBase.Order.Gets(team);
             }
             else
             {
-                var listTmp = DataBase.Order.Gets(user);
+                var listTmp = DataBase.Order.Gets(team);
                 foreach (var order in listTmp)
                 {
                     if (order.status == int.Parse(aid))
@@ -69,7 +73,7 @@ namespace WXShare
                 orderList.InnerHtml += item
                     .Replace("#id#", order.id)
                     .Replace("#content#", order.name + " " + order.phone)
-                    .Replace("#new#", order.status == 0 ? newOrder : "");
+                    .Replace("#new#", order.status == 8 ? newOrder : "");
             }
             if (list.Count == 0)
             {
@@ -81,7 +85,7 @@ namespace WXShare
         protected void searchBtn_Click(Object sender, EventArgs e)
         {
             string item =
-"<a class=\"weui-cell weui-cell_access\" href=\"/OrderDetailForYWY.aspx?oid=#id#\">" +
+"<a class=\"weui-cell weui-cell_access\" href=\"/OrderDetailForSGD.aspx?oid=#id#\">" +
 "    <div class=\"weui-cell__bd\">" +
 "        <p>#content#</p>" +
 "   </div>" +
@@ -91,12 +95,18 @@ namespace WXShare
             string newOrder = "<span class=\"weui-badge weui-badge_dot\" style=\"margin-left: 5px; margin-right: 5px; \"></span>";
             string aid = statusSelect.Value;
             string key = searchInput.Value;
+            var user = new Objects.User()
+            {
+                phone = Session["phone"].ToString(),
+                identity = Session["iden"].ToString()
+            };
+            var team = DataBase.Team.Get(user);
             var list = DataBase.Order.Search(key);
             orderList.InnerHtml = "";
             int validCount = 0;
             foreach (var order in list)
             {
-                if (order.commissioner != Session["phone"].ToString())
+                if (order.constructionTeam != team.id)
                 {
                     continue;
                 }
@@ -104,13 +114,12 @@ namespace WXShare
                 orderList.InnerHtml += item
                     .Replace("#id#", order.id)
                     .Replace("#content#", order.name + " " + order.phone)
-                    .Replace("#new#", order.status == 0 ? newOrder : "");
+                    .Replace("#new#", order.status == 8 ? newOrder : "");
             }
             if (validCount == 0)
             {
                 orderList.InnerHtml = "<p style=\"text-align:center\">找不到任何订单</p>";
             }
         }
-
     }
 }

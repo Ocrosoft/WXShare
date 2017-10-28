@@ -39,7 +39,6 @@
             margin-top: 400px;
         }
     </style>
-
 </head>
 <body>
     <div id="shareit">
@@ -76,52 +75,105 @@
 
         <script>
             var uid;
-        </script>
-
-        <script id="wxscript">
             wx.config({
-                debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。  
-                appId: appId, // 必填，公众号的唯一标识  
-                timestamp: timestamp, // 必填，生成签名的时间戳  
-                nonceStr: nonceStr, // 必填，生成签名的随机串  
-                signature: signature,// 必填，签名，见附录1  
+                debug: false,
+                appId: appId,
+                timestamp: timestamp,
+                nonceStr: nonceStr,
+                signature: signature,
                 jsApiList: [
-                    'checkJsApi',
                     'onMenuShareTimeline',
                     'onMenuShareAppMessage',
                     'onMenuShareQQ',
-                    'onMenuShareWeibo'
-                ] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2  
+                    'onMenuShareWeibo',
+                    'onMenuShareQZone'
+                ]
             });
-
             wx.ready(function () {
+                /* 分享给朋友 */
                 wx.onMenuShareAppMessage({
-                    title: location.title, // 分享标题
-                    desc: $('#activity_name').text(), // 分享描述
-                    link: location.href.split('#')[0] + uid ? ('&uid=' + uid) : '', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
-                    imgUrl: '', // 分享图标
-                    type: 'link', // 分享类型,music、video或link，不填默认为link
-                    dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
+                    title: location.title,
+                    desc: $('#activity_name').text(),
+                    link: location.href.split('#')[0] + (uid ? ('&uid=' + uid) : ''),
+                    imgUrl: imgUrl,
+                    type: 'link',
+                    dataUrl: '',
                     success: function () {
-                        // 用户确认分享后执行的回调函数
+                        //
                     },
                     cancel: function () {
-                        // 用户取消分享后执行的回调函数
+                        //
                     },
                     trigger: function () {
                         if (!uid) {
-                            alert('没有登录，分享将无法获得分成！');
+                            alert('分享前请先登录！');
+                            location.href = "/UserLogin.aspx";
                         }
                     }
                 });
+                /* 分享到朋友圈 */
+                wx.onMenuShareTimeline({
+                    title: location.title,
+                    link: location.href.split('#')[0] + (uid ? ('&uid=' + uid) : ''),
+                    imgUrl: imgUrl,
+                    success: function () {
+                        //
+                    },
+                    cancel: function () {
+                        //
+                    },
+                    trigger: function () {
+                        if (!uid) {
+                            alert('分享前请先登录！');
+                            location.href = "/UserLogin.aspx";
+                        }
+                    }
+                });
+                /* 分享到QQ */
+                wx.onMenuShareQQ({
+                    title: location.title,
+                    desc: $('#activity_name').text(),
+                    link: location.href.split('#')[0] + (uid ? ('&uid=' + uid) : ''),
+                    imgUrl: imgUrl,
+                    success: function () {
+                        //
+                    },
+                    cancel: function () {
+                        //
+                    }
+                });
+                /* 分享到微博 */
+                wx.onMenuShareWeibo({
+                    title: location.title,
+                    desc: $('#activity_name').text(),
+                    link: location.href.split('#')[0] + (uid ? ('&uid=' + uid) : ''),
+                    imgUrl: imgUrl,
+                    success: function () {
+                        //
+                    },
+                    cancel: function () {
+                        //
+                    }
+                });
+                /* 分享到QQ控件 */
+                wx.onMenuShareQZone({
+                    title: location.title,
+                    desc: $('#activity_name').text(),
+                    link: location.href.split('#')[0] + (uid ? ('&uid=' + uid) : ''),
+                    imgUrl: imgUrl,
+                    success: function () {
+                        //
+                    },
+                    cancel: function () {
+                        //
+                    }
+                });
             });
-
+            /* 错误 */
             wx.error(function (res) {
-                alert('wx.error: ' + JSON.stringify(res));
+                //console.log('wx.error: ' + JSON.stringify(res));
             });
-        </script>
-
-        <script>
+            /* 分享按钮提示 */
             $(".shareBtn").on("click", function () {
                 if (uid) {
                     $("#shareit").show();
@@ -129,7 +181,7 @@
                     location.href = '/ActivitySign.aspx?' + location.href.split('?')[1];
                 }
             });
-
+            /* 分享按钮提示隐藏 */
             $("#shareit").on("click", function () {
                 $("#shareit").hide();
             })

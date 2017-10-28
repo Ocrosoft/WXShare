@@ -7,7 +7,12 @@ namespace WXShare
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-
+            // 不是微信内置浏览器
+            if (!WXManage.IsWXBrowser(Request))
+            {
+                Response.Redirect("/RequireWX.aspx?url=" + Request.Url);
+                return;
+            }
         }
 
         protected void Logout(object sender, EventArgs e)

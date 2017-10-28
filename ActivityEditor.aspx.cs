@@ -13,27 +13,24 @@ namespace WXShare
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            Session["phone"] = "123";
-            Session["iden"] = "5";
-            if (Session["phone"] == null)
+            // 不是微信内置浏览器
+            if (!WXManage.IsWXBrowser(Request))
             {
-                Response.Clear();
-                Response.Redirect("/UserLogin.aspx");
+                Response.Redirect("/RequireWX.aspx?url=" + Request.Url);
                 return;
             }
-            if (Session["iden"].ToString() != "5")
+            if (Session["phone"] == null || Session["iden"].ToString() != "5")
             {
-                Response.Clear();
                 Response.Redirect("/UserIndex.aspx");
                 return;
             }
             if (Request.QueryString["aid"] == null)
             {
-                Response.Clear();
                 Response.Redirect("/Activity.aspx");
                 return;
             }
 
+            // 保存
             if (IsPostBack)
             {
                 var id = Request.QueryString["aid"];
@@ -50,7 +47,7 @@ namespace WXShare
                 if (title == "" ||
                     content == "" ||
                     brief == "" ||
-                    templateAddition == ""||
+                    templateAddition == "" ||
                     Request.Files.Count > 1)
                 {
                     return;
@@ -64,7 +61,7 @@ namespace WXShare
                     {
                         Directory.CreateDirectory("/WXShare/uploads");
                     }
-                    if(!Directory.Exists(path))
+                    if (!Directory.Exists(path))
                     {
                         Directory.CreateDirectory(path);
                     }
@@ -87,32 +84,29 @@ namespace WXShare
                     imgSrc = imgSrc,
                     templateAddition = templateAddition
                 };
-                if (DataBase.Activity.Modify(modActivity))
+                if (!DataBase.Activity.Modify(modActivity))
                 {
-                    ScriptManager.RegisterClientScriptBlock(this, GetType(), "saveFailed", "alert('保存成功');", true);
+                    ScriptManager.RegisterClientScriptBlock(this, GetType(), "saveFailed", "alert('保存失败');", true);
                     return;
                 }
-                else
-                {
-                    ScriptManager.RegisterClientScriptBlock(this, GetType(),"saveFailed", "alert('保存失败');", true);
-                    return;
-                }
+                Response.Redirect(Request.Url.ToString());
             }
 
+            // 显示
             var activityID = Request.QueryString["aid"];
             var activity = DataBase.Activity.Get(new Objects.Activity() { id = activityID });
 
-            timeStart.Value = activity.timeStart.ToString("yyyy-MM-ddThh:mm:ss");
-            timeEnd.Value = activity.timeEnd.ToString("yyyy-MM-ddThh:mm:ss");
+            timeStart.Value = activity.timeStart.ToString("yyyy-MM-ddTHH:mm:ss");
+            timeEnd.Value = activity.timeEnd.ToString("yyyy-MM-ddTHH:mm:ss");
             title.Value = activity.title;
             textarea.InnerHtml = activity.content;
 
             var templates = DataBase.Template.Gets();
             templateSelect.Items.Clear();
-            foreach(var template in templates)
+            foreach (var template in templates)
             {
                 templateSelect.Items.Add(new ListItem(template.name, template.id));
-                if(template.id == activity.id)
+                if (template.id == activity.id)
                 {
                     templateSelect.SelectedIndex = templateSelect.Items.Count - 1;
                 }
@@ -121,7 +115,7 @@ namespace WXShare
 
             brief.Value = activity.brief;
             checkValid.Checked = activity.valid;
-            if(activity.imgSrc != "")
+            if (activity.imgSrc != "")
             {
                 ScriptManager.RegisterStartupScript(this, GetType(), "showImgSrc", "showImgSrc('//" + Request.Url.Host + "" + activity.imgSrc + "');", true);
             }

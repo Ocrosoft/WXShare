@@ -8,7 +8,19 @@ namespace WXShare
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            if(IsPostBack)
+            // 不是微信内置浏览器
+            if (!WXManage.IsWXBrowser(Request))
+            {
+                Response.Redirect("/RequireWX.aspx?url=" + Request.Url);
+                return;
+            }
+            if(Session["phone"] != null && Session["iden"]!= null)
+            {
+                Response.Redirect("/UserIndex.aspx");
+                return;
+            }
+
+            if (IsPostBack)
             {
                 String phone = Request.Form["tel"];
                 String password = Request.Form["password"];
@@ -24,13 +36,13 @@ namespace WXShare
                 }
 
                 // 普通会员-业务员-施工队-管理员
-                if(iden == 1 || iden == 2 || iden == 4 || iden == 5)
+                if (iden == 1 || iden == 2 || iden == 4 || iden == 5)
                 {
-                    if(DataBase.User.Login(new Objects.User()
+                    if (DataBase.User.Login(new Objects.User()
                     {
                         phone = phone,
-                        password=password,
-                        identity=iden.ToString()
+                        password = password,
+                        identity = iden.ToString()
                     }))
                     {
                         Session["phone"] = phone;

@@ -31,6 +31,7 @@
         <div class="page__hd" style="padding-left: 15px; padding-bottom: 15px;">
             <h1 class="page__title" style="font-size: 25px; font-weight: bold;">当前活动</h1>
         </div>
+        <!-- 活动列表 -->
         <div class="weui-panel weui-panel_access">
             <div class="weui-panel__bd" runat="server" id="activities">
             </div>
@@ -39,7 +40,6 @@
         <script src="./js/zepto.js"></script>
         <script type="text/javascript" src="./js/jweixin-1.00.js"></script>
         <script src="./js/weui.min.js"></script>
-
     </form>
 </body>
 </html>

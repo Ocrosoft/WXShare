@@ -375,7 +375,7 @@ namespace WXShare
                 return ret;
             }
             /// <summary>
-            /// 获取施工人员所在施工队
+            /// 获取施工人员所在施工队（phone）
             /// </summary>
             /// <param name="info"></param>
             /// <returns></returns>
@@ -397,7 +397,7 @@ namespace WXShare
                 };
             }
             /// <summary>
-            /// 获取施工队伍，包括成员
+            /// 获取施工队伍（id），包括成员
             /// </summary>
             /// <param name="info"></param>
             /// <returns></returns>
@@ -948,7 +948,7 @@ namespace WXShare
                 MySqlParameter[] para = new MySqlParameter[6];
                 para[0] = new MySqlParameter("?na", order.name);
                 para[1] = new MySqlParameter("?ph", order.phone);
-                para[2] = new MySqlParameter("?ct", order.createTime.ToString("yyyy-MM-dd hh:mm:ss"));
+                para[2] = new MySqlParameter("?ct", order.createTime.ToString("yyyy-MM-dd HH:mm:ss"));
                 para[3] = new MySqlParameter("?lo", order.location);
                 para[4] = new MySqlParameter("?lod", order.locationDetail);
                 para[5] = new MySqlParameter("?yhly", order.youHuiLaiYuan);
@@ -1601,6 +1601,84 @@ namespace WXShare
             {
                 string sql = "select * from orders where commissioner = ?com";
                 MySqlParameter para = new MySqlParameter("?com", info.phone);
+                List<Objects.Order> ret = new List<Objects.Order>();
+
+                var ds = MySQLHelper.ExecuteDataSet(sql, para);
+                foreach (DataRow row in ds.Tables[0].Rows)
+                {
+                    var array = row.ItemArray;
+                    ret.Add(new Objects.Order()
+                    {
+                        id = array[0].ToString(),
+                        name = array[1].ToString(),
+                        phone = array[2].ToString(),
+                        createTime = DateTime.Parse(array[3].ToString()),
+                        orderTime = DateTime.Parse(array[4].ToString()),
+                        status = int.Parse(array[5].ToString()),
+                        location = array[6].ToString(),
+                        locationDetail = array[7].ToString(),
+                        orderChannel = int.Parse(array[8].ToString()),
+                        brushType = int.Parse(array[9].ToString()),
+                        brushDemand = array[10].ToString(),
+                        commissioner = array[11].ToString(),
+                        comOrderTime = DateTime.Parse(array[12].ToString()),
+                        canceledReason = array[13].ToString(),
+                        comCheckOrderTime = DateTime.Parse(array[14].ToString()),
+                        comCheckTime = DateTime.Parse(array[15].ToString()),
+                        housePurpose = int.Parse(array[16].ToString()),
+                        houseType = int.Parse(array[17].ToString()),
+                        signTime = DateTime.Parse(array[18].ToString()),
+                        dispatchTime = DateTime.Parse(array[19].ToString()),
+                        signFailedReason = array[20].ToString(),
+                        contractNumber = array[21].ToString(),
+                        constructionTeam = array[22].ToString(),
+                        workOrderDate = DateTime.Parse(array[23].ToString()),
+                        workCompleteOrderDate = DateTime.Parse(array[24].ToString()),
+                        refuseReason = array[25].ToString(),
+                        workDate = DateTime.Parse(array[26].ToString()),
+                        workCompleteDate = DateTime.Parse(array[27].ToString()),
+                        workStopDays = int.Parse(array[28].ToString()),
+                        timeLimitOrder = int.Parse(array[29].ToString()),
+                        timeLimit = int.Parse(array[30].ToString()),
+                        mmSum = int.Parse(array[31].ToString()),
+                        smSum = int.Parse(array[32].ToString()),
+                        workSum = int.Parse(array[33].ToString()),
+                        signed = array[34].ToString() == "1",
+                        receipted = array[35].ToString() == "1",
+                        likePart = array[36].ToString(),
+                        dislikePart = array[37].ToString(),
+                        NPS = int.Parse(array[38].ToString()),
+                        callbackTime = DateTime.Parse(array[39].ToString()),
+                        qaNumber = array[40].ToString(),
+                        postDate = DateTime.Parse(array[41].ToString()),
+                        year = DateTime.Parse(array[42].ToString()),
+                        callbackSuccess = array[43].ToString() == "1",
+                        callbackFailedReason = array[44].ToString(),
+                        callbackTrace = array[45].ToString(),
+                        callbackComm = array[46].ToString(),
+                        postNumber = array[47].ToString(),
+                        houseStructure = int.Parse(array[48].ToString()),
+                        mianJi = int.Parse(array[49].ToString()),
+                        neiQiang = int.Parse(array[50].ToString()),
+                        yiShuQi = int.Parse(array[51].ToString()),
+                        waiQiang = int.Parse(array[52].ToString()),
+                        yangTai = int.Parse(array[53].ToString()),
+                        muQi = int.Parse(array[54].ToString()),
+                        tieYi = int.Parse(array[55].ToString()),
+                        youHuiLaiYuan = int.Parse(array[56].ToString())
+                    });
+                }
+                return ret;
+            }
+            /// <summary>
+            /// 获取订单，根据（施工队ID）
+            /// </summary>
+            /// <param name="info"></param>
+            /// <returns></returns>
+            public static List<Objects.Order> Gets(Objects.Team info)
+            {
+                string sql = "select * from orders where constructionTeam = ?ct";
+                MySqlParameter para = new MySqlParameter("?ct", info.id);
                 List<Objects.Order> ret = new List<Objects.Order>();
 
                 var ds = MySQLHelper.ExecuteDataSet(sql, para);

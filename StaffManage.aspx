@@ -13,11 +13,12 @@
         a {
             color: #000;
         }
-        .weui-badge_dot{
+
+        .weui-badge_dot {
             padding-left: .4em;
-            padding-right:.4em;
-            padding-top:.42em;
-            padding-bottom:.415em;
+            padding-right: .4em;
+            padding-top: .42em;
+            padding-bottom: .415em;
         }
     </style>
 </head>

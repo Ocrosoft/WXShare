@@ -11,9 +11,19 @@ namespace WXShare
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+            // 不是微信内置浏览器
+            if (!WXManage.IsWXBrowser(Request))
+            {
+                Response.Redirect("/RequireWX.aspx?url=" + Request.Url);
+                return;
+            }
+            if (Session["phone"] == null || Session["iden"].ToString() != "5")
+            {
+                Response.Redirect("/UserIndex.aspx");
+                return;
+            }
             if (Request.QueryString["uid"] == null)
             {
-                Response.Clear();
                 Response.Redirect("/StaffManageYWY.aspx");
                 return;
             }

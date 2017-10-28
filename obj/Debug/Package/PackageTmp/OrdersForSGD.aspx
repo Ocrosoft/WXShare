@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="OrdersManage.aspx.cs" Inherits="WXShare.OrdersManage" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="OrdersForSGD.aspx.cs" Inherits="WXShare.OrdersForSGD" %>
 
 <!DOCTYPE html>
 

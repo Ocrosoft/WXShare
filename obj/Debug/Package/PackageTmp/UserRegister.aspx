@@ -35,8 +35,8 @@
             </div>
         </div>
         <!-- 标题 -->
-        <div class="page__hd" style="padding-left: 15px;padding-bottom: 15px;">
-            <h1 class="page__title" style="font-size: 25px;font-weight: bold;">账号注册</h1>
+        <div class="page__hd" style="padding-left: 15px; padding-bottom: 15px;">
+            <h1 class="page__title" style="font-size: 25px; font-weight: bold;">账号注册</h1>
         </div>
         <!-- 表单 -->
         <div class="weui-cells weui-cells_form">

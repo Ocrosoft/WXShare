@@ -13,7 +13,6 @@ namespace WXShare
         {
             if(!Request.QueryString.AllKeys.Contains("url"))
             {
-                Response.Clear();
                 Response.Redirect("/UserLogin.aspx");
                 return;
             }

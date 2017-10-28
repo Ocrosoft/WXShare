@@ -14,7 +14,7 @@
     <form id="form1" runat="server">
         <div class="weui-btn-area">
             <div class="weui-cell__hd">
-                <h2>报名情况</h2>                
+                <h2>报名情况</h2>
             </div>
         </div>
         <div class="weui-cells">
@@ -32,6 +32,7 @@
                 </div>
             </div>
         </div>
+        <!-- 报名列表 -->
         <div class="weui-cells" runat="server" id="signList">
         </div>
 

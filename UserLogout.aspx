@@ -23,7 +23,7 @@
                 </div>
                 <div class="weui-dialog__ft">
                     <a href="javascript:history.go(-1);" class="weui-dialog__btn weui-dialog__btn_default">取消</a>
-                    <a href="javascript:;" class="weui-dialog__btn weui-dialog__btn_primary" 
+                    <a href="javascript:;" class="weui-dialog__btn weui-dialog__btn_primary"
                         runat="server" id="logout" onserverclick="Logout">确定</a>
                 </div>
             </div>
