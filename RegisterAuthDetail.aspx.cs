@@ -34,7 +34,20 @@ namespace WXShare
 
             inputName.Value = rauth.name;
             inputPhone.Value = rauth.phone;
-            inputIden.Value = rauth.identity;
+            var identity = "";
+            switch(rauth.identity)
+            {
+                case "2":
+                    identity = "业务员";
+                    break;
+                case "4":
+                    identity = "施工队";
+                    break;
+                case "5":
+                    identity = "管理员";
+                    break;
+            }
+            inputIden.Value = identity;
             inputIDCard.Value = rauth.IDCard;
         }
         protected void AuthBtn_Click(object sender, EventArgs e)
@@ -42,13 +55,38 @@ namespace WXShare
             string rid = Request.QueryString["rid"];
             if (DataBase.UserUnAuth.Auth(new Objects.User() { id = rid }))
             {
+                // 发送新注册提示
+                var admins = DataBase.User.Gets("5");
+                foreach (var admin in admins)
+                {
+                    var openid = DataBase.User.GetOpenID(admin);
+                    if (!string.IsNullOrEmpty(openid))
+                    {
+                        WXManage.SendMessage(openid, "新注册待审核！");
+                    }
+                }
+                Response.Redirect("/UserRegisterAuth.aspx");
+                return;
+            }
+            else
+            {
+                ScriptManager.RegisterClientScriptBlock(this, GetType(), "error", "alert('审核失败，服务器错误');", true);
+                return;
+            }
+        }
+
+        protected void delete_Click(Object sender,EventArgs e)
+        {
+            string rid = Request.QueryString["rid"];
+            if (DataBase.UserUnAuth.Delete(new Objects.User() { id = rid }))
+            {
                 Response.Clear();
                 Response.Redirect("/UserRegisterAuth.aspx");
                 return;
             }
             else
             {
-                ScriptManager.RegisterClientScriptBlock(this, GetType(), "error", "alert('出现错误');", true);
+                ScriptManager.RegisterClientScriptBlock(this, GetType(), "error", "alert('删除失败，服务器错误');", true);
                 return;
             }
         }

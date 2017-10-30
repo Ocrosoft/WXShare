@@ -47,6 +47,8 @@ namespace WXShare
                 .view;
             // 获取活动优惠
             var activity = DataBase.Activity.Get(new Objects.Activity() { id = order.youHuiLaiYuan.ToString() });
+            inputYouHui.Attributes["data-t"] = activity.template.ToString();
+            inputYouHui.Attributes["data-a"] = activity.templateAddition;
             if (activity.template == 1)
             {
                 var addition = activity.templateAddition.Split(',');
@@ -164,7 +166,12 @@ namespace WXShare
             {
                 //
             }
-            // 签约失败、签约成功、其他
+            // 签约成功
+            else if(order.status == 5)
+            {
+                //
+            }
+            // 签约失败、其他
             else
             {
                 requiredHint.InnerHtml = "";
@@ -202,6 +209,22 @@ namespace WXShare
                 inputWorkCompleteOrderDateSubmitted.Value = order.workCompleteOrderDate.ToString("yyyy-MM-dd");
                 inputContractNumberSubmitted.Value = order.contractNumber;
             }
+            // 收款完成+ 不含合同退单
+            if(order.status > 5 && order.status != 7)
+            {
+                var sum = order.smSum + order.mmSum + order.workSum;
+                if(activity.template == 1)
+                {
+                    if(sum  >= int.Parse(activity.templateAddition.Split(',')[0]))
+                    {
+                        sum -= int.Parse(activity.templateAddition.Split(',')[1]);
+                    }
+                }
+                cashRec.Value = sum.ToString("0.0");
+            }
+            inputMMSumSubmitted.Value = order.mmSum.ToString("0.0");
+            inputSMSumSubmitted.Value = order.smSum.ToString("0.0");
+            inputWorkSumSubmitted.Value = order.workSum.ToString("0.0");
         }
 
         protected void saveBtn_Click(Object sender, EventArgs e)
@@ -301,10 +324,23 @@ namespace WXShare
             }
             Response.Redirect(Request.Url.ToString());
         }
+
         protected void orderFailed_Click(Object sender, EventArgs e)
         {
+            var reason = Request.Form["orderFailedReason"];
 
+            if (!DataBase.Order.SignFailed(new Objects.Order()
+            {
+                id = Request.QueryString["oid"],
+                signFailedReason = reason
+            }))
+            {
+                ScriptManager.RegisterClientScriptBlock(this, GetType(), "error", "alert('无法完成操作，系统错误')", true);
+                return;
+            }
+            Response.Redirect(Request.Url.ToString());
         }
+
         protected void signOrder_Click(Object sender, EventArgs e)
         {
             var workOrderDate = DateTime.Parse(Request.Form["workOrderDate"].Replace('T', ' '));
@@ -350,6 +386,87 @@ namespace WXShare
                 statusBtn_3.InnerHtml = "";
                 statusBtn_3.Style["display"] = "none";
             }
+            if(show != 4)
+            {
+                status_4.InnerHtml = "";
+                status_4.Style["display"] = "none";
+                statusBtn_4.InnerHtml = "";
+                statusBtn_4.Style["display"] = "none";
+            }
+        }
+
+        protected void cash_Click(object sender, EventArgs e)
+        {
+            var mmSum = float.Parse(Request.Form["inputMMSum"]);
+            var smSum = float.Parse(Request.Form["inputSMSum"]);
+            var workSum = float.Parse(Request.Form["inputWorkSum"]);
+
+            if(!DataBase.Order.Cashed(new Objects.Order()
+            {
+                id = Request.QueryString["oid"],
+                mmSum = mmSum,
+                smSum = smSum,
+                workSum = workSum
+            }))
+            {
+                ScriptManager.RegisterClientScriptBlock(this, GetType(), "error", "alert('无法完成收款，系统错误')", true);
+                return;
+            }
+            var admins = DataBase.User.Gets("5");
+            foreach(var admin in admins)
+            {
+                var openID = DataBase.User.GetOpenID(admin);
+                if(openID != "")
+                {
+                    WXManage.SendMessage(openID, "一个订单收款完成，前往派工：http://debug.ocrosoft.com/OrderDetail.aspx?oid=" + Request.QueryString["oid"]);
+                }
+            }
+            Response.Redirect(Request.Url.ToString());
+        }
+
+        protected void refuse_Click(object sender, EventArgs e)
+        {
+            var reason = Request.Form["refuseReason"];
+            var order = new Objects.Order()
+            {
+                id = Request.QueryString["oid"]
+            };
+            order = DataBase.Order.GetByID(order);
+            order.refuseReason = reason;
+
+            if(!DataBase.Order.RefuseOrder(order))
+            {
+                ScriptManager.RegisterClientScriptBlock(this, GetType(), "error", "alert('无法完成退单，系统错误')", true);
+                return;
+            }
+            // 给管理员发送消息
+            var admins = DataBase.User.Gets("5");
+            foreach(var admin in admins)
+            {
+                var openID = DataBase.User.GetOpenID(admin);
+                if(!string.IsNullOrEmpty(openID))
+                {
+                    WXManage.SendMessage(openID, "一个订单被退单");
+                }
+            }
+            // 已经派工也给施工队发送提醒
+            if(order.status>=8)
+            {
+                var team = new Objects.Team()
+                {
+                    id = order.constructionTeam
+                };
+                team = DataBase.Team.GetWithMembers(team);
+                foreach(var member in team.members)
+                {
+                    var openID = DataBase.User.GetOpenID(member);
+                    if (!string.IsNullOrEmpty(openID))
+                    {
+                        WXManage.SendMessage(openID, "一个订单被退单");
+                    }
+                }
+            }
+            Response.Redirect(Request.Url.ToString());
         }
     }
 }

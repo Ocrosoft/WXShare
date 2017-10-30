@@ -7,9 +7,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
     <title>活动</title>
-    <link rel="stylesheet" type="text/css" href="./css/weui.min.css" />
     <link rel="stylesheet" type="text/css" href="./css/example.css" />
     <link rel="stylesheet" type="text/css" href="./css/article.css" />
+    <link rel="stylesheet" type="text/css" href="./css/weui.min.css" />
     <script src="./js/jweixin-1.2.0.js"></script>
     <style>
         #shareit {

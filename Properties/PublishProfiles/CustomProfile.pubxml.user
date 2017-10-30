@@ -14,16 +14,16 @@
       <publishTime>10/28/2017 12:16:23</publishTime>
     </File>
     <File Include="ActivityAll.aspx">
-      <publishTime>10/17/2017 23:28:15</publishTime>
+      <publishTime>10/28/2017 23:21:08</publishTime>
     </File>
     <File Include="ActivityAuthSuccess.aspx">
       <publishTime>10/16/2017 10:38:15</publishTime>
     </File>
     <File Include="ActivityDetail.aspx">
-      <publishTime>10/28/2017 12:33:21</publishTime>
+      <publishTime>10/28/2017 23:02:33</publishTime>
     </File>
     <File Include="ActivityEditor.aspx">
-      <publishTime>10/28/2017 12:41:55</publishTime>
+      <publishTime>10/28/2017 23:39:32</publishTime>
     </File>
     <File Include="ActivitySign.aspx">
       <publishTime>10/28/2017 13:21:54</publishTime>
@@ -125,10 +125,10 @@
       <publishTime>06/27/2016 14:50:24</publishTime>
     </File>
     <File Include="bin/WXShare.dll">
-      <publishTime>10/28/2017 14:28:37</publishTime>
+      <publishTime>10/29/2017 18:28:58</publishTime>
     </File>
     <File Include="bin/WXShare.pdb">
-      <publishTime>10/28/2017 14:28:37</publishTime>
+      <publishTime>10/29/2017 18:28:58</publishTime>
     </File>
     <File Include="css/article.css">
       <publishTime>10/17/2017 14:16:49</publishTime>
@@ -140,7 +140,7 @@
       <publishTime>10/15/2017 17:02:10</publishTime>
     </File>
     <File Include="css/weui.min.css">
-      <publishTime>10/10/2017 22:19:28</publishTime>
+      <publishTime>10/28/2017 23:06:25</publishTime>
     </File>
     <File Include="editor/css/fonts/icomoon.eot">
       <publishTime>10/15/2017 00:04:32</publishTime>
@@ -178,11 +178,17 @@
     <File Include="images/activity.png">
       <publishTime>10/14/2017 22:31:24</publishTime>
     </File>
+    <File Include="images/back.png">
+      <publishTime>10/28/2017 22:37:07</publishTime>
+    </File>
     <File Include="images/checkout.png">
       <publishTime>10/22/2017 16:22:02</publishTime>
     </File>
     <File Include="images/control.png">
       <publishTime>10/22/2017 16:22:03</publishTime>
+    </File>
+    <File Include="images/home.png">
+      <publishTime>10/28/2017 22:37:05</publishTime>
     </File>
     <File Include="images/icon_tabbar.png">
       <publishTime>10/14/2017 15:05:21</publishTime>
@@ -223,8 +229,11 @@
     <File Include="js/jweixin-1.2.0.js">
       <publishTime>10/15/2017 17:37:06</publishTime>
     </File>
+    <File Include="js/toolButtons.js">
+      <publishTime>10/28/2017 22:55:09</publishTime>
+    </File>
     <File Include="js/weui.min.js">
-      <publishTime>10/11/2017 16:08:05</publishTime>
+      <publishTime>10/28/2017 22:41:00</publishTime>
     </File>
     <File Include="js/zepto-touch.js">
       <publishTime>10/15/2017 00:02:42</publishTime>
@@ -235,11 +244,14 @@
     <File Include="logo.png">
       <publishTime>10/10/2017 20:55:36</publishTime>
     </File>
+    <File Include="OrderDetail.aspx">
+      <publishTime>10/29/2017 17:13:59</publishTime>
+    </File>
     <File Include="OrderDetailForSGD.aspx">
-      <publishTime>10/28/2017 13:41:34</publishTime>
+      <publishTime>10/29/2017 17:14:00</publishTime>
     </File>
     <File Include="OrderDetailForYWY.aspx">
-      <publishTime>10/28/2017 13:42:22</publishTime>
+      <publishTime>10/29/2017 18:19:03</publishTime>
     </File>
     <File Include="OrdersForSGD.aspx">
       <publishTime>10/27/2017 23:08:28</publishTime>
@@ -248,22 +260,22 @@
       <publishTime>10/28/2017 13:43:28</publishTime>
     </File>
     <File Include="OrdersManage.aspx">
-      <publishTime>10/26/2017 15:16:29</publishTime>
+      <publishTime>10/28/2017 21:31:35</publishTime>
     </File>
     <File Include="packages.config">
       <publishTime>10/10/2017 15:11:34</publishTime>
     </File>
     <File Include="RegisterAuthDetail.aspx">
-      <publishTime>10/28/2017 13:45:59</publishTime>
+      <publishTime>10/29/2017 17:36:32</publishTime>
     </File>
     <File Include="RequireWX.aspx">
-      <publishTime>10/15/2017 17:15:24</publishTime>
+      <publishTime>10/28/2017 22:45:43</publishTime>
     </File>
     <File Include="StaffManage.aspx">
       <publishTime>10/28/2017 13:48:02</publishTime>
     </File>
     <File Include="StaffManageSGDW.aspx">
-      <publishTime>10/26/2017 10:29:04</publishTime>
+      <publishTime>10/28/2017 21:31:35</publishTime>
     </File>
     <File Include="StaffManageSGRY.aspx">
       <publishTime>10/23/2017 21:44:16</publishTime>
@@ -284,13 +296,13 @@
       <publishTime>10/13/2017 15:25:17</publishTime>
     </File>
     <File Include="UserIndex.aspx">
-      <publishTime>10/28/2017 13:50:42</publishTime>
+      <publishTime>10/29/2017 13:30:38</publishTime>
     </File>
     <File Include="UserLogin.aspx">
       <publishTime>10/14/2017 16:41:40</publishTime>
     </File>
     <File Include="UserLoginPhone.aspx">
-      <publishTime>10/22/2017 16:31:31</publishTime>
+      <publishTime>10/29/2017 18:05:23</publishTime>
     </File>
     <File Include="UserLogout.aspx">
       <publishTime>10/28/2017 13:51:42</publishTime>
@@ -299,7 +311,7 @@
       <publishTime>10/10/2017 21:22:03</publishTime>
     </File>
     <File Include="UserProfile.aspx">
-      <publishTime>10/28/2017 13:59:16</publishTime>
+      <publishTime>10/29/2017 13:52:14</publishTime>
     </File>
     <File Include="UserRegister.aspx">
       <publishTime>10/28/2017 13:59:36</publishTime>
@@ -317,7 +329,7 @@
       <publishTime>10/18/2017 09:57:04</publishTime>
     </File>
     <File Include="Web.config">
-      <publishTime>10/18/2017 10:04:44</publishTime>
+      <publishTime>10/29/2017 16:55:41</publishTime>
     </File>
   </ItemGroup>
 </Project>

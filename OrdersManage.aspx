@@ -16,6 +16,7 @@
         <div class="page__hd" style="padding-left: 15px; padding-bottom: 15px;">
             <h1 class="page__title" style="font-size: 25px; font-weight: bold;">订单管理</h1>
         </div>
+        <!-- 搜索 -->
         <div class="page__bd">
             <div class="weui-search-bar" id="searchBar">
                 <div class="weui-search-bar__box" style="background: #fff; border-radius: 3px;">
@@ -26,6 +27,7 @@
                 <a runat="server" onserverclick="searchBtn_Click" class="weui-search-bar__cancel-btn" id="searchCancel" style="display: block; margin-left: 10px;">搜索</a>
             </div>
         </div>
+        <!-- 筛选 -->
         <div class="weui-cells">
             <div class="weui-cell weui-cell_select-after">
                 <div class="weui-cell__hd">

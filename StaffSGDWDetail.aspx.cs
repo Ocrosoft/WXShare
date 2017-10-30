@@ -37,7 +37,7 @@ namespace WXShare
 "	</div>" +
 "</a>";
 
-            if(Request.QueryString["tid"] == null)
+            if (Request.QueryString["tid"] == null)
             {
                 Response.Clear();
                 Response.Redirect("/StaffManageSGDW.aspx");
@@ -47,13 +47,13 @@ namespace WXShare
             var tid = Request.QueryString["tid"];
             var team = DataBase.Team.GetWithMembers(new Objects.Team() { id = tid });
             name.Value = team.teamName;
-            foreach(var user in team.members)
+            foreach (var user in team.members)
             {
                 members.InnerHtml += listHTML.Replace("#name#", user.name).Replace("#id#", user.id);
             }
-            if(team.members.Count == 0)
+            if (team.members.Count == 0)
             {
-                members.InnerHtml = "<a href=\"/StaffManageSGRY.aspx\">该队伍没有成员，点击前往添加</a>";
+                members.InnerHtml = "<p style=\"text-align:center;\"><a href=\"/StaffManageSGRY.aspx\">该队伍没有成员，点击前往添加</a></p>";
             }
         }
 
@@ -62,10 +62,10 @@ namespace WXShare
             string id = Request.QueryString["tid"];
             string name = Request.Form["name"];
 
-            if(!DataBase.Team.Modify(new Objects.Team()
+            if (!DataBase.Team.Modify(new Objects.Team()
             {
-                id=id,
-                teamName=name
+                id = id,
+                teamName = name
             }
             ))
             {
@@ -74,14 +74,14 @@ namespace WXShare
             Response.Redirect(Request.Url.ToString());
         }
 
-        protected void DeleteBtn_Click(Object sender,EventArgs e)
+        protected void DeleteBtn_Click(Object sender, EventArgs e)
         {
             var team = new Objects.Team()
             {
                 id = Request.QueryString["tid"]
             };
 
-            if(!DataBase.Team.Delete(team))
+            if (!DataBase.Team.Delete(team))
             {
                 ScriptManager.RegisterClientScriptBlock(this, GetType(), "error", "alert('解散失败，系统错误');", true);
             }

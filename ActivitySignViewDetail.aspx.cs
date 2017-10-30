@@ -94,7 +94,17 @@ namespace WXShare
             }
             else
             {
-                //WXManage.SendMessage("", "");
+                var com = new Objects.User()
+                {
+                    phone = order.commissioner,
+                    identity = "2"
+                };
+                com = DataBase.User.Get(com);
+                var openID = DataBase.User.GetOpenID(com);
+                if(openID!= "")
+                {
+                    WXManage.SendMessage(openID, "有一个新的订单！");
+                }
             }
             Response.Redirect("/ActivitySignView.aspx");
         }

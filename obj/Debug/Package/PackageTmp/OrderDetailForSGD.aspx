@@ -1,5 +1,7 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="OrderDetailForSGD.aspx.cs" Inherits="WXShare.OrdersDetailForSGD" %>
 
+<!DOCTYPE html>
+
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <meta charset="UTF-8">
@@ -10,6 +12,64 @@
 </head>
 <body>
     <form id="form1" runat="server">
+        <!-- 开工提示 -->
+        <div class="js_dialog" id="startWorkDialog" style="display: none;">
+            <div class="weui-mask"></div>
+            <div class="weui-dialog">
+                <div class="weui-dialog__hd"><strong class="weui-dialog__title">开工确认</strong></div>
+                <div class="weui-dialog__bd">
+                    将以今天作为开工日期，确定吗？
+                </div>
+                <div class="weui-dialog__ft">
+                    <a id="startWork_cancel" class="weui-dialog__btn weui-dialog__btn_default">取消</a>
+                    <a id="startWork_ok" runat="server" onserverclick="startWork_Click" class="weui-dialog__btn weui-dialog__btn_primary">确定</a>
+                </div>
+            </div>
+        </div>
+        <!-- 停工提示 -->
+        <div class="js_dialog" id="stopWorkDialog" style="display: none;">
+            <div class="weui-mask"></div>
+            <div class="weui-dialog">
+                <div class="weui-dialog__hd"><strong class="weui-dialog__title">停工确认</strong></div>
+                <div class="weui-dialog__bd">
+                    从今天开始计算停工日期，确定吗？<br />
+                    （18点后停工从第二天开始计算）
+                </div>
+                <div class="weui-dialog__ft">
+                    <a id="stopWork_cancel" class="weui-dialog__btn weui-dialog__btn_default">取消</a>
+                    <a id="stopWork_ok" runat="server" onserverclick="stopWork_Click" class="weui-dialog__btn weui-dialog__btn_primary">确定</a>
+                </div>
+            </div>
+        </div>
+        <!-- 重新开工提示 -->
+        <div class="js_dialog" id="resumeWorkDialog" style="display: none;">
+            <div class="weui-mask"></div>
+            <div class="weui-dialog">
+                <div class="weui-dialog__hd"><strong class="weui-dialog__title">重开工确认</strong></div>
+                <div class="weui-dialog__bd">
+                    以今天作为重开工日期，确定吗？<br />
+                    （8点前开工今天不计）
+                </div>
+                <div class="weui-dialog__ft">
+                    <a id="resumeWork_cancel" class="weui-dialog__btn weui-dialog__btn_default">取消</a>
+                    <a id="resumeWork_ok" runat="server" onserverclick="resumeWork_Click" class="weui-dialog__btn weui-dialog__btn_primary">确定</a>
+                </div>
+            </div>
+        </div>
+        <!-- 完工提示 -->
+        <div class="js_dialog" id="finishWorkDialog" style="display: none;">
+            <div class="weui-mask"></div>
+            <div class="weui-dialog">
+                <div class="weui-dialog__hd"><strong class="weui-dialog__title">完工确认</strong></div>
+                <div class="weui-dialog__bd">
+                    将以今天作为完工日期，确定吗？
+                </div>
+                <div class="weui-dialog__ft">
+                    <a id="finishWork_cancel" class="weui-dialog__btn weui-dialog__btn_default">取消</a>
+                    <a id="finishWork_ok" runat="server" onserverclick="finishWork_Click" class="weui-dialog__btn weui-dialog__btn_primary">确定</a>
+                </div>
+            </div>
+        </div>
         <!-- 标题 -->
         <div class="page__hd" style="padding-left: 15px; padding-bottom: 15px;">
             <h1 class="page__title" style="font-size: 25px; font-weight: bold;">订单详情</h1>
@@ -86,6 +146,33 @@
                 </div>
                 <div class="weui-cell__bd">
                     <input runat="server" id="inputWorkCompleteOrderDateSubmitted" class="weui-input" type="date" disabled />
+                </div>
+            </div>
+            <!-- 实际开工日期 -->
+            <div class="weui-cell" runat="server" id="workDateDiv" style="display:none;">
+                <div class="weui-cell__hd">
+                    <label class="weui-label">实际开工日期</label>
+                </div>
+                <div class="weui-cell__bd">
+                    <input runat="server" id="inputWorkDate" class="weui-input" type="date" disabled />
+                </div>
+            </div>
+            <!-- 实际完工日期 -->
+            <div class="weui-cell" runat="server" id="workCompleteDateDiv" style="display:none;">
+                <div class="weui-cell__hd">
+                    <label class="weui-label">实际完工日期</label>
+                </div>
+                <div class="weui-cell__bd">
+                    <input runat="server" id="inputWorkCompleteDate" class="weui-input" type="date" disabled />
+                </div>
+            </div>
+            <!-- 实际收款 -->
+            <div class="weui-cell">
+                <div class="weui-cell__hd">
+                    <label class="weui-label">实际收款</label>
+                </div>
+                <div class="weui-cell__bd">
+                    <input runat="server" id="cashRec" class="weui-input" name="cashRec" type="number" disabled />
                 </div>
             </div>
             <!-- 订单状态 -->
@@ -205,10 +292,33 @@
                         <input runat="server" type="text" class="weui-input" id="inputContractNumberSubmitted" disabled />
                     </div>
                 </div>
-            </div>
-            <!-- 可修改部分 -->
-            <div class="weui-cell" runat="server" id="requiredHint" style="display: none;">
-                <p style="text-align: center; width: 100%; color: #1AAD19;">需填写以下内容</p>
+                <!-- 主材金额 -->
+                <div class="weui-cell">
+                    <div class="weui-cell__hd">
+                        <label class="weui-label">主材金额</label>
+                    </div>
+                    <div class="weui-cell__bd">
+                        <input runat="server" type="number" class="weui-input" id="inputMMSumSubmitted" disabled />
+                    </div>
+                </div>
+                <!-- 辅材金额 -->
+                <div class="weui-cell">
+                    <div class="weui-cell__hd">
+                        <label class="weui-label">辅材金额</label>
+                    </div>
+                    <div class="weui-cell__bd">
+                        <input runat="server" type="number" class="weui-input" id="inputSMSumSubmitted" disabled />
+                    </div>
+                </div>
+                <!-- 施工金额 -->
+                <div class="weui-cell">
+                    <div class="weui-cell__hd">
+                        <label class="weui-label">施工金额</label>
+                    </div>
+                    <div class="weui-cell__bd">
+                        <input runat="server" type="number" class="weui-input" id="inputWorkSumSubmitted" disabled />
+                    </div>
+                </div>
             </div>
         </div>
         <div class="weui-cells" runat="server" id="statusBtn_8">
@@ -220,7 +330,18 @@
         <div class="weui-cells" runat="server" id="statusBtn_9">
             <!-- 施工完成按钮 -->
             <div class="weui-btn-area">
-                <a class="weui-btn weui-btn_primary" id="startWork">施工完成</a>
+                <a class="weui-btn weui-btn_primary" id="finishWork">施工完成</a>
+            </div>
+            <label for="weuiAgree" class="weui-agree" style="text-align: center;">
+                <span class="weui-agree__text">
+                    <a id="stopWork">临时停工</a>
+                </span>
+            </label>
+        </div>
+        <div class="weui-cells" runat="server" id="statusBtn_8_5" style="display:none;">
+            <!-- 继续施工按钮 -->
+            <div class="weui-btn-area">
+                <a class="weui-btn weui-btn_primary" id="resumeWork">继续施工</a>
             </div>
         </div>
 
@@ -237,6 +358,18 @@
                     $('#additionContent').hide();
                     this.innerText = '显示全部';
                 }
+            });
+            $('#startWork').on('click', function () {
+                $('#startWorkDialog').fadeIn(200);
+            });
+            $('#finishWork').on('click', function () {
+                $('#finishWorkDialog').fadeIn(200);
+            });
+            $('#stopWork').on('click', function () {
+                $('#stopWorkDialog').fadeIn(200);
+            });
+            $('#resumeWork').on('click', function () {
+                $('#resumeWorkDialog').fadeIn(200);
             });
         </script>
     </form>

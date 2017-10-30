@@ -39,7 +39,7 @@
                     <label class="weui-label">身份</label>
                 </div>
                 <div class="weui-cell__bd">
-                    <input runat="server" id="inputIden" class="weui-input" type="number" disabled>
+                    <input runat="server" id="inputIden" class="weui-input" type="text" disabled>
                 </div>
             </div>
             <div class="weui-cell">
@@ -53,9 +53,12 @@
             <!-- 审核按钮 -->
             <div class="weui-btn-area">
                 <a class="weui-btn weui-btn_primary" runat="server" onserverclick="AuthBtn_Click" id="showTooltips">确认审核</a>
-                <label for="weuiAgree" class="weui-agree" style="text-align: center;">
-                </label>
             </div>
+            <label for="weuiAgree" class="weui-agree" style="text-align: center;">
+                <span class="weui-agree__text">
+                    <a runat="server" onserverclick="delete_Click" id="delete">忽略并删除</a>
+                </span>
+            </label>
         </div>
 
         <script src="./js/zepto.js"></script>

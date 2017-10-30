@@ -58,6 +58,24 @@ namespace WXShare {
         protected global::System.Web.UI.HtmlControls.HtmlAnchor checkFinish_ok;
         
         /// <summary>
+        /// cash_ok 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlAnchor cash_ok;
+        
+        /// <summary>
+        /// refuce_ok 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlAnchor refuce_ok;
+        
+        /// <summary>
         /// inputName 控件。
         /// </summary>
         /// <remarks>
@@ -101,6 +119,15 @@ namespace WXShare {
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlInputText inputYouHui;
+        
+        /// <summary>
+        /// cashRec 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlInputGenericControl cashRec;
         
         /// <summary>
         /// inputStatus 控件。
@@ -256,6 +283,33 @@ namespace WXShare {
         protected global::System.Web.UI.HtmlControls.HtmlInputText inputContractNumberSubmitted;
         
         /// <summary>
+        /// inputMMSumSubmitted 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlInputGenericControl inputMMSumSubmitted;
+        
+        /// <summary>
+        /// inputSMSumSubmitted 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlInputGenericControl inputSMSumSubmitted;
+        
+        /// <summary>
+        /// inputWorkSumSubmitted 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlInputGenericControl inputWorkSumSubmitted;
+        
+        /// <summary>
         /// requiredHint 控件。
         /// </summary>
         /// <remarks>
@@ -337,6 +391,15 @@ namespace WXShare {
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl status_3;
         
         /// <summary>
+        /// status_4 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl status_4;
+        
+        /// <summary>
         /// statusBtn_0 控件。
         /// </summary>
         /// <remarks>
@@ -389,5 +452,14 @@ namespace WXShare {
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlAnchor signOrder;
+        
+        /// <summary>
+        /// statusBtn_4 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl statusBtn_4;
     }
 }

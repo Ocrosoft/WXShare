@@ -16,7 +16,7 @@ namespace WXShare
                 Response.Redirect("/UserLogin.aspx");
                 return;
             }
-            var url = Request.QueryString["url"];
+            var url = Request.Url.ToString().Substring(Request.Url.ToString().IndexOf('=') + 1);
             qrcode.Src = WXManage.QRCode(url);
         }
     }

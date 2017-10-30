@@ -85,8 +85,10 @@
     <Content Include="css\example.css" />
     <Content Include="css\requireWX.css" />
     <Content Include="images\activity.png" />
+    <Content Include="images\back.png" />
     <Content Include="images\checkout.png" />
     <Content Include="images\control.png" />
+    <Content Include="images\home.png" />
     <Content Include="images\icon_tabbar.png" />
     <Content Include="images\logout.png" />
     <Content Include="images\orders.png" />
@@ -99,6 +101,7 @@
     <Content Include="images\staff.png" />
     <Content Include="js\example.js" />
     <Content Include="js\jweixin-1.00.js" />
+    <Content Include="js\toolButtons.js" />
     <Content Include="js\weui.min.js" />
     <Content Include="js\zepto-touch.js" />
     <Content Include="js\zepto.js" />

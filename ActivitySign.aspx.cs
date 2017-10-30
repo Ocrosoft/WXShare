@@ -81,7 +81,15 @@ namespace WXShare
                 }))
                 {
                     // 发送新报名提示
-                    WXManage.SendMessage("orUOg1HDidOwnt_QS45_Ws4XHko4", "有一条新报名信息！");
+                    var admins = DataBase.User.Gets("5");
+                    foreach(var admin in admins)
+                    {
+                        var openid = DataBase.User.GetOpenID(admin);
+                        if(!string.IsNullOrEmpty(openid))
+                        {
+                            WXManage.SendMessage(openid, "有一条新报名信息！");
+                        }
+                    }
                     Response.Redirect("/ActivitySignSuccess.aspx");
                     return;
                 }

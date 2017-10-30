@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using Ocrosoft;
+using System;
 using System.Web.UI;
-using System.Web.UI.WebControls;
 
 namespace WXShare
 {
@@ -40,12 +37,40 @@ namespace WXShare
             activities.InnerHtml = "";
             foreach (var activity in activityList)
             {
+                if (activity.imgSrc == null || activity.imgSrc == "")
+                {
+                    activity.imgSrc = WXManage.QRCode(Request.Url.Host + "/ActivityDetail.aspx?aid=" + activity.id);
+                }
                 activities.InnerHtml += activityHTML
                     .Replace("#id#", activity.id)
-                    .Replace("#img#", "")
+                    .Replace("#img#", activity.imgSrc)
                     .Replace("#title#", activity.title)
                     .Replace("#brief#", activity.brief);
             }
+        }
+
+        protected void newActivity_Click(Object sender, EventArgs e)
+        {
+            // 新建活动，标题初始化为时间 + 一随机数
+            var activity = new Objects.Activity()
+            {
+                timeStart = DateTime.Now,
+                timeEnd = DateTime.Now,
+                title = OSecurity.DateTimeToTimeStamp(DateTime.Now).ToString() + new Random().Next(0, 100).ToString(),
+                content = "",
+                brief = "",
+                template = int.Parse(DataBase.Template.Gets()[0].id),
+                templateAddition = ""
+            };
+            // 新建
+            if (!DataBase.Activity.Add(activity))
+            {
+                ScriptManager.RegisterClientScriptBlock(this, GetType(), "error", "alert('新建失败，服务器错误')", true);
+                return;
+            }
+            // 获取ID，转到编辑界面
+            activity = DataBase.Activity.GetByTitle(activity);
+            Response.Redirect("/ActivityEditor.aspx?aid=" + activity.id);
         }
     }
 }

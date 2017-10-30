@@ -28,9 +28,22 @@ namespace WXShare
             var activitys = DataBase.Activity.GetsAll();
             activitySelect.Items.Clear();
             activitySelect.Items.Add(new ListItem("所有活动", "0"));
+            var firstActivityHasSign = "0";
             foreach (var activity in activitys)
             {
-                activitySelect.Items.Add(new ListItem(activity.title, activity.id));
+                var count = DataBase.ActivitySign.Gets(activity).Count;
+                if(count != 0 && firstActivityHasSign == "0")
+                {
+                    firstActivityHasSign = activity.id;
+                }
+                // 报名数量不为0的显示数量
+                activitySelect.Items.Add(new ListItem(activity.title + (count == 0 ? "" : ("(" + count + ")")), activity.id));
+            }
+            // 有新报名，则显示新报名信息
+            if(firstActivityHasSign != "0" && !IsPostBack) // 回发时不处理
+            {
+                activitySelect.Value = firstActivityHasSign;
+                ScriptManager.RegisterStartupScript(this, GetType(), "show", "$('#selectActivity').click();", true);
             }
         }
 
@@ -44,7 +57,8 @@ namespace WXShare
 "   <div class=\"weui-cell__ft\">" +
 "    </div>" +
 "</a>";
-            string aid = activitySelect.Value;
+            string aid = Request.Form["activitySelect"];
+            activitySelect.Value = aid;
             List<Objects.ActivitySign> list = new List<Objects.ActivitySign>();
             if(aid=="0")
             {
@@ -61,6 +75,10 @@ namespace WXShare
                 signList.InnerHtml += signItem
                     .Replace("#id#", sign.id)
                     .Replace("#content#", sign.name + " " + sign.phone);
+            }
+            if(list.Count == 0)
+            {
+                signList.InnerHtml = "<p style=\"text-align:center;\">找不到任何报名记录</p>";
             }
         }
     }

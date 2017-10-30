@@ -72,6 +72,37 @@
                 </div>
             </div>
         </div>
+        <!-- 收款完成提示 -->
+        <div class="js_dialog" id="cashDialog" style="display: none;">
+            <div class="weui-mask"></div>
+            <div class="weui-dialog">
+                <div class="weui-dialog__hd"><strong class="weui-dialog__title">收款完成确认</strong></div>
+                <div class="weui-dialog__bd">
+                    提交后不可修改<br />
+                    确认信息正确？<br />
+                </div>
+                <div class="weui-dialog__ft">
+                    <a id="cash_cancel" class="weui-dialog__btn weui-dialog__btn_default">取消</a>
+                    <a id="cash_ok" runat="server" onserverclick="cash_Click" class="weui-dialog__btn weui-dialog__btn_primary">确定</a>
+                </div>
+            </div>
+        </div>
+        <!-- 退单提示 -->
+        <div class="js_dialog" id="refuseDialog" style="display: none;">
+            <div class="weui-mask"></div>
+            <div class="weui-dialog">
+                <div class="weui-dialog__hd"><strong class="weui-dialog__title">退单确认</strong></div>
+                <div class="weui-dialog__bd">
+                    该操作不可取消<br />
+                    确认请在下方输入退单原因<br />
+                    <input style="color: #000; text-align: center; margin-top: 10px; border-bottom: 1px solid;" class="weui-input" id="refuseReason" name="refuseReason" disabled />
+                </div>
+                <div class="weui-dialog__ft">
+                    <a id="refuse_cancel" class="weui-dialog__btn weui-dialog__btn_default">取消</a>
+                    <a id="refuce_ok" runat="server" onserverclick="refuse_Click" class="weui-dialog__btn weui-dialog__btn_primary">确定</a>
+                </div>
+            </div>
+        </div>
         <!-- 标题 -->
         <div class="page__hd" style="padding-left: 15px; padding-bottom: 15px;">
             <h1 class="page__title" style="font-size: 25px; font-weight: bold;">订单详情</h1>
@@ -121,6 +152,14 @@
                 </div>
                 <div class="weui-cell__bd">
                     <input runat="server" id="inputYouHui" class="weui-input" name="inputYouHui" type="text" disabled />
+                </div>
+            </div>
+            <div class="weui-cell">
+                <div class="weui-cell__hd">
+                    <label class="weui-label">实际收款</label>
+                </div>
+                <div class="weui-cell__bd">
+                    <input runat="server" id="cashRec" class="weui-input" name="cashRec" type="number" disabled />
                 </div>
             </div>
             <!-- 订单状态 -->
@@ -265,6 +304,33 @@
                     </div>
                     <div class="weui-cell__bd">
                         <input runat="server" type="text" class="weui-input" id="inputContractNumberSubmitted" disabled />
+                    </div>
+                </div>
+                <!-- 主材金额 -->
+                <div class="weui-cell">
+                    <div class="weui-cell__hd">
+                        <label class="weui-label">主材金额</label>
+                    </div>
+                    <div class="weui-cell__bd">
+                        <input runat="server" type="number" class="weui-input" id="inputMMSumSubmitted" disabled />
+                    </div>
+                </div>
+                <!-- 辅材金额 -->
+                <div class="weui-cell">
+                    <div class="weui-cell__hd">
+                        <label class="weui-label">辅材金额</label>
+                    </div>
+                    <div class="weui-cell__bd">
+                        <input runat="server" type="number" class="weui-input" id="inputSMSumSubmitted" disabled />
+                    </div>
+                </div>
+                <!-- 施工金额 -->
+                <div class="weui-cell">
+                    <div class="weui-cell__hd">
+                        <label class="weui-label">施工金额</label>
+                    </div>
+                    <div class="weui-cell__bd">
+                        <input runat="server" type="number" class="weui-input" id="inputWorkSumSubmitted" disabled />
                     </div>
                 </div>
             </div>
@@ -432,6 +498,41 @@
                     </div>
                 </div>
             </div>
+            <div runat="server" id="status_4">
+                <!-- 收款完成 -->
+                <div class="weui-cell">
+                    <div class="weui-cell__hd">
+                        <label class="weui-label">主材金额</label>
+                    </div>
+                    <div class="weui-cell__bd">
+                        <input id="inputMMSum" placeholder="0" class="weui-input" type="number" value="" name="inputMMSum" required>
+                    </div>
+                </div>
+                <div class="weui-cell">
+                    <div class="weui-cell__hd">
+                        <label class="weui-label">辅材金额</label>
+                    </div>
+                    <div class="weui-cell__bd">
+                        <input id="inputSMSum" placeholder="0" class="weui-input" type="number" value="" name="inputSMSum" required>
+                    </div>
+                </div>
+                <div class="weui-cell">
+                    <div class="weui-cell__hd">
+                        <label class="weui-label">施工金额</label>
+                    </div>
+                    <div class="weui-cell__bd">
+                        <input id="inputWorkSum" placeholder="0" class="weui-input" type="number" value="" name="inputWorkSum" required>
+                    </div>
+                </div>
+                <div class="weui-cell">
+                    <div class="weui-cell__hd">
+                        <label class="weui-label">优惠后金额</label>
+                    </div>
+                    <div class="weui-cell__bd">
+                        <input id="inputSum" placeholder="先填写所有金额" class="weui-input" type="number" name="inputSum" disabled>
+                    </div>
+                </div>
+            </div>
         </div>
         <div class="weui-cells" runat="server" id="statusBtn_0">
             <!-- 确认按钮 -->
@@ -461,6 +562,17 @@
                 <label for="weuiAgree" class="weui-agree" style="text-align: center;">
                     <span class="weui-agree__text">
                         <a id="orderFailed">无法签约，取消订单</a>
+                    </span>
+                </label>
+            </div>
+        </div>
+        <div class="weui-cells" runat="server" id="statusBtn_4">
+            <!-- 收款按钮 -->
+            <div class="weui-btn-area">
+                <a class="weui-btn weui-btn_primary" id="cash">收款完成</a>
+                <label for="weuiAgree" class="weui-agree" style="text-align: center;">
+                    <span class="weui-agree__text">
+                        <a id="refuse">申请退单</a>
                     </span>
                 </label>
             </div>
@@ -596,6 +708,49 @@
                     this.innerText = '显示全部';
                 }
             });
+            $('#cash').on('click', function () {
+                if ($('#inputMMSum').val() == "" ||
+                    $('#inputSMSum').val() == "" ||
+                    $('#inputWorkSum').val() == "") {
+                    alert('请填写所有金额后再确认收款完成！');
+                    return;
+                }
+                $('#cashDialog').fadeIn(200);
+            });
+            /* 退单 */
+            $('#refuse').on('click', function () {
+                $('#refuseReason').removeAttr("disabled").attr('required', 'required');
+                $('#refuseReason')[0].value = '咨询订单';
+                $('#refuseDialog').fadeIn(200);
+            });
+            $('#cash_cancel').on('click', function () {
+                $('#cashDialog').fadeOut(200);
+            });
+            $('#refuse_cancel').on('click', function () {
+                $('#refuseDialog').fadeOut(200);
+            });
+            function calc() {
+                var mmSum = parseFloat($('#inputMMSum').val());
+                var smSum = parseFloat($('#inputSMSum').val());
+                var workSum = parseFloat($('#inputWorkSum').val());
+
+                if (mmSum != "" && smSum != "" && workSum != "") {
+                    var sum = mmSum + smSum + workSum;
+                    var template = $('#inputYouHui').attr('data-t');
+                    var addition = $('#inputYouHui').attr('data-a');
+                    if (template == "1") {
+                        var aa = addition.split(',')[0];
+                        var ab = addition.split(',')[1];
+                        if (sum >= aa) {
+                            sum -= ab;
+                        }
+                    }
+                    $('#inputSum').val(sum.toFixed(1));
+                }
+            }
+            $('#inputMMSum').on('keyup', calc);
+            $('#inputSMSum').on('keyup', calc);
+            $('#inputWorkSum').on('keyup', calc);
         </script>
     </form>
 </body>

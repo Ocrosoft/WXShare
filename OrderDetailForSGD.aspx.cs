@@ -83,17 +83,99 @@ namespace WXShare
             inputWorkOrderDateSubmitted.Value = order.workOrderDate.ToString("yyyy-MM-dd");
             inputWorkCompleteOrderDateSubmitted.Value = order.workCompleteOrderDate.ToString("yyyy-MM-dd");
             inputContractNumberSubmitted.Value = order.contractNumber;
+            // 各种金额
+            var sum = order.smSum + order.mmSum + order.workSum;
+            if (activity.template == 1)
+            {
+                if (sum >= int.Parse(activity.templateAddition.Split(',')[0]))
+                {
+                    sum -= int.Parse(activity.templateAddition.Split(',')[1]);
+                }
+            }
+            cashRec.Value = sum.ToString("0.0");
+            inputMMSumSubmitted.Value = order.mmSum.ToString("0.0");
+            inputSMSumSubmitted.Value = order.smSum.ToString("0.0");
+            inputWorkSumSubmitted.Value = order.workSum.ToString("0.0");
 
-            if (order.status == 8)
+            if (order.status >= 9)
+            {
+                inputWorkDate.Value = order.workDate.ToString("yyyy-MM-dd");
+                workDateDiv.Style["display"] = "";
+            }
+            if(order.status > 9)
+            {
+                inputWorkCompleteDate.Value = order.workCompleteDate.ToString("yyyy-MM-dd");
+                workCompleteDateDiv.Style["display"] = "";
+            }
+
+            // 调整按钮
+            if (order.status != 8)
             {
                 statusBtn_8.InnerHtml = "";
                 statusBtn_8.Style["display"] = "none";
             }
-            else if (order.status == 9)
+            if (order.status != 9)
             {
                 statusBtn_9.InnerHtml = "";
                 statusBtn_9.Style["display"] = "none";
             }
+            // 停工继续按钮
+            if(DataBase.Order.HasPaused(order))
+            {
+                inputStatus.Value = "临时停工";
+                // 隐藏完工按钮
+                statusBtn_9.InnerHtml = "";
+                statusBtn_9.Style["display"] = "none";
+                // 显示重新开工按钮
+                statusBtn_8_5.Style["display"] = "";
+            }
+        }
+
+        protected void startWork_Click(Object sender, EventArgs e)
+        {
+            if (!DataBase.Order.StartWork(new Objects.Order() { id = Request.QueryString["oid"] }))
+            {
+                ScriptManager.RegisterClientScriptBlock(this, GetType(), "error", "alert('开工失败，系统错误');", true);
+                return;
+            }
+            Response.Redirect(Request.Url.ToString());
+        }
+
+        protected void stopWork_Click(Object sender,EventArgs e)
+        {
+            if(!DataBase.Order.PauseWork(new Objects.Order() { id = Request.QueryString["oid"]},DateTime.Now))
+            {
+                ScriptManager.RegisterClientScriptBlock(this, GetType(), "error", "alert('临时停工失败，系统错误');", true);
+                return;
+            }
+            Response.Redirect(Request.Url.ToString());
+        }
+
+        protected void resumeWork_Click(Object sender,EventArgs e)
+        {
+            if(!DataBase.Order.ResumeWork(new Objects.Order() { id = Request.QueryString["oid"] }, DateTime.Now))
+            {
+                ScriptManager.RegisterClientScriptBlock(this, GetType(), "error", "alert('继续施工失败，系统错误');", true);
+                return;
+            }
+            Response.Redirect(Request.Url.ToString());
+        }
+
+        protected void finishWork_Click(Object sender,EventArgs e)
+        {
+            var order = new Objects.Order()
+            {
+                id = Request.QueryString["oid"]
+            };
+            order = DataBase.Order.GetByID(order);
+            order.workCompleteDate = DateTime.Now;
+            order.timeLimit = (order.workCompleteDate - order.workDate).Days;
+            if (!DataBase.Order.FinishWork(order))
+            {
+                ScriptManager.RegisterClientScriptBlock(this, GetType(), "error", "alert('完工失败，系统错误');", true);
+                return;
+            }
+            Response.Redirect(Request.Url.ToString());
         }
     }
 }

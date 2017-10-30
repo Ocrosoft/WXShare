@@ -21,7 +21,23 @@ namespace WXShare
             /// <returns></returns>
             public static bool Add(Objects.User user, bool authed = false)
             {
-                if (authed || user.identity == "1")
+                if(authed)
+                {
+                    string sql = "insert into users(name, phone, identity, IDCard) values(?name, ?phone, ?iden, ?IDCard);";
+                    MySqlParameter[] para = new MySqlParameter[4];
+                    para[0] = new MySqlParameter("?name", user.name);
+                    para[1] = new MySqlParameter("?phone", user.phone);
+                    para[2] = new MySqlParameter("?iden", user.identity);
+                    para[3] = new MySqlParameter("?IDCard", user.IDCard);
+
+                    int ret = MySQLHelper.ExecuteNonQuery(sql, para);
+                    if (ret == 1)
+                    {
+                        return true;
+                    }
+                    return false;
+                }
+                else if (user.identity == "1")
                 {
                     string sql = "insert into users(name, phone, identity) values(?name, ?phone, ?iden);";
                     MySqlParameter[] para = new MySqlParameter[3];
@@ -32,7 +48,7 @@ namespace WXShare
                     int ret = MySQLHelper.ExecuteNonQuery(sql, para);
                     if (ret == 1)
                     {
-                        return true;
+                        return true;   
                     }
                     return false;
                 }
@@ -244,10 +260,69 @@ namespace WXShare
                 }
                 return false;
             }
+            /// <summary>
+            /// 获取OPENID（发送消息用）（id）
+            /// </summary>
+            /// <param name="info"></param>
+            /// <returns></returns>
+            public static string GetOpenID(Objects.User info)
+            {
+                string sql = "select openID from openid where id = ?id";
+                MySqlParameter para = new MySqlParameter("?id", info.id);
 
+                var openID = MySQLHelper.ExecuteScalar(sql, para);
+                if(openID == null)
+                {
+                    return "";
+                }
+                return openID.ToString();
+            }
+            /// <summary>
+            /// 保存OPENID（id）
+            /// </summary>
+            /// <param name="info"></param>
+            /// <param name="openID"></param>
+            /// <returns></returns>
+            public static bool SaveOpenID(Objects.User info,string openID)
+            {
+                string sql = "";
+                MySqlParameter[] para = new MySqlParameter[2];
+                para[0] = new MySqlParameter("?oid", openID);
+                para[1] = new MySqlParameter("?id", info.id);
+                if (GetOpenID(info) != "")
+                {
+                    sql = "update openid set openID = ?oid where id = ?id";
+                }
+                else
+                {
+                    sql = "insert into openid values(?id, ?oid)";
+                }
+
+                if(MySQLHelper.ExecuteNonQuery(sql,para) == 1)
+                {
+                    return true;
+                }
+                return false;
+            }
         }
         public class Team
         {
+            /// <summary>
+            /// 添加新施工队
+            /// </summary>
+            /// <param name="team"></param>
+            /// <returns></returns>
+            public static bool Add(Objects.Team team)
+            {
+                string sql = "insert into constructionteam_name(teamName) values(?tn)";
+                MySqlParameter para = new MySqlParameter("?tn", team.teamName);
+
+                if(MySQLHelper.ExecuteNonQuery(sql,para) == 1)
+                {
+                    return true;
+                }
+                return false;
+            }
             /// <summary>
             /// 添加到施工队
             /// </summary>
@@ -311,13 +386,15 @@ namespace WXShare
                 return ret;
             }
             /// <summary>
-            /// 获取所有施工队
+            /// 获取所有施工队，注意当施工队没有成员时不在返回结果中
             /// </summary>
             /// <returns></returns>
             public static Dictionary<string, Objects.Team> GetsWithMembers()
             {
-                string sql = "select * from users,constructionteam_name as cta " +
-                    "where identity = 4 and users.phone in (select phone from constructionteam)";
+                string sql = "select * from users," +
+                    "(select ctn.*, phone from constructionteam as ct,constructionteam_name as ctn " +
+                    "where ct.teamID = ctn.teamID) tmp " +
+                    "where tmp.phone = users.phone";
                 Dictionary<string, Objects.Team> ret = new Dictionary<string, Objects.Team>();
 
                 var ds = MySQLHelper.ExecuteDataSet(sql);
@@ -357,6 +434,10 @@ namespace WXShare
                 }
                 return ret;
             }
+            /// <summary>
+            /// 获取所有施工队，包含没有成员的队伍
+            /// </summary>
+            /// <returns></returns>
             public static List<Objects.Team> Gets()
             {
                 string sql = "select * from constructionteam_name";
@@ -369,7 +450,8 @@ namespace WXShare
                     ret.Add(new Objects.Team()
                     {
                         teamName = array[0].ToString(),
-                        id = array[1].ToString()
+                        id = array[1].ToString(),
+                        members = new List<Objects.User>()
                     });
                 }
                 return ret;
@@ -750,9 +832,34 @@ namespace WXShare
                 }
                 return false;
             }
-            public static bool Delete()
+            /// <summary>
+            /// 删除活动（id）
+            /// </summary>
+            /// <param name="info"></param>
+            /// <returns></returns>
+            public static bool Delete(Objects.Activity info)
             {
+                string sql = "delete from activity where id = ?id";
+                MySqlParameter para = new MySqlParameter("?id", info.id);
+
+                if(MySQLHelper.ExecuteNonQuery(sql,para) == 1)
+                {
+                    return true;
+                }
                 return false;
+            }
+            /// <summary>
+            /// 仅用于新建活动（标题可能重复）
+            /// </summary>
+            /// <param name="info"></param>
+            /// <returns></returns>
+            public static Objects.Activity GetByTitle(Objects.Activity info)
+            {
+                string sql = "select id from activity where title = ?title";
+                MySqlParameter para = new MySqlParameter("?title", info.title);
+
+                var id = MySQLHelper.ExecuteScalar(sql, para).ToString();
+                return Get(new Objects.Activity() { id = id });
             }
         }
         public class ActivitySign
@@ -984,7 +1091,7 @@ namespace WXShare
             /// <returns></returns>
             public static bool ToCommissioner(Objects.Order order)
             {
-                string sql = "update orders set commissioner = ?comm where id = ?id";
+                string sql = "update orders set commissioner = ?comm, status = 0 where id = ?id";
                 MySqlParameter[] para = new MySqlParameter[2];
                 para[0] = new MySqlParameter("?comm", order.commissioner);
                 para[1] = new MySqlParameter("?id", order.id);
@@ -1045,6 +1152,7 @@ namespace WXShare
             /// <returns></returns>
             public static bool CommissionerCheck(Objects.Order order)
             {
+                // 没有正在基检这一状态，通过实际基检时间判断
                 string sql = "update orders set comCheckTime = ?cct where id = ?id";
                 MySqlParameter[] para = new MySqlParameter[2];
                 para[0] = new MySqlParameter("?cct", order.comCheckTime.ToString("yyyy-MM-dd HH:mm:ss"));
@@ -1096,7 +1204,8 @@ namespace WXShare
             public static bool SignTheOrder(Objects.Order order)
             {
                 string sql = "update orders set signTime = now(), contractNumber = ?cn, status = 4, " +
-                    "workOrderDate = ?wod, workCompleteOrderDate = ?wcod, timeLimitOrder = ?tlo where id = ?id";
+                    "workOrderDate = ?wod, workCompleteOrderDate = ?wcod, timeLimitOrder = ?tlo, " +
+                    "signed = 1 where id = ?id";
                 MySqlParameter[] para = new MySqlParameter[5];
                 para[0] = new MySqlParameter("?cn", order.contractNumber);
                 para[1] = new MySqlParameter("?wod", order.workOrderDate.ToString("yyyy-MM-dd"));
@@ -1118,7 +1227,7 @@ namespace WXShare
             /// <returns></returns>
             public static bool SignFailed(Objects.Order order)
             {
-                string sql = "update orders set signFailedReason = ?sfr, status = 3 where id = ?id";
+                string sql = "update orders set signFailedReason = ?sfr, status = 5 where id = ?id";
                 MySqlParameter[] para = new MySqlParameter[2];
                 para[0] = new MySqlParameter("?sfr", order.signFailedReason);
                 para[1] = new MySqlParameter("?id", order.id);
@@ -1131,23 +1240,39 @@ namespace WXShare
                 return false;
             }
             /// <summary>
-            /// 派工
+            /// 派工（constructionTeam）
             /// </summary>
             /// <param name="order"></param>
             /// <returns></returns>
             public static bool Dispatch(Objects.Order order)
             {
-                string sql = "update orders set constructionTeam = ?ct, workOrderDate = ?wod, " +
-                    "workCompleteOrderDate = ?wcod, timeLimit = ?tl where id = ?id";
-                MySqlParameter[] para = new MySqlParameter[5];
+                string sql = "update orders set constructionTeam = ?ct, status = 8 where id = ?id";
+                MySqlParameter[] para = new MySqlParameter[2];
                 para[0] = new MySqlParameter("?ct", order.constructionTeam);
-                para[1] = new MySqlParameter("?wod", order.workOrderDate.ToString("yyyy-MM-dd"));
-                para[2] = new MySqlParameter("?wcod", order.workCompleteOrderDate.ToString("yyyy-MM-dd"));
-                para[3] = new MySqlParameter("?tl", order.timeLimit);
-                para[4] = new MySqlParameter("?id", order.id);
+                para[1] = new MySqlParameter("?id", order.id);
 
                 int ret = MySQLHelper.ExecuteNonQuery(sql, para);
                 if (ret == 1)
+                {
+                    return true;
+                }
+                return false;
+            }
+            /// <summary>
+            /// 收款（mmSum，smSum，workSum，id）
+            /// </summary>
+            /// <param name="order"></param>
+            /// <returns></returns>
+            public static bool Cashed(Objects.Order order)
+            {
+                string sql = "update orders set mmSum = ?ms, smSum = ?ss, workSum = ?ws, status = 6 where id = ?id";
+                MySqlParameter[] para = new MySqlParameter[4];
+                para[0] = new MySqlParameter("?ms", order.mmSum.ToString("0.0"));
+                para[1] = new MySqlParameter("?ss", order.smSum.ToString("0.0"));
+                para[2] = new MySqlParameter("?ws", order.workSum.ToString("0.0"));
+                para[3] = new MySqlParameter("?id", order.id);
+
+                if(MySQLHelper.ExecuteNonQuery(sql,para) == 1)
                 {
                     return true;
                 }
@@ -1160,7 +1285,7 @@ namespace WXShare
             /// <returns></returns>
             public static bool RefuseOrder(Objects.Order order)
             {
-                string sql = "update orders set refuseReason = ?rr where id = ?id";
+                string sql = "update orders set refuseReason = ?rr, status = 7 where id = ?id";
                 MySqlParameter[] para = new MySqlParameter[2];
                 para[0] = new MySqlParameter("?rr", order.refuseReason);
                 para[1] = new MySqlParameter("?id", order.id);
@@ -1173,17 +1298,117 @@ namespace WXShare
                 return false;
             }
             /// <summary>
-            /// 开工
+            /// 开工（id）
             /// </summary>
             /// <param name="order"></param>
             /// <returns></returns>
             public static bool StartWork(Objects.Order order)
             {
-                string sql = "update orders set workDate = now() where id = ?id";
+                string sql = "update orders set workDate = now(), status = 9 where id = ?id";
                 MySqlParameter para = new MySqlParameter("?id", order.id);
 
                 int ret = MySQLHelper.ExecuteNonQuery(sql, para);
                 if (ret == 1)
+                {
+                    return true;
+                }
+                return false;
+            }
+            /// <summary>
+            ///  临时停工（id）
+            /// </summary>
+            /// <param name="order"></param>
+            /// <param name="pauseTime">停工开始时间</param>
+            /// <returns></returns>
+            public static bool PauseWork(Objects.Order order,DateTime pauseTime)
+            {
+                // 没有临时停工这一状态，使用HasPaused()进行查询
+                string sql = "insert into order_construction_pause values(?pt, ?oid)";
+                MySqlParameter[] para = new MySqlParameter[2];
+                para[0] = new MySqlParameter("?pt", pauseTime.ToString("yyyy-MM-dd HH:mm:ss"));
+                para[1] = new MySqlParameter("?oid", order.id);
+
+                if(MySQLHelper.ExecuteNonQuery(sql,para) == 1)
+                {
+                    return true;
+                }
+                return false;
+            }
+            /// <summary>
+            /// 是否处于临时停工状态（id）
+            /// </summary>
+            /// <param name="order"></param>
+            /// <returns></returns>
+            public static bool HasPaused(Objects.Order order)
+            {
+                string sql = "select count(*) from order_construction_pause where orderID = ?oid";
+                MySqlParameter para = new MySqlParameter("?oid", order.id);
+
+                if(MySQLHelper.ExecuteScalar(sql,para).ToString() != "0")
+                {
+                    return true;
+                }
+                return false;
+            }
+            /// <summary>
+            ///  重新开工（id）
+            /// </summary>
+            /// <param name="order"></param>
+            /// <param name="resumeTime">继续施工日期</param>
+            /// <returns></returns>
+            public static bool ResumeWork(Objects.Order order, DateTime resumeTime)
+            {
+                // 查询停工记录
+                string sql = "select pauseTime from order_construction_pause where orderID = ?oid";
+                MySqlParameter para = new MySqlParameter("?oid", order.id);
+
+                DateTime pauseTime = DateTime.Parse(MySQLHelper.ExecuteScalar(sql, para).ToString());
+                if(pauseTime.Hour>=18)
+                {
+                    pauseTime = pauseTime.AddDays(1);
+                }
+                if(resumeTime.Hour<=8)
+                {
+                    resumeTime = resumeTime.AddDays(-1);
+                }
+                order = GetByID(order);
+                if ((resumeTime - pauseTime).Days >= 1)
+                {
+                    order.workStopDays += (resumeTime - pauseTime).Days;
+                }
+                // 更新停工日期
+                sql = "update orders set workStopDays = ?wsd where id = ?id";
+                MySqlParameter[] paras = new MySqlParameter[2];
+                paras[0] = new MySqlParameter("?wsd", order.workStopDays);
+                paras[1] = new MySqlParameter("?id", order.id);
+                if(MySQLHelper.ExecuteNonQuery(sql,paras) == 1)
+                {
+                    // 删除停工记录
+                    if(MySQLHelper.ExecuteNonQuery(
+                        "delete from order_construction_pause where orderID = ?oid",
+                        new MySqlParameter("?oid", order.id)
+                        ) == 1)
+                    {
+                        return true;
+                    }
+                    return false;
+                }
+                return false;
+            }
+            /// <summary>
+            /// 完成施工（id，workCompleteDate，timeLimit）
+            /// </summary>
+            /// <param name="order"></param>
+            /// <returns></returns>
+            public static bool FinishWork(Objects.Order order)
+            {
+                string sql = "update orders set workCompleteDate = ?wcd, timeLimit = ?tl, status = 10 where id = ?id";
+                MySqlParameter[] para = new MySqlParameter[3];
+                para[0] = new MySqlParameter("?wcd", order.workCompleteDate.ToString("yyyy-MM-dd"));
+                para[1] = new MySqlParameter("?tl", order.timeLimit);
+                para[2] = new MySqlParameter("?id", order.id);
+
+                if(MySQLHelper.ExecuteNonQuery(sql,para) == 1)
                 {
                     return true;
                 }
@@ -1260,9 +1485,9 @@ namespace WXShare
                         workStopDays = int.Parse(array[28].ToString()),
                         timeLimitOrder = int.Parse(array[29].ToString()),
                         timeLimit = int.Parse(array[30].ToString()),
-                        mmSum = int.Parse(array[31].ToString()),
-                        smSum = int.Parse(array[32].ToString()),
-                        workSum = int.Parse(array[33].ToString()),
+                        mmSum = double.Parse(array[31].ToString()),
+                        smSum = double.Parse(array[32].ToString()),
+                        workSum = double.Parse(array[33].ToString()),
                         signed = array[34].ToString() == "1",
                         receipted = array[35].ToString() == "1",
                         likePart = array[36].ToString(),
@@ -1336,9 +1561,9 @@ namespace WXShare
                         workStopDays = int.Parse(array[28].ToString()),
                         timeLimitOrder = int.Parse(array[29].ToString()),
                         timeLimit = int.Parse(array[30].ToString()),
-                        mmSum = int.Parse(array[31].ToString()),
-                        smSum = int.Parse(array[32].ToString()),
-                        workSum = int.Parse(array[33].ToString()),
+                        mmSum = double.Parse(array[31].ToString()),
+                        smSum = double.Parse(array[32].ToString()),
+                        workSum = double.Parse(array[33].ToString()),
                         signed = array[34].ToString() == "1",
                         receipted = array[35].ToString() == "1",
                         likePart = array[36].ToString(),
@@ -1414,9 +1639,9 @@ namespace WXShare
                         workStopDays = int.Parse(array[28].ToString()),
                         timeLimitOrder = int.Parse(array[29].ToString()),
                         timeLimit = int.Parse(array[30].ToString()),
-                        mmSum = int.Parse(array[31].ToString()),
-                        smSum = int.Parse(array[32].ToString()),
-                        workSum = int.Parse(array[33].ToString()),
+                        mmSum = double.Parse(array[31].ToString()),
+                        smSum = double.Parse(array[32].ToString()),
+                        workSum = double.Parse(array[33].ToString()),
                         signed = array[34].ToString() == "1",
                         receipted = array[35].ToString() == "1",
                         likePart = array[36].ToString(),
@@ -1491,9 +1716,9 @@ namespace WXShare
                     workStopDays = int.Parse(array[28].ToString()),
                     timeLimitOrder = int.Parse(array[29].ToString()),
                     timeLimit = int.Parse(array[30].ToString()),
-                    mmSum = int.Parse(array[31].ToString()),
-                    smSum = int.Parse(array[32].ToString()),
-                    workSum = int.Parse(array[33].ToString()),
+                    mmSum = double.Parse(array[31].ToString()),
+                    smSum = double.Parse(array[32].ToString()),
+                    workSum = double.Parse(array[33].ToString()),
                     signed = array[34].ToString() == "1",
                     receipted = array[35].ToString() == "1",
                     likePart = array[36].ToString(),
@@ -1564,9 +1789,9 @@ namespace WXShare
                     workStopDays = int.Parse(array[28].ToString()),
                     timeLimitOrder = int.Parse(array[29].ToString()),
                     timeLimit = int.Parse(array[30].ToString()),
-                    mmSum = int.Parse(array[31].ToString()),
-                    smSum = int.Parse(array[32].ToString()),
-                    workSum = int.Parse(array[33].ToString()),
+                    mmSum = double.Parse(array[31].ToString()),
+                    smSum = double.Parse(array[32].ToString()),
+                    workSum = double.Parse(array[33].ToString()),
                     signed = array[34].ToString() == "1",
                     receipted = array[35].ToString() == "1",
                     likePart = array[36].ToString(),
@@ -1640,9 +1865,9 @@ namespace WXShare
                         workStopDays = int.Parse(array[28].ToString()),
                         timeLimitOrder = int.Parse(array[29].ToString()),
                         timeLimit = int.Parse(array[30].ToString()),
-                        mmSum = int.Parse(array[31].ToString()),
-                        smSum = int.Parse(array[32].ToString()),
-                        workSum = int.Parse(array[33].ToString()),
+                        mmSum = double.Parse(array[31].ToString()),
+                        smSum = double.Parse(array[32].ToString()),
+                        workSum = double.Parse(array[33].ToString()),
                         signed = array[34].ToString() == "1",
                         receipted = array[35].ToString() == "1",
                         likePart = array[36].ToString(),
@@ -1718,9 +1943,9 @@ namespace WXShare
                         workStopDays = int.Parse(array[28].ToString()),
                         timeLimitOrder = int.Parse(array[29].ToString()),
                         timeLimit = int.Parse(array[30].ToString()),
-                        mmSum = int.Parse(array[31].ToString()),
-                        smSum = int.Parse(array[32].ToString()),
-                        workSum = int.Parse(array[33].ToString()),
+                        mmSum = double.Parse(array[31].ToString()),
+                        smSum = double.Parse(array[32].ToString()),
+                        workSum = double.Parse(array[33].ToString()),
                         signed = array[34].ToString() == "1",
                         receipted = array[35].ToString() == "1",
                         likePart = array[36].ToString(),

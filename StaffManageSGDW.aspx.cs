@@ -32,6 +32,14 @@ namespace WXShare
 "</div>";
 
             var array = DataBase.Team.GetsWithMembers();
+            var allTeam = DataBase.Team.Gets();
+            foreach(var team in allTeam)
+            {
+                if(!array.ContainsKey(team.id))
+                {
+                    array[team.id] = team;
+                }
+            }
             list.InnerHtml = "";
             foreach (var item in array)
             {
@@ -40,6 +48,22 @@ namespace WXShare
                     .Replace("#name#", item.Value.teamName)
                     .Replace("#memberCount#", item.Value.members.Count.ToString());
             }
+        }
+
+        protected void addTeam_Click(Object sender,EventArgs e)
+        {
+            var teamName = Request.Form["inputAddTeam"];
+            if(string.IsNullOrEmpty(teamName))
+            {
+                ScriptManager.RegisterClientScriptBlock(this, GetType(), "error", "alert('请输入队伍名称');", true);
+                return;
+            }
+            if(!DataBase.Team.Add(new Objects.Team() { teamName = teamName}))
+            {
+                ScriptManager.RegisterClientScriptBlock(this, GetType(), "error", "alert('创建失败，系统错误');", true);
+                return;
+            }
+            Response.Redirect(Request.Url.ToString());
         }
     }
 }

@@ -7,6 +7,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
     <title>使用微信扫描二维码</title>
+    <link rel="stylesheet" type="text/css" href="./css/weui.min.css" />
+    <link rel="stylesheet" type="text/css" href="./css/example.css" />
     <link rel="stylesheet" type="text/css" href="./css/requireWX.css" />
 </head>
 <body>
@@ -16,8 +18,9 @@
             <div class="hs-error-msg">请使用微信扫描此二维码查看</div>
         </div>
     </div>
-    <div class="hs-foot">
-        <div>Copyright © 2017</div>
-    </div>
+
+    <script src="./js/zepto.js"></script>
+    <script type="text/javascript" src="./js/jweixin-1.00.js"></script>
+    <script src="./js/weui.min.js"></script>
 </body>
 </html>

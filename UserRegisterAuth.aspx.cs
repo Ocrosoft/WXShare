@@ -34,7 +34,8 @@ namespace WXShare
 "   <div class=\"weui-cell__ft\">" +
 "    </div>" +
 "</a>";
-            string iden = activitySelect.Value;
+            string iden = Request.Form["activitySelect"];
+            activitySelect.Value = iden;
             List<Objects.User> list = new List<Objects.User>();
             if (iden == "0")
             {
@@ -44,9 +45,17 @@ namespace WXShare
             {
                 list = DataBase.UserUnAuth.Gets(new Objects.User() { identity = iden });
             }
+            regList.InnerHtml = "";
             foreach (var sign in list)
             {
-                regList.InnerHtml += signItem.Replace("#id#", sign.id).Replace("#content#", sign.name + " " + sign.phone + " " + sign.IDCard);
+                regList.InnerHtml += 
+                    signItem
+                    .Replace("#id#", sign.id)
+                    .Replace("#content#", sign.name + " " + sign.phone + " " + sign.IDCard);
+            }
+            if(list.Count == 0)
+            {
+                regList.InnerHtml = "<p style=\"text-align:center;\">找不到任何待审核记录</p>";
             }
         }
        

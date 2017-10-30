@@ -60,7 +60,7 @@
                 </div>
                 <p class="weui-grid__label">我的推荐</p>
             </a>
-            <a href="#" class="weui-grid">
+            <a href="/UserProfile.aspx" class="weui-grid">
                 <div class="weui-grid__icon" style="width: 35.86px">
                     <img src="./images/profile.png" alt="">
                 </div>
@@ -80,7 +80,7 @@
                 </div>
                 <p class="weui-grid__label">客户订单</p>
             </a>
-            <a href="#" class="weui-grid">
+            <a href="/UserProfile.aspx" class="weui-grid">
                 <div class="weui-grid__icon" style="width: 35.86px">
                     <img src="./images/profile.png" alt="">
                 </div>
@@ -107,7 +107,7 @@
                 </div>
                 <p class="weui-grid__label">施工订单</p>
             </a>
-            <a href="#" class="weui-grid">
+            <a href="/UserProfile.aspx" class="weui-grid">
                 <div class="weui-grid__icon" style="width: 35.86px">
                     <img src="./images/profile.png" alt="">
                 </div>
@@ -157,6 +157,12 @@
                     <img src="./images/control.png" alt="">
                 </div>
                 <p class="weui-grid__label">系统设置</p>
+            </a>
+            <a href="/UserProfile.aspx" class="weui-grid">
+                <div class="weui-grid__icon" style="width: 35.86px">
+                    <img src="./images/profile.png" alt="">
+                </div>
+                <p class="weui-grid__label">我的信息</p>
             </a>
             <!-- 管理员E -->
             <%

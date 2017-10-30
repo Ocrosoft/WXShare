@@ -13,6 +13,10 @@ namespace WXShare
     {
         public bool IsReusable { get { return true; } }
 
+        /// <summary>
+        /// 进行微信消息处理
+        /// </summary>
+        /// <param name="context"></param>
         public void ProcessRequest(HttpContext context)
         {
             String postString = String.Empty;
@@ -27,11 +31,10 @@ namespace WXShare
 
                 if (!string.IsNullOrEmpty(postString))
                 {
-                    
                     Execute(postString);
                 }
             }
-            else
+            else // GET 为消息验证
             {
                 string token = WXManage.token;
 
@@ -50,6 +53,14 @@ namespace WXShare
                 }
             }
         }
+        /// <summary>
+        /// 验证签名
+        /// </summary>
+        /// <param name="token"></param>
+        /// <param name="signature"></param>
+        /// <param name="timestamp"></param>
+        /// <param name="nonce"></param>
+        /// <returns></returns>
         public bool CheckSignature(string token, string signature, string timestamp, string nonce)
         {
             string[] ArrTmp = { token, timestamp, nonce };
@@ -69,6 +80,10 @@ namespace WXShare
                 return false;
             }
         }
+        /// <summary>
+        /// 详细消息处理
+        /// </summary>
+        /// <param name="postString"></param>
         public void Execute(string postString)
         {
             HttpContext.Current.Response.ContentEncoding = Encoding.UTF8;
@@ -103,6 +118,18 @@ namespace WXShare
                         ToUserName = rec.FromUserName,
                         MsgType = "text",
                         Content = "你好"
+                    };
+                    HttpContext.Current.Response.Write(res.ToXML());
+                }
+                // 获取OPENID
+                else if(textMSG.Content == "-1")
+                {
+                    TextMessageXMLObject res = new TextMessageXMLObject()
+                    {
+                        FromUserName = rec.ToUserName,
+                        ToUserName = rec.FromUserName,
+                        MsgType = "text",
+                        Content = rec.FromUserName
                     };
                     HttpContext.Current.Response.Write(res.ToXML());
                 }

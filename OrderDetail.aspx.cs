@@ -34,7 +34,34 @@ namespace WXShare
             {
                 id = oid
             });
-            if (order.status > 0)
+            inputName.Value = order.name;
+            inputPhone.Value = order.phone;
+            inputLocation.Value = order.location;
+            inputLocationDetail.Value = order.locationDetail;
+            inputStatus.Value = new DataBase.Status()
+                .Get(
+                new Objects.Status()
+                {
+                    id = order.status.ToString()
+                }
+                )
+                .view;
+            // 获取活动优惠
+            var activity = DataBase.Activity.Get(new Objects.Activity() { id = order.youHuiLaiYuan.ToString() });
+            if (activity.template == 1)
+            {
+                var addition = activity.templateAddition.Split(',');
+                inputYouHui.Value = "满" + addition[0] + "减" + addition[1];
+            }
+            else if (activity.template == 2)
+            {
+                var addition = activity.templateAddition.Split(',');
+                inputYouHui.Value = "满" + addition[0] + "赠送" + addition[1];
+            }
+            // 显示业务员
+            var ywy = DataBase.User.Get(new Objects.User() { phone = order.commissioner, identity = "2" });
+            inputYWY.Value = ywy.name + " " + ywy.phone;
+            if (order.status > 1) // 预约基检+
             {
                 // 显示预约的内容
                 inputBrushType.Value = new DataBase.BrushType().Get(new Objects.BrushType() { id = order.brushType.ToString() }).view;
@@ -45,7 +72,7 @@ namespace WXShare
                 }
                 inputBrushDemand.Value = inputBrushDemand.Value.Substring(0, inputBrushDemand.Value.Length - 1);
             }
-            if (order.status > 2)
+            if (order.status > 2) // 基检完成+
             {
                 // 显示基检内容
                 inputHousePurpose.Value = new DataBase.HousePurpose().Get(new Objects.HousePurpose() { id = order.housePurpose.ToString() }).view;
@@ -59,12 +86,96 @@ namespace WXShare
                 inputMuQiSubmitted.Value = order.muQi.ToString();
                 inputTieYiSubmitted.Value = order.tieYi.ToString();
             }
-            if (order.status > 3)
+            if (order.status > 3 && order.status != 5)  // 签约成功+（签约失败没有计划）
             {
+                // 显示计划施工
                 inputWorkOrderDateSubmitted.Value = order.workOrderDate.ToString("yyyy-MM-dd");
                 inputWorkCompleteOrderDateSubmitted.Value = order.workCompleteOrderDate.ToString("yyyy-MM-dd");
                 inputContractNumberSubmitted.Value = order.contractNumber;
             }
+            if(order.status > 5) // 收款完成+
+            {
+                // 各种金额
+                var sum = order.smSum + order.mmSum + order.workSum;
+                if (activity.template == 1)
+                {
+                    if (sum >= int.Parse(activity.templateAddition.Split(',')[0]))
+                    {
+                        sum -= int.Parse(activity.templateAddition.Split(',')[1]);
+                    }
+                }
+                cashRec.Value = sum.ToString("0.0");
+                inputMMSumSubmitted.Value = order.mmSum.ToString("0.0");
+                inputSMSumSubmitted.Value = order.smSum.ToString("0.0");
+                inputWorkSumSubmitted.Value = order.workSum.ToString("0.0");
+            }
+            if(order.status > 7) // 派工完成+
+            {
+                // 显示施工队
+                var team = DataBase.Team.Get(new Objects.Team() { id = order.constructionTeam });
+                inputSGD.Value = team.teamName;
+            }
+            // 订单取消原因、签约不成功原因、退单原因
+            if(order.status == 1)
+            {
+                reasonDiv.Style["display"] = "";
+                inputReason.Value = order.canceledReason;
+            }
+            else if(order.status == 5)
+            {
+                reasonDiv.Style["display"] = "";
+                inputReason.Value = order.signFailedReason;
+            }
+            else if(order.status == 7)
+            {
+                reasonDiv.Style["display"] = "";
+                inputReason.Value = order.refuseReason;
+            }
+            // 调整按钮
+            if(order.status != 6) // 收款完成
+            {
+                statusBtn_8.InnerHtml = "";
+                statusBtn_8.Style["display"] = "none";
+            }
+
+            // 获取施工队
+            var teams = DataBase.Team.Gets();
+            SGDSelect.Items.Clear();
+            SGDSelect.Items.Add(new ListItem("请选择施工队", "0"));
+            foreach(var team in teams)
+            {
+                SGDSelect.Items.Add(new ListItem(team.teamName, team.id));
+            }
+        }
+
+        protected void ButtonOK_Click(Object sender,EventArgs e)
+        {
+            var order = new Objects.Order()
+            {
+                id = Request.QueryString["oid"]
+            };
+            order = DataBase.Order.GetByID(order);
+            order.constructionTeam = Request.Form["SGDSelect"];
+            // 派工
+            if(!DataBase.Order.Dispatch(order))
+            {
+                ScriptManager.RegisterClientScriptBlock(this, GetType(), "error", "alert('派工失败，服务器错误');", true);
+                return;
+            }
+            else
+            {
+                var team = DataBase.Team.GetWithMembers(new Objects.Team() { id = order.constructionTeam });
+                foreach(var member in team.members)
+                {
+                    var openID = DataBase.User.GetOpenID(member);
+                    if(openID != "")
+                    {
+                        WXManage.SendMessage(openID, "有一个新的施工订单");
+                    }
+                }
+                // 给施工队所有成员发送消息
+            }
+            Response.Redirect(Request.Url.ToString());
         }
     }
 }

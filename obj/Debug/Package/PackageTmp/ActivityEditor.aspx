@@ -21,10 +21,27 @@
 </head>
 <body>
     <form id="form1" runat="server" method="post" enctype="multipart/form-data">
+        <!-- 删除提示 -->
+        <div class="js_dialog" id="deleteDialog" style="display: none;">
+            <div class="weui-mask"></div>
+            <div class="weui-dialog">
+                <div class="weui-dialog__hd"><strong class="weui-dialog__title">删除确认</strong></div>
+                <div class="weui-dialog__bd">
+                    删除后不可恢复，是否继续？
+                </div>
+                <div class="weui-dialog__ft">
+                    <a id="delete_cancel" class="weui-dialog__btn weui-dialog__btn_default">取消</a>
+                    <a id="delete_ok" runat="server" onserverclick="delete_Click" class="weui-dialog__btn weui-dialog__btn_primary">确定</a>
+                </div>
+            </div>
+        </div>
         <!-- 保存按钮 -->
         <div class="weui-btn-area">
             <div class="weui-cell__hd">
-                <h2 style="float: left;">编辑活动</h2>
+                <h2 style="float: left;">
+                    编辑活动
+                    <a id="delete" class="weui-btn weui-btn_mini weui-btn_default" style="top: 5px;right: 0px;left: 5px;">删除</a>
+                </h2>
                 <a style="width: 33.333%; margin-left: 65%;" class="weui-btn weui-btn_primary" onclick="document.getElementById('htmlInput').value = $('#textarea')[0].childNodes[0].innerHTML;$('#form1').submit();" id="showTooltips">保存</a>
             </div>
         </div>
@@ -220,6 +237,12 @@
                 $uploaderFiles.append($(tmpl.replace('#url#', '\'' + url + '\'')));
                 $('.weui-uploader__info').text('1/1');
             }
+            $('#delete').on('click', function () {
+                $('#deleteDialog').fadeIn(200);
+            });
+            $('#delete_cancel').on('click', function () {
+                $('#deleteDialog').fadeOut(200);
+            });
         </script>
     </form>
 </body>

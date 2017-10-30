@@ -92,6 +92,11 @@ namespace WXShare
                 }
                 return;
             }
+            // 退出原有施工队
+            if(DataBase.Team.Get(user) != null)
+            {
+                DataBase.Team.RemoveFromTeam(user);
+            }
             if (!DataBase.Team.AddToTeam(user, team))
             {
                 ScriptManager.RegisterClientScriptBlock(this, GetType(), "error", "alert('加入施工队失败，服务器错误')", true);

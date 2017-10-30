@@ -241,7 +241,7 @@ namespace WXShare
         /// </summary>
         public string MsgType { get; set; }
         /// <summary>
-        /// 转换为XML，子类必须重写(抄一遍实现，不然调用此方法报错)
+        /// 转换为XML，子类必须重写(抄一遍实现，不然调用此方法报错，typeof会取到基类)
         /// </summary>
         /// <returns></returns>
         public virtual string ToXML()

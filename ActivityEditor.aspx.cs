@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using Ocrosoft;
+using System;
+using System.IO;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using Ocrosoft;
-using System.IO;
 
 namespace WXShare
 {
@@ -119,6 +116,17 @@ namespace WXShare
             {
                 ScriptManager.RegisterStartupScript(this, GetType(), "showImgSrc", "showImgSrc('//" + Request.Url.Host + "" + activity.imgSrc + "');", true);
             }
+        }
+
+        protected void delete_Click(object sender,EventArgs e)
+        {
+            var aid = Request.QueryString["aid"];
+            if(!DataBase.Activity.Delete(new Objects.Activity() { id = aid}))
+            {
+                ScriptManager.RegisterClientScriptBlock(this, GetType(), "error", "alert('删除失败，服务器错误');", true);
+                return;
+            }
+            Response.Redirect("/ActivityAll.aspx");
         }
     }
 }

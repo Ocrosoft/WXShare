@@ -22,6 +22,24 @@ namespace WXShare {
         protected global::System.Web.UI.HtmlControls.HtmlForm form1;
         
         /// <summary>
+        /// SGDSelect 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlSelect SGDSelect;
+        
+        /// <summary>
+        /// button_ok 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlAnchor button_ok;
+        
+        /// <summary>
         /// inputName 控件。
         /// </summary>
         /// <remarks>
@@ -58,6 +76,24 @@ namespace WXShare {
         protected global::System.Web.UI.HtmlControls.HtmlInputText inputLocationDetail;
         
         /// <summary>
+        /// inputYWY 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlInputText inputYWY;
+        
+        /// <summary>
+        /// inputSGD 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlInputText inputSGD;
+        
+        /// <summary>
         /// inputYouHui 控件。
         /// </summary>
         /// <remarks>
@@ -67,6 +103,15 @@ namespace WXShare {
         protected global::System.Web.UI.HtmlControls.HtmlInputText inputYouHui;
         
         /// <summary>
+        /// cashRec 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlInputGenericControl cashRec;
+        
+        /// <summary>
         /// inputStatus 控件。
         /// </summary>
         /// <remarks>
@@ -74,6 +119,24 @@ namespace WXShare {
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlInputText inputStatus;
+        
+        /// <summary>
+        /// reasonDiv 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl reasonDiv;
+        
+        /// <summary>
+        /// inputReason 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlInputText inputReason;
         
         /// <summary>
         /// additionContent 控件。
@@ -218,5 +281,41 @@ namespace WXShare {
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlInputText inputContractNumberSubmitted;
+        
+        /// <summary>
+        /// inputMMSumSubmitted 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlInputGenericControl inputMMSumSubmitted;
+        
+        /// <summary>
+        /// inputSMSumSubmitted 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlInputGenericControl inputSMSumSubmitted;
+        
+        /// <summary>
+        /// inputWorkSumSubmitted 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlInputGenericControl inputWorkSumSubmitted;
+        
+        /// <summary>
+        /// statusBtn_8 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl statusBtn_8;
     }
 }

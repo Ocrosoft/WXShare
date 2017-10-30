@@ -100,8 +100,8 @@
                 var $_self = $(element);
                 if ($_self.parent().parent().hasClass('weui-cell_warn')) return;
                 $_self.parent().parent().addClass('weui-cell_warn');
-                $_self.parent().parent().find('.weui-icon-warn').parent().remove();
-                $_self.parent().parent().append($('<div class="weui-cell__ft"><i class="weui-icon-warn" style="display: inline-block;"></i></div>'));
+                //$_self.parent().parent().find('.weui-icon-warn').parent().remove();
+                //$_self.parent().parent().append($('<div class="weui-cell__ft"><i class="weui-icon-warn" style="display: inline-block;"></i></div>'));
             }
             /**
              * 显示错误，不添加元素
@@ -116,7 +116,7 @@
             $('input').on('keydown', function () {
                 var $_self = $(this);
                 $_self.parent().parent().removeClass('weui-cell_warn');
-                $_self.parent().parent().find('.weui-cell__ft').css('display', 'none');
+                //$_self.parent().parent().find('.weui-cell__ft').css('display', 'none');
             });
             /* 表单检查 */
             $('#form1').on('submit', function () {

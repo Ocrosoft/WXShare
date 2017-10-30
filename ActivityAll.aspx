@@ -27,8 +27,15 @@
 </head>
 <body>
     <form id="form1" runat="server">
+        <!-- 标题 -->
+        <div class="page__hd" style="padding-left: 15px; padding-bottom: 15px;">
+            <h1 class="page__title" style="font-size: 25px; font-weight: bold;">
+                所有活动
+                <a runat="server" onserverclick="newActivity_Click" id="newActivity" class="weui-btn weui-btn_mini weui-btn_primary" style="top: 5px;right: 0px;left: 5px;">添加</a>
+            </h1>
+        </div>
+        <!-- 活动列表 -->
         <div class="weui-panel weui-panel_access">
-            <div class="weui-panel__hd">所有活动</div>
             <div class="weui-panel__bd" runat="server" id="activities">
             </div>
         </div>
