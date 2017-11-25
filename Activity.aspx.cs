@@ -38,6 +38,10 @@ namespace WXShare
                     .Replace("#title#", activity.title)
                     .Replace("#brief#", activity.brief);
             }
+            if(activityList.Count==0)
+            {
+                activities.InnerHtml = "<p style=\"text-align:center;\">当前没有活动</p>";
+            }
         }
     }
 }

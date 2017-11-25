@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text;
 using System.Web;
 using System.Web.Security;
-using System.Xml.Serialization;
 
 namespace WXShare
 {
@@ -20,6 +17,7 @@ namespace WXShare
         public void ProcessRequest(HttpContext context)
         {
             String postString = String.Empty;
+            // POST请求为消息处理
             if (HttpContext.Current.Request.HttpMethod.ToUpper() == "POST")
             {
                 using (Stream stream = HttpContext.Current.Request.InputStream)
@@ -34,7 +32,8 @@ namespace WXShare
                     Execute(postString);
                 }
             }
-            else // GET 为消息验证
+            // GET请求为签名验证
+            else
             {
                 string token = WXManage.token;
 
@@ -89,12 +88,12 @@ namespace WXShare
             HttpContext.Current.Response.ContentEncoding = Encoding.UTF8;
             // 获取ToUserName,FromUserName,CreateTime,MsgType
             var rec = WXManage.FromXML<XMLObject>(postString);
-            if(rec.MsgType=="event")
+            if (rec.MsgType == "event")
             {
                 // 事件类型处理
                 // 仅处理关注
                 var subEV = WXManage.FromXML<SubscribeXMLObject>(postString);
-                if(subEV.Event == "subscribe")
+                if (subEV.Event == "subscribe")
                 {
                     var res = new TextMessageXMLObject()
                     {
@@ -106,11 +105,11 @@ namespace WXShare
                     HttpContext.Current.Response.Write(res.ToXML());
                 }
             }
-            else if(rec.MsgType == "text")
+            else if (rec.MsgType == "text")
             {
                 // 文本类型处理
                 var textMSG = WXManage.FromXML<TextMessageXMLObject>(postString);
-                if(textMSG.Content == "1")
+                if (textMSG.Content == "1")
                 {
                     TextMessageXMLObject res = new TextMessageXMLObject()
                     {
@@ -122,7 +121,7 @@ namespace WXShare
                     HttpContext.Current.Response.Write(res.ToXML());
                 }
                 // 获取OPENID
-                else if(textMSG.Content == "-1")
+                else if (textMSG.Content == "-1")
                 {
                     TextMessageXMLObject res = new TextMessageXMLObject()
                     {
@@ -132,6 +131,58 @@ namespace WXShare
                         Content = rec.FromUserName
                     };
                     HttpContext.Current.Response.Write(res.ToXML());
+                }
+                // 注册送气球
+                else if (textMSG.Content.StartsWith("ilovezufe"))
+                {
+                    var name = textMSG.Content.Split(' ')[1];
+                    ImageTextXMLObject res = new ImageTextXMLObject()
+                    {
+                        FromUserName = rec.ToUserName,
+                        ToUserName = rec.FromUserName,
+                        MsgType = "news",
+                        ArticleCount = 1,
+                        Articles = new System.Collections.Generic.List<ImageTextXMLObject.item>()
+                    };
+                    TextMessageXMLObject tres = new TextMessageXMLObject()
+                    {
+                        FromUserName = rec.ToUserName,
+                        ToUserName = rec.FromUserName,
+                        MsgType = "text"
+                    };
+                    bool failed = false;
+                    if (sqq.Sys.SignEnabled)
+                    {
+                        if (sqq.Database.AddSender(rec.FromUserName, name))
+                        {
+                            res.Articles.Add(new ImageTextXMLObject.item()
+                            {
+                                Title = "登记成功，在这里查看和提交任务哦！",
+                                Description = "查看和提交任务遇到问题，请联系管理员。",
+                                PicUrl = "..",
+                                Url = "http://debug.ocrosoft.com/sqq/ReportBack.aspx?oid=" + rec.FromUserName
+                            });
+                            sqq.Sys.Log(name + "进行了登记");
+                        }
+                        else
+                        {
+                            failed = true;
+                            tres.Content = "登记失败，请确认是否已经登记过。";
+                        }
+                    }
+                    else
+                    {
+                        failed = true;
+                        tres.Content = "登记未开启，如错过登记请联系管理员。";
+                    }
+                    if (failed)
+                    {
+                        HttpContext.Current.Response.Write(tres.ToXML());
+                    }
+                    else
+                    {
+                        HttpContext.Current.Response.Write(res.ToXML());
+                    }
                 }
             }
         }

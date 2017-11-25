@@ -51,9 +51,12 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>bin\MySql.Data.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Net.Http.Formatting, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.3\lib\net45\System.Net.Http.Formatting.dll</HintPath>
     </Reference>
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
@@ -64,6 +67,12 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Http, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.5.2.3\lib\net45\System.Web.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http.WebHost, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.WebHost.5.2.3\lib\net45\System.Web.Http.WebHost.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Web" />
@@ -106,6 +115,7 @@
     <Content Include="js\zepto-touch.js" />
     <Content Include="js\zepto.js" />
     <Content Include="logo.png" />
+    <Content Include="MyShare.aspx" />
     <Content Include="OrderDetail.aspx" />
     <Content Include="OrderDetailForYWY.aspx" />
     <Content Include="OrderDetailForSGD.aspx" />
@@ -115,6 +125,29 @@
     <Content Include="packages.config" />
     <Content Include="js\jweixin-1.2.0.js" />
     <None Include="Properties\PublishProfiles\CustomProfile.pubxml" />
+    <Content Include="sqq\ajax\senders.ashx" />
+    <Content Include="sqq\ajax\sents.ashx" />
+    <Content Include="sqq\ajax\switchDispatch.ashx" />
+    <Content Include="sqq\ajax\getDispatch.ashx" />
+    <Content Include="sqq\ajax\getSign.ashx" />
+    <Content Include="sqq\ajax\switchSign.ashx" />
+    <Content Include="sqq\ajax\initation.ashx" />
+    <Content Include="sqq\ajax\problemsSolved.ashx" />
+    <Content Include="sqq\ajax\processProblems.ashx" />
+    <Content Include="sqq\ajax\problemsSavedCount.ashx" />
+    <Content Include="sqq\ajax\problemsCountInfo.ashx" />
+    <Content Include="sqq\ajax\dispatch.ashx" />
+    <Content Include="sqq\ajax\confirmTask.ashx" />
+    <Content Include="sqq\ajax\newTask.ashx" />
+    <Content Include="sqq\ajax\getContestID.ashx" />
+    <Content Include="sqq\ajax\setContestID.ashx" />
+    <Content Include="sqq\ajax\getLogs.ashx" />
+    <None Include="Properties\PublishProfiles\CustomProfile1.pubxml" />
+    <Content Include="sqq\ajax\checkTasks.ashx" />
+    <Content Include="sqq\ajax\resendTask.ashx" />
+    <Content Include="sqq\ajax\getMaxTask.ashx" />
+    <Content Include="sqq\ajax\setMaxTask.ashx" />
+    <Content Include="sqq\ajax\deleteSender.ashx" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -126,6 +159,11 @@
     <Content Include="css\weui.min.css" />
     <Content Include="RegisterAuthDetail.aspx" />
     <Content Include="RequireWX.aspx" />
+    <Content Include="sqq\css\main.css" />
+    <Content Include="sqq\Index.aspx" />
+    <Content Include="sqq\ReportBack.aspx" />
+    <Content Include="sqq\ShowSender.aspx" />
+    <Content Include="sqq\ShowSent.aspx" />
     <Content Include="StaffManage.aspx" />
     <Content Include="StaffManageSGDW.aspx" />
     <Content Include="StaffManageSGRY.aspx" />
@@ -204,6 +242,13 @@
     </Compile>
     <Compile Include="AuthCode.cs" />
     <Compile Include="DataBase.cs" />
+    <Compile Include="MyShare.aspx.cs">
+      <DependentUpon>MyShare.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MyShare.aspx.designer.cs">
+      <DependentUpon>MyShare.aspx</DependentUpon>
+    </Compile>
     <Compile Include="MySQLHelper.cs" />
     <Compile Include="Objects.cs" />
     <Compile Include="OrderDetail.aspx.cs">
@@ -265,6 +310,103 @@
       <DependentUpon>RequireWX.aspx</DependentUpon>
     </Compile>
     <Compile Include="OSecurity.cs" />
+    <Compile Include="sqq\ajax\checkTasks.ashx.cs">
+      <DependentUpon>checkTasks.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="sqq\ajax\confirmTask.ashx.cs">
+      <DependentUpon>confirmTask.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="sqq\ajax\deleteSender.ashx.cs">
+      <DependentUpon>deleteSender.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="sqq\ajax\dispatch.ashx.cs">
+      <DependentUpon>dispatch.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="sqq\ajax\getContestID.ashx.cs">
+      <DependentUpon>getContestID.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="sqq\ajax\getDispatch.ashx.cs">
+      <DependentUpon>getDispatch.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="sqq\ajax\getLogs.ashx.cs">
+      <DependentUpon>getLogs.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="sqq\ajax\getMaxTask.ashx.cs">
+      <DependentUpon>getMaxTask.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="sqq\ajax\getSign.ashx.cs">
+      <DependentUpon>getSign.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="sqq\ajax\initation.ashx.cs">
+      <DependentUpon>initation.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="sqq\ajax\newTask.ashx.cs">
+      <DependentUpon>newTask.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="sqq\ajax\problemsCountInfo.ashx.cs">
+      <DependentUpon>problemsCountInfo.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="sqq\ajax\problemsSavedCount.ashx.cs">
+      <DependentUpon>problemsSavedCount.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="sqq\ajax\problemsSolved.ashx.cs">
+      <DependentUpon>problemsSolved.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="sqq\ajax\resendTask.ashx.cs">
+      <DependentUpon>resendTask.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="sqq\ajax\senders.ashx.cs">
+      <DependentUpon>senders.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="sqq\ajax\sents.ashx.cs">
+      <DependentUpon>sents.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="sqq\ajax\setContestID.ashx.cs">
+      <DependentUpon>setContestID.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="sqq\ajax\setMaxTask.ashx.cs">
+      <DependentUpon>setMaxTask.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="sqq\ajax\switchDispatch.ashx.cs">
+      <DependentUpon>switchDispatch.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="sqq\ajax\switchSign.ashx.cs">
+      <DependentUpon>switchSign.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="sqq\Database.cs" />
+    <Compile Include="sqq\Dispatch.cs" />
+    <Compile Include="sqq\Index.aspx.cs">
+      <DependentUpon>Index.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="sqq\Index.aspx.designer.cs">
+      <DependentUpon>Index.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="sqq\ajax\processProblems.ashx.cs">
+      <DependentUpon>processProblems.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="sqq\ReportBack.aspx.cs">
+      <DependentUpon>ReportBack.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="sqq\ReportBack.aspx.designer.cs">
+      <DependentUpon>ReportBack.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="sqq\ShowSender.aspx.cs">
+      <DependentUpon>ShowSender.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="sqq\ShowSender.aspx.designer.cs">
+      <DependentUpon>ShowSender.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="sqq\ShowSent.aspx.cs">
+      <DependentUpon>ShowSent.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="sqq\ShowSent.aspx.designer.cs">
+      <DependentUpon>ShowSent.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="sqq\Sys.cs" />
     <Compile Include="StaffManage.aspx.cs">
       <DependentUpon>StaffManage.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

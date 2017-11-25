@@ -73,6 +73,7 @@ namespace WXShare
             // 将报名转为订单
             if(!DataBase.Order.Add(order)) // 失败提示，成功不处理
             {
+
                 ScriptManager.RegisterClientScriptBlock(this, GetType(), "error", "alert('派单失败，服务器错误');", true);
                 return;
             }

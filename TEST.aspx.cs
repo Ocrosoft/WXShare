@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Web.UI;
 
 namespace WXShare
@@ -7,7 +8,10 @@ namespace WXShare
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            //WXManage.SendMessage("orUOg1HDidOwnt_QS45_Ws4XHko4", "有一条新报名信息！");
+            var open_id = Request.QueryString["oid"];
+            var content = Request.QueryString["cont"];
+
+            WXManage.SendMessage(open_id, content);
         }
     }
 }

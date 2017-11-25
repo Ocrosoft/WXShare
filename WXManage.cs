@@ -1,5 +1,6 @@
 ﻿using Ocrosoft;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Web;
 using System.Xml.Serialization;
@@ -25,7 +26,7 @@ namespace WXShare
         private static long timeStamp;
         // 公众号设置的token
         public static string token = "chenyanhong";
-        
+
         /// <summary>
         /// 刷新access_token
         /// </summary>
@@ -98,7 +99,7 @@ namespace WXShare
                 "{\"type\":\"view\",\"name\":\"当前活动\",\"url\":\"http://debug.ocrosoft.com/Activity.aspx\"}]}";
             var errcode = ORequest.RequestPost(
                 "https://api.weixin.qq.com/cgi-bin/menu/create?access_token=" + GetAccessToken(),
-                menuJson, 
+                menuJson,
                 "errcode");
             if (errcode == "0")
             {
@@ -127,7 +128,7 @@ namespace WXShare
         public static bool AddKF(string account, string nick, string pass)
         {
             string postData = "{\"kf_account\":\"" + account + "@" + gh + "\",\"nickname\":\"" + nick + "\",\"password\":\"" + pass + "\"}";
-            var errcode = ORequest.RequestPost("https://api.weixin.qq.com/customservice/kfaccount/add?access_token=" + GetAccessToken(), 
+            var errcode = ORequest.RequestPost("https://api.weixin.qq.com/customservice/kfaccount/add?access_token=" + GetAccessToken(),
                 postData,
                 "errcode");
             if (errcode == "0")
@@ -215,7 +216,7 @@ namespace WXShare
     }
 
     /// <summary>
-    /// 消息基类(普通文本消息)
+    /// 消息基类
     /// </summary>
     [XmlRoot(ElementName = "xml")]
     public class XMLObject
@@ -284,6 +285,28 @@ namespace WXShare
         {
             CreateTime = OSecurity.DateTimeToTimeStamp(DateTime.Now);
             return WXManage.ToXML(this);
+        }
+    }
+    /// <summary>
+    /// 图文消息（外链消息），MsgType=news
+    /// </summary>
+    [XmlRoot(ElementName = "xml")]
+    public class ImageTextXMLObject : XMLObject
+    {
+        public int ArticleCount { get; set; }
+        public List<item> Articles { get; set; }
+        public override string ToXML()
+        {
+            CreateTime = OSecurity.DateTimeToTimeStamp(DateTime.Now);
+            return WXManage.ToXML(this);
+        }
+
+        public class item
+        {
+            public string Title { get; set; }
+            public string Description { get; set; }
+            public string PicUrl { get; set; }
+            public string Url { get; set; }
         }
     }
 }
